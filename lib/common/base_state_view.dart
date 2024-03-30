@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../app/assets/icon_assets.dart';
 import '../app/utils/global.dart';
 import '../app/utils/router.dart';
 import '../app/widgets/confirm_view.dart';
 import 'base_controller.dart';
 import 'i_base_view.dart';
 
-abstract class BaseStateView<page extends View,
-controller extends BaseController> extends ViewState<page, controller>
+abstract class BaseStateView<Page extends View,
+        controller extends BaseController> extends ViewState<Page, controller>
     with WidgetsBindingObserver
     implements IBaseView {
   final AppRouter _router = AppRouter();
@@ -152,7 +152,7 @@ controller extends BaseController> extends ViewState<page, controller>
   void pushScreen(String pageName,
       {bool isAllowBack = true, Object? arguments}) {
     CupertinoPageRoute? newScreen =
-    _router.getRoute(RouteSettings(name: pageName, arguments: arguments));
+        _router.getRoute(RouteSettings(name: pageName, arguments: arguments));
     if (newScreen != null) {
       if (isAllowBack) {
         Navigator.push(context, newScreen).then((value) {
@@ -197,36 +197,36 @@ controller extends BaseController> extends ViewState<page, controller>
                       //resizeToAvoidBottomInset: !isMapView(),
                       backgroundColor: Colors.transparent,
                       appBar: (isInitialAppbar() &&
-                          MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.portrait)
                           ? AppBar(
-                        backgroundColor: Colors.transparent,
-                        centerTitle: true,
-                        title: Text(appBarTitle(),
-                            style: TextStyle(
-                                fontFamily: 'NunitoSans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: HexColor(Global.mColors["black_5"]
-                                    .toString()))),
-                        leading: !isHideBackButton()
-                            ? Padding(
-                          padding: const EdgeInsets.only(left: 25),
-                          child: IconButton(
-                            onPressed: () {
-                              if (Global.isAvailableToClick()) {
-                                onBack();
-                              }
-                            },
-                            icon: Image.asset(IconAssets.icBack,
-                                width: 11, height: 16),
-                            alignment: Alignment.center,
-                          ),
-                        )
-                            : Container(),
-                        elevation: 0,
-                        actions: rightMenu(),
-                      )
+                              backgroundColor: Colors.transparent,
+                              centerTitle: true,
+                              title: Text(appBarTitle(),
+                                  style: TextStyle(
+                                      fontFamily: 'NunitoSans',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: HexColor(Global.mColors["black_5"]
+                                          .toString()))),
+                              leading: !isHideBackButton()
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(left: 25),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          if (Global.isAvailableToClick()) {
+                                            onBack();
+                                          }
+                                        },
+                                        icon: Image.asset(IconAssets.icBack,
+                                            width: 11, height: 16),
+                                        alignment: Alignment.center,
+                                      ),
+                                    )
+                                  : Container(),
+                              elevation: 0,
+                              actions: rightMenu(),
+                            )
                           : null,
                       body: (_isDelayed)
                           ? body(context, controller)
@@ -244,7 +244,7 @@ controller extends BaseController> extends ViewState<page, controller>
   void showErrorFromServer(String? key, {BuildContext? viewContext}) {
     Future.delayed(
       const Duration(microseconds: 200),
-          () {
+      () {
         ScaffoldMessenger.of(viewContext ?? context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.transparent,
@@ -308,7 +308,7 @@ controller extends BaseController> extends ViewState<page, controller>
   void showGeneralToast(String message) {
     Future.delayed(
       const Duration(microseconds: 500),
-          () {
+      () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
@@ -325,14 +325,14 @@ controller extends BaseController> extends ViewState<page, controller>
 
   @override
   void showPopupWithAction(
-      String message,
-      String okButton, [
-        VoidCallback? okCallback,
-        String? title,
-        String? cancelButton,
-        VoidCallback? cancelCallback,
-        bool? acceptByRequester,
-      ]) {
+    String message,
+    String okButton, [
+    VoidCallback? okCallback,
+    String? title,
+    String? cancelButton,
+    VoidCallback? cancelCallback,
+    bool? acceptByRequester,
+  ]) {
     if (_isThereCurrentDialogShowing(context)) {
       return;
     }
