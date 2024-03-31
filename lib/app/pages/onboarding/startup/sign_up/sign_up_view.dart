@@ -23,7 +23,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
 
   @override
   bool isInitialAppbar() {
-    return true;
+    return false;
   }
 
   @override
@@ -39,65 +39,130 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
   @override
   Widget body(BuildContext context, BaseController controller) {
     SignUpController _controller = controller as SignUpController;
+    // const double defaultPadding = 16.0;
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.only(left: toSize(40)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          SizedBox(
-            height: 400,
+      // backgroundColor:
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg2.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
           ),
-          ok(),
-          SizedBox(
-            height: 30,
-          ),
-          ok(),
-        ]),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: toSize(5)),
+                // Image
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: toSize(150),
+                    width: toSize(150),
+                    child: Image.asset(
+                      'assets/images/medVoice.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: toSize(300)),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: TextFieldContainer(
+                      size: size,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          icon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.person,
+                              color: HexColor("#EC4B8B"),
+                            ),
+                          ),
+                          labelText: "Email",
+                          labelStyle: TextStyle(
+                            color: HexColor("#EC4B8B"),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      )),
+                ),
+
+                SizedBox(height: toSize(10)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: TextFieldContainer(
+                      size: size,
+                      child: TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          icon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.lock,
+                              color: HexColor("#EC4B8B"),
+                            ),
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.visibility,
+                              color: HexColor("#EC4B8B"),
+                            ),
+                          ),
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            color: HexColor("#EC4B8B"),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      )),
+                ),
+                SizedBox(height: toSize(10)),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Login".toUpperCase(),
+                  ),
+                ),
+              ]),
+        ),
       ),
     );
   }
+}
 
-  Container ok() {
+class TextFieldContainer extends StatelessWidget {
+  final Widget child;
+  final Size size;
+  const TextFieldContainer({
+    Key? key,
+    required this.child,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      width: 335,
-      child: TextFormField(
-        autofocus: true,
-        obscureText: false,
-        decoration: InputDecoration(
-          isDense: false,
-          labelText: 'Email Address',
-          alignLabelWithHint: false,
-          hintText: 'Enter your email',
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          filled: true,
-        ),
-        textAlign: TextAlign.start,
-        maxLines: null,
-        minLines: null,
+      margin: EdgeInsets.symmetric(vertical: toSize(10)),
+      padding:
+          EdgeInsets.symmetric(horizontal: toSize(20), vertical: toSize(8)),
+      width: size.width * 0.9,
+      decoration: BoxDecoration(
+        color: HexColor("#FBE8F2"),
+        borderRadius: BorderRadius.circular(29),
       ),
+      child: child,
     );
   }
 }

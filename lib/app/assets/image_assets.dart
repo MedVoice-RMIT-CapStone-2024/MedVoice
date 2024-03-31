@@ -2,4 +2,7 @@
 
 class ImageAssets {
   static const String imgAssetName = 'assets/images/img_asset_name.png';
+  static const String imgMedVoice = 'assets/images/medVoice.png';
+  static const String bg = 'assets/images/backGround.png';
+  static const String bg2 = 'assets/images/bg2.png';
 }
