@@ -3,19 +3,19 @@ import 'package:flutter/cupertino.dart';
 class BackgroundSetUp extends StatelessWidget {
   const BackgroundSetUp({
     Key? key,
-    required this.size,
     required this.child,
+    required this.link,
   }) : super(key: key);
 
-  final Size size;
   final Widget child;
+  final String link;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/bg2.png'),
+          image: AssetImage(link),
           fit: BoxFit.cover,
           alignment: Alignment.topCenter,
         ),

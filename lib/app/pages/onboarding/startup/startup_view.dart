@@ -38,5 +38,15 @@ class _StartupView extends BaseStateView<StartupView, StartupController> {
   Widget body(BuildContext context, BaseController controller) {
     StartupController startupController = controller as StartupController;
     return SignInView();
+    // Scaffold(
+    //   backgroundColor: Colors.white,
+    //   body: Center(child: Text("Hi, welcome to MedCare")
+    //       // InkWell(
+    //       //     child: Text("Hi, welcome to MedCare"),
+    //       //     onTap: () {
+    //       //       pushScreen(Pages.signIn);
+    //       //     })
+    //       ),
+    // );
   }
 }

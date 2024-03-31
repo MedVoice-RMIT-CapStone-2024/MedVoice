@@ -46,7 +46,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
     return Scaffold(
         backgroundColor: HexColor("#FBE8F2"),
         body: BackgroundSetUp(
-          size: size,
+          link: 'assets/images/bg2.png',
           child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -175,12 +175,17 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     )),
                 SizedBox(height: toSize(15)),
 
-                Text("Don't have an account? Sign up",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: toSize(15),
-                      fontWeight: FontWeight.w400,
-                    )),
+                InkWell(
+                  onTap: () {
+                    pushScreen(Pages.signUp);
+                  },
+                  child: Text("Don't have an account? Sign up",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: toSize(15),
+                        fontWeight: FontWeight.w400,
+                      )),
+                ),
 
                 SizedBox(height: toSize(40)),
               ]),
