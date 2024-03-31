@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../common/base_controller.dart';
+import '../../../../common/base_controller.dart';
 
-class SignUpController extends BaseController {
+class SignInController extends BaseController {
   bool isShowStartButton = false;
   Timer? timer;
 

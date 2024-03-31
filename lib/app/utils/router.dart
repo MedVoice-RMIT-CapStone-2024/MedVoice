@@ -1,8 +1,10 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
-import 'package:med_voice/app/pages/onboarding/startup/sign_up/sign_up_view.dart';
+import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
+
+import '../pages/onboarding/signup/sign_up_view.dart';
 
 class AppRouter {
   final RouteObserver<PageRoute> routeObserver;
@@ -21,8 +23,11 @@ class AppRouter {
       //     foodItem: arguments[foodItemParam] as String,
       //   ));
 
-      case Pages.signIn:
+      case Pages.signUp:
         return _buildRoute(settings, SignUpView());
+
+      case Pages.signIn:
+        return _buildRoute(settings, SignInView());
 
       default:
         return null;

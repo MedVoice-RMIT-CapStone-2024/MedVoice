@@ -5,4 +5,5 @@ class ImageAssets {
   static const String imgMedVoice = 'assets/images/medVoice.png';
   static const String bg = 'assets/images/backGround.png';
   static const String bg2 = 'assets/images/bg2.png';
+  static const String bg3 = 'assets/images/bg3.png';
 }
