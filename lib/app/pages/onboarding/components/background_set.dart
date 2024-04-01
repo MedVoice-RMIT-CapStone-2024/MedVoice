@@ -20,6 +20,7 @@ class BackgroundSetUp extends StatelessWidget {
           alignment: Alignment.topCenter,
         ),
       ),
+      width: double.infinity,
       child: child,
     ));
   }
