@@ -7,7 +7,9 @@ import 'package:med_voice/app/pages/onboarding/signup/sign_up_controller.dart';
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/module_utils.dart';
+import '../../../utils/pages.dart';
 import '../components/background_set.dart';
+import '../components/small_text_field.dart';
 import '../components/text_field_container.dart';
 import '../login/sign_in_controller.dart';
 
@@ -45,79 +47,70 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: toSize(230)),
-              Text(
-                "Login",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: toSize(50),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Sign in to continue",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: toSize(15),
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              SizedBox(height: toSize(20)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: TextFieldContainer(
-                    size: size,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        icon: Padding(
-                          padding: EdgeInsets.all(toSize(8.0)),
-                          child: const Icon(
-                            Icons.person,
-                            color: Colors.black,
-                          ),
-                        ),
-                        labelText: "Email address",
-                        labelStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    )),
-              ),
+              SizedBox(height: toSize(170)),
+              Text("Create new",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: toSize(40),
+                    fontWeight: FontWeight.w900,
+                  )),
+              Text("Account",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: toSize(40),
+                    fontWeight: FontWeight.w900,
+                  )),
               SizedBox(height: toSize(10)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: TextFieldContainer(
-                    size: size,
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        icon: Padding(
-                          padding: EdgeInsets.all(toSize(8.0)),
-                          child: const Icon(
-                            Icons.lock,
-                            color: Colors.black,
-                          ),
-                        ),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.all(toSize(8.0)),
-                          child: const Icon(
-                            Icons.visibility,
-                            color: Colors.black,
-                          ),
-                        ),
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: toSize(18),
-                          fontWeight: FontWeight.w300,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    )),
+              InkWell(
+                onTap: () {
+                  pushScreen(Pages.signIn);
+                },
+                child: Text(
+                  "Already registered? Sign in here!",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: toSize(14),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
+              SizedBox(height: toSize(40)),
+              SmallTextField(size: size, labelText: "Name"),
+              SmallTextField(size: size, labelText: "Email address"),
+              SmallTextField(
+                size: size,
+                labelText: "Password",
+                icon: Icons.lock_outline,
+              ),
+              SmallTextField(
+                size: size,
+                labelText: "Date of Birth",
+                icon: Icons.calendar_today_outlined,
+                hint: "Select",
+              ),
+              Padding(
+                padding: EdgeInsets.all(toSize(12)),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: HexColor("#EC4B8B"),
+                    fixedSize: Size(size.width * 0.7, toSize(50)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "Sign up",
+                    style: TextStyle(
+                      letterSpacing: 0,
+                      color: Colors.black,
+                      fontSize: toSize(18),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: toSize(150)),
             ],
           ),
         ));
