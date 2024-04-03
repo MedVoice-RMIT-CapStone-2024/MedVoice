@@ -21,41 +21,48 @@ class SmallTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: toSize(10)),
-      padding:
-          EdgeInsets.symmetric(horizontal: toSize(20), vertical: toSize(8)),
+      padding: EdgeInsets.symmetric(horizontal: toSize(20)),
       width: size.width * 0.8,
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 17,
-            fontWeight: FontWeight.w300,
-            letterSpacing: 1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+            child: Text(labelText,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: toSize(11),
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: toSize(1.5),
+                )),
           ),
-          suffixIcon: Padding(
-              padding: EdgeInsets.only(right: toSize(8.0)),
-              child: Icon(icon, color: Colors.black)),
-          fillColor: HexColor("FBE8F2"),
-          filled: true,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(toSize(29)), // Adjusted size
-            borderSide: BorderSide.none,
+          TextFormField(
+            decoration: InputDecoration(
+                suffixIcon: Padding(
+                    padding: EdgeInsets.only(right: toSize(8.0)),
+                    child: Icon(icon, color: Colors.black)),
+                fillColor: HexColor("FBE8F2"),
+                filled: true,
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                border: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(toSize(20)), // Adjusted size
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                isDense: true,
+                hintText: hint,
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(toSize(20)), // Adjusted size
+                  borderSide: BorderSide(color: HexColor("#EC4B8B")),
+                )),
           ),
-          isDense: true,
-          hintText: hint,
-          hintStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 17,
-            fontWeight: FontWeight.w300,
-          ),
-          focusColor: HexColor("F2509C"),
-          // focusedBorder: OutlineInputBorder(
-          //   borderRadius: BorderRadius.circular(toSize(29)),
-          //   borderSide: BorderSide(color: HexColor("F2509C")),
-          // ),
-        ),
+        ],
       ),
     );
   }

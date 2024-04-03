@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
+import '../pages/onboarding/confirm/confirm_view.dart';
+import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
 
 class AppRouter {
@@ -27,7 +29,13 @@ class AppRouter {
         return _buildRoute(settings, SignUpView());
 
       case Pages.signIn:
-        return _buildRoute(settings, SignInView());
+        return _buildRoute(settings, const SignInView());
+
+      case Pages.reset:
+        return _buildRoute(settings, ResetView());
+
+      case Pages.confirm:
+        return _buildRoute(settings, ConfirmView());
 
       default:
         return null;

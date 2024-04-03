@@ -27,7 +27,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
 
   @override
   bool isInitialAppbar() {
-    return false;
+    return true;
   }
 
   @override
@@ -47,17 +47,17 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: toSize(170)),
+              SizedBox(height: toSize(50)),
               Text("Create new",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: toSize(40),
+                    fontSize: toSize(35),
                     fontWeight: FontWeight.w900,
                   )),
               Text("Account",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: toSize(40),
+                    fontSize: toSize(35),
                     fontWeight: FontWeight.w900,
                   )),
               SizedBox(height: toSize(10)),
@@ -66,20 +66,20 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                   pushScreen(Pages.signIn);
                 },
                 child: Text(
-                  "Already registered? Sign in here!",
+                  "Already registered? Log in here.",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: toSize(14),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
               ),
               SizedBox(height: toSize(40)),
-              SmallTextField(size: size, labelText: "Name"),
-              SmallTextField(size: size, labelText: "Email address"),
+              SmallTextField(size: size, labelText: "NAME"),
+              SmallTextField(size: size, labelText: "EMAIL ADDRESS"),
               SmallTextField(
                 size: size,
-                labelText: "Password",
+                labelText: "PASSWORD",
                 icon: Icons.lock_outline,
               ),
               SmallTextField(
@@ -89,7 +89,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                 hint: "Select",
               ),
               Padding(
-                padding: EdgeInsets.all(toSize(12)),
+                padding: EdgeInsets.all(toSize(20)),
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -102,10 +102,9 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                   child: Text(
                     "Sign up",
                     style: TextStyle(
-                      letterSpacing: 0,
-                      color: Colors.black,
+                      color: HexColor("#FFFDF5"),
                       fontSize: toSize(18),
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

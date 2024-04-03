@@ -9,6 +9,7 @@ import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/pages.dart';
 import '../components/background_set.dart';
+import '../components/small_text_field.dart';
 import '../components/text_field_container.dart';
 
 class SignInView extends View {
@@ -51,7 +52,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: toSize(5)),
+                SizedBox(height: toSize(10)),
                 // Image
                 Align(
                   alignment: Alignment.topLeft,
@@ -84,110 +85,66 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(height: toSize(20)),
+                SizedBox(height: toSize(5)),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextFieldContainer(
-                      size: size,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          icon: Padding(
-                            padding: EdgeInsets.all(toSize(8.0)),
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.black,
-                            ),
-                          ),
-                          labelText: "Email address",
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      )),
+                SmallTextField(
+                  size: size,
+                  labelText: "EMAIL ADDRESS",
+                  hint: "Jiara Martins",
                 ),
-
-                SizedBox(height: toSize(10)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextFieldContainer(
-                      size: size,
-                      child: TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          icon: Padding(
-                            padding: EdgeInsets.all(toSize(8.0)),
-                            child: const Icon(
-                              Icons.lock,
-                              color: Colors.black,
-                            ),
-                          ),
-                          suffixIcon: Padding(
-                            padding: EdgeInsets.all(toSize(8.0)),
-                            child: const Icon(
-                              Icons.visibility,
-                              color: Colors.black,
-                            ),
-                          ),
-                          labelText: "Password",
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: toSize(18),
-                            fontWeight: FontWeight.w300,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      )),
+                SmallTextField(
+                  size: size,
+                  labelText: "PASSWORD",
+                  hint: "********",
                 ),
-
                 Padding(
-                  padding: EdgeInsets.all(toSize(20)),
+                  padding: EdgeInsets.all(toSize(10)),
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      fixedSize: Size(size.width * 0.6, toSize(70)),
+                      fixedSize: Size(size.width * 0.6, toSize(50)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: Text(
-                      "Log In",
+                      "Log in",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: toSize(20),
-                        fontWeight: FontWeight.w500,
+                        color: HexColor("#FFFDF5"),
+                        fontSize: toSize(18),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-
                 SizedBox(height: toSize(30)),
-
-                Text("Forgot password?",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: toSize(15),
-                      fontWeight: FontWeight.w300,
-                    )),
-                SizedBox(height: toSize(15)),
+                InkWell(
+                  onTap: () {
+                    pushScreen(Pages.reset);
+                  },
+                  child: Text("Forgot password?",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: toSize(15),
+                        fontWeight: FontWeight.w300,
+                      )),
+                ),
+                SizedBox(height: toSize(20)),
 
                 InkWell(
                   onTap: () {
                     pushScreen(Pages.signUp);
                   },
-                  child: Text("Don't have an account? Sign up",
+                  child: Text("Signup !",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: toSize(15),
-                        fontWeight: FontWeight.w400,
+                        fontSize: toSize(14),
+                        fontWeight: FontWeight.w300,
                       )),
                 ),
 
-                SizedBox(height: toSize(40)),
+                SizedBox(height: toSize(90)),
               ]),
         ));
   }
