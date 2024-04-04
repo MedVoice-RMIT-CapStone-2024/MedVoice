@@ -43,8 +43,9 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
         backgroundColor: HexColor("#FBE8F2"),
         body: BackgroundSetUp(
           link: 'assets/images/bg3.png',
+          isShowLogo: false,
+          isSignUpView: true,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: toSize(50)),
@@ -109,7 +110,6 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                   ),
                 ),
               ),
-              SizedBox(height: toSize(150)),
             ],
           ),
         ));

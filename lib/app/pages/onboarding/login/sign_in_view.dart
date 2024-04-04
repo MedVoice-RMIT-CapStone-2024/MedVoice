@@ -48,26 +48,12 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
         backgroundColor: HexColor("#FBE8F2"),
         body: BackgroundSetUp(
           link: 'assets/images/bg2.png',
+          isShowLogo: true,
+          isSignUpView: false,
           child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: toSize(10)),
-                // Image
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    height: toSize(150),
-                    width: toSize(150),
-                    child: Image.asset(
-                      'assets/images/medVoice.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: toSize(230)),
-
                 Text(
                   "Login",
                   style: TextStyle(
@@ -76,7 +62,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 Text(
                   "Sign in to continue",
                   style: TextStyle(
@@ -86,7 +71,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                   ),
                 ),
                 SizedBox(height: toSize(5)),
-
                 SmallTextField(
                   size: size,
                   labelText: "EMAIL ADDRESS",
@@ -143,8 +127,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                         fontWeight: FontWeight.w300,
                       )),
                 ),
-
-                SizedBox(height: toSize(90)),
               ]),
         ));
   }

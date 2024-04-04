@@ -40,11 +40,11 @@ class _ConfirmView extends BaseStateView<ResetView, ResetController> {
         backgroundColor: HexColor("#FBE8F2"),
         body: BackgroundSetUp(
           link: 'assets/images/bg5.png',
+          isShowLogo: false,
+          isSignUpView: false,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: toSize(290)),
               Text("Forgot Password?",
                   style: TextStyle(
                     color: Colors.black,
@@ -106,7 +106,8 @@ class _ConfirmView extends BaseStateView<ResetView, ResetController> {
                 children: [
                   InkWell(
                     onTap: () {
-                      pushScreen(Pages.signIn);
+                      // pushScreen(Pages.signIn);
+                      onBack();
                     },
                     child: Text("Return to Login",
                         style: TextStyle(
@@ -137,7 +138,7 @@ class _ConfirmView extends BaseStateView<ResetView, ResetController> {
                   ),
                 ],
               ),
-              SizedBox(height: toSize(300)),
+              const Spacer(),
             ],
           ),
         ));

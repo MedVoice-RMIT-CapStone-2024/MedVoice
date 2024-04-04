@@ -37,13 +37,13 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
         backgroundColor: HexColor("#FBE8F2"),
         body: BackgroundSetUp(
           link: 'assets/images/bg5.png',
+          isShowLogo: false,
+          isSignUpView: false,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: toSize(100)),
               Image.asset('assets/images/email.png',
-                  width: toSize(250), height: toSize(250), fit: BoxFit.fill),
+                  width: toSize(190), height: toSize(190), fit: BoxFit.fill),
               Text("Check your Inbox",
                   style: TextStyle(
                     color: Colors.black,
@@ -91,7 +91,6 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                     fontSize: toSize(14),
                     fontWeight: FontWeight.bold,
                   )),
-              SizedBox(height: toSize(290)),
             ],
           ),
         ));
