@@ -6,7 +6,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
-import '../data/network/constants.dart';
 import 'dart:async';
 
 import 'app_config.dart';

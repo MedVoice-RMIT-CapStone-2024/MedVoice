@@ -8,6 +8,9 @@ import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
 
+import '../pages/home/main/main_view.dart';
+import '../pages/home/medical_archive/medical_archive_view.dart';
+
 class AppRouter {
   final RouteObserver<PageRoute> routeObserver;
 
@@ -36,6 +39,12 @@ class AppRouter {
 
       case Pages.confirm:
         return _buildRoute(settings, ConfirmView());
+
+      case Pages.main:
+        return _buildRoute(settings, const MainView());
+
+      case Pages.medicalArchive:
+        return _buildRoute(settings, const MedicalArchiveView());
 
       default:
         return null;

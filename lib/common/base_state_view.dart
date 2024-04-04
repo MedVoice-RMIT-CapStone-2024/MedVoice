@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../app/assets/icon_assets.dart';
 import '../app/utils/global.dart';
 import '../app/utils/router.dart';
 import '../app/widgets/confirm_view.dart';
@@ -190,43 +190,43 @@ abstract class BaseStateView<Page extends View,
                       : 0,
                   child: Container(
                     decoration: (isShowBackground())
-                        ? const BoxDecoration(color: Colors.black)
+                        ? BoxDecoration(color: HexColor(Global.mColors['white_2'].toString()))
                         : null,
                     child: Scaffold(
                       key: globalKey,
                       //resizeToAvoidBottomInset: !isMapView(),
                       backgroundColor: Colors.transparent,
                       appBar: (isInitialAppbar() &&
-                              MediaQuery.of(context).orientation ==
-                                  Orientation.portrait)
+                          MediaQuery.of(context).orientation ==
+                              Orientation.portrait)
                           ? AppBar(
-                              backgroundColor: Colors.transparent,
-                              centerTitle: true,
-                              title: Text(appBarTitle(),
-                                  style: TextStyle(
-                                      fontFamily: 'NunitoSans',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: HexColor(Global.mColors["black_5"]
-                                          .toString()))),
-                              leading: !isHideBackButton()
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(left: 25),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          if (Global.isAvailableToClick()) {
-                                            onBack();
-                                          }
-                                        },
-                                        icon: Image.asset(IconAssets.icBack,
-                                            width: 11, height: 16),
-                                        alignment: Alignment.center,
-                                      ),
-                                    )
-                                  : Container(),
-                              elevation: 0,
-                              actions: rightMenu(),
-                            )
+                        backgroundColor: Colors.transparent,
+                        centerTitle: true,
+                        title: Text(appBarTitle(),
+                            style: TextStyle(
+                                fontFamily: 'NunitoSans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: HexColor(Global.mColors["black_5"]
+                                    .toString()))),
+                        leading: !isHideBackButton()
+                            ? Padding(
+                          padding: const EdgeInsets.only(left: 25),
+                          child: IconButton(
+                            onPressed: () {
+                              if (Global.isAvailableToClick()) {
+                                onBack();
+                              }
+                            },
+                            icon: Image.asset(IconAssets.icBack,
+                                width: 11, height: 16),
+                            alignment: Alignment.center,
+                          ),
+                        )
+                            : Container(),
+                        elevation: 0,
+                        actions: rightMenu(),
+                      )
                           : null,
                       body: (_isDelayed)
                           ? body(context, controller)
@@ -244,7 +244,7 @@ abstract class BaseStateView<Page extends View,
   void showErrorFromServer(String? key, {BuildContext? viewContext}) {
     Future.delayed(
       const Duration(microseconds: 200),
-      () {
+          () {
         ScaffoldMessenger.of(viewContext ?? context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.transparent,

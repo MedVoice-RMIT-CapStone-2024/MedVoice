@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 
 import '../../../../common/base_controller.dart';
-import '../../../utils/shared_preferences.dart';
 
 class StartupController extends BaseController {
   bool isShowStartButton = false;
@@ -17,41 +18,18 @@ class StartupController extends BaseController {
 
   @override
   void firstLoad() {
-    // startTimer();
+    startTimer();
   }
 
-  // void goToLogin() async {
-  //   bool? firstInstallApp = await SharedPreferencesHelper().getBoolValue(
-  //       SharedData.APP_FIRST_INSTALL.toString(),
-  //       defaultValue: true);
-  //   if (firstInstallApp) {
-  //     SharedPreferencesHelper()
-  //         .setBoolValue(SharedData.APP_FIRST_INSTALL.toString(), false);
-  //     isShowStartButton = true;
-  //     // isLoadingData = false;
-  //     refreshUI();
-  //   } else {
-  //     //view.pushScreen(Pages.onboardingHome, isAllowBack: false);
-  //   }
-  // }
-
-  // void startTimer() {
-  //   debugPrint("start splash screen timer");
-  //   timer = Timer(const Duration(seconds: 2), () {
-  //     Navigator.pushAndRemoveUntil(
-  //         view.context, SecondPageRoute(), (Route<dynamic> route) => false)
-  //         .then((value) => {view.onBackWithData(value)});
-  //   });
-  // }
+  void startTimer() {
+    debugPrint("start splash screen timer");
+    Timer(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        view.context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const SignInView(),
+        ),
+      );
+    });
+  }
 }
-
-// class SecondPageRoute extends CupertinoPageRoute {
-//   SecondPageRoute()
-//       : super(builder: (BuildContext context) => const MainView());
-//
-//   @override
-//   Widget buildPage(BuildContext context, Animation<double> animation,
-//       Animation<double> secondaryAnimation) {
-//     return FadeTransition(opacity: animation, child: const MainView());
-//   }
-// }

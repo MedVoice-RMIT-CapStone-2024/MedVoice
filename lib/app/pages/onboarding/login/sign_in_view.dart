@@ -84,7 +84,9 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                 Padding(
                   padding: EdgeInsets.all(toSize(10)),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      pushScreen(Pages.main);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       fixedSize: Size(size.width * 0.6, toSize(50)),
@@ -105,7 +107,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                 SizedBox(height: toSize(30)),
                 InkWell(
                   onTap: () {
-                    pushScreen(Pages.reset);
+                    pushScreen(Pages.reset, isAllowBack: false);
                   },
                   child: Text("Forgot password?",
                       style: TextStyle(
