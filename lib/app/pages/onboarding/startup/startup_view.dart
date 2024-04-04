@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/startup/startup_controller.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
+import '../../../utils/pages.dart';
 
 class StartupView extends View {
   StartupView({Key? key}) : super(key: key);
@@ -33,9 +36,25 @@ class _StartupView extends BaseStateView<StartupView, StartupController> {
   @override
   Widget body(BuildContext context, BaseController controller) {
     StartupController startupController = controller as StartupController;
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Text("Hi, welcome to MedCare")),
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: toSize(300),
+                  width: toSize(300),
+                  child: Image.asset(ImageAssets.imgMedVoiceLogo)
+              ),
+              SizedBox(height: toSize(100)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

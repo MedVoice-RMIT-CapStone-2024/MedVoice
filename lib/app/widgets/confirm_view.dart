@@ -62,9 +62,9 @@ class ConfirmView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: HexColor(
-                                  Global.mColors["blue_1"].toString()),
+                                  Global.mColors["pink_1"].toString()),
                               fontFamily: 'NunitoSans',
-                              fontSize: 11,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600),
                         ))
                         : Container(),
@@ -75,9 +75,9 @@ class ConfirmView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color:
-                              HexColor(Global.mColors["blue_1"].toString()),
+                              HexColor(Global.mColors["black_5"].toString()),
                               fontFamily: 'NunitoSans',
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.normal),
                         )),
                     const SizedBox(height: 26),
@@ -104,10 +104,10 @@ class ConfirmView extends StatelessWidget {
                                             blurRadius: 6)
                                       ],
                                       color: HexColor(Global
-                                          .mColors['gray_3']
+                                          .mColors['white_2']
                                           .toString()),
                                       border: Border.all(
-                                        color: Colors.white,
+                                        color: HexColor(Global.mColors["pink_1"].toString()),
                                         width: 1,
                                       ),
                                     ),
@@ -115,8 +115,8 @@ class ConfirmView extends StatelessWidget {
                                         child: Text(
                                           titleSecondButton!.toUpperCase(),
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              color: Colors.white,
+                                          style: TextStyle(
+                                              color: HexColor(Global.mColors["pink_1"].toString()),
                                               fontFamily: 'NunitoSans',
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal),
@@ -144,7 +144,7 @@ class ConfirmView extends StatelessWidget {
                                             blurRadius: 6)
                                       ],
                                       color: HexColor(
-                                          Global.mColors['blue_3'].toString()),
+                                          Global.mColors['pink_1'].toString()),
                                       border: Border.all(
                                         color: Colors.white,
                                         width: 1,

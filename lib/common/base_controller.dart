@@ -18,7 +18,9 @@ abstract class BaseController extends Controller implements IBaseController {
   void firstLoad();
 
   @override
-  void initListeners() {}
+  void initListeners() {
+    onListener();
+  }
 
   @override
   void onResumed() {}

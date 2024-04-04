@@ -2,13 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:month_year_picker/month_year_picker.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
-import '../data/network/constants.dart';
 import 'dart:async';
 
 import 'app_config.dart';
@@ -83,11 +80,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           onPrimary: Colors.white,
         ),
       ),
-      localizationsDelegates: const [
-        MonthYearPickerLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
       home: StartupView(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
