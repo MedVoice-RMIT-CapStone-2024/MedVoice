@@ -190,7 +190,7 @@ controller extends BaseController> extends ViewState<page, controller>
                       : 0,
                   child: Container(
                     decoration: (isShowBackground())
-                        ? const BoxDecoration(color: Colors.black)
+                        ? BoxDecoration(color: HexColor(Global.mColors['white_2'].toString()))
                         : null,
                     child: Scaffold(
                       key: globalKey,
@@ -206,7 +206,7 @@ controller extends BaseController> extends ViewState<page, controller>
                             style: TextStyle(
                                 fontFamily: 'NunitoSans',
                                 fontSize: 18,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w400,
                                 color: HexColor(Global.mColors["black_5"]
                                     .toString()))),
                         leading: !isHideBackButton()

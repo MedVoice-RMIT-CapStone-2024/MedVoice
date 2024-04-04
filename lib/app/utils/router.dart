@@ -3,6 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
+import '../pages/home/main/main_view.dart';
+import '../pages/home/medical_archive/medical_archive_view.dart';
+
 class AppRouter {
   final RouteObserver<PageRoute> routeObserver;
 
@@ -19,6 +22,12 @@ class AppRouter {
       //   return _buildRoute(settings, FoodDetailsView(
       //     foodItem: arguments[foodItemParam] as String,
       //   ));
+
+      case Pages.main:
+        return _buildRoute(settings, const MainView());
+
+      case Pages.medicalArchive:
+        return _buildRoute(settings, const MedicalArchiveView());
 
       default:
         return null;

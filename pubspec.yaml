@@ -32,7 +32,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  intl: ^0.17.0
+  intl: any
+
+  #flutter_localization:
+  flutter_localizations:
+    sdk: flutter
 
 
   #flutter_clean_architecture:
@@ -49,9 +53,6 @@ dependencies:
 
   #hexcolor:
   hexcolor: ^2.0.5
-
-  # Pick month and year
-  month_year_picker: ^0.2.0+2
 
   #device_info_plus:
   device_info_plus: ^4.0.0
