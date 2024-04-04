@@ -12,8 +12,8 @@ import '../app/widgets/confirm_view.dart';
 import 'base_controller.dart';
 import 'i_base_view.dart';
 
-abstract class BaseStateView<page extends View,
-controller extends BaseController> extends ViewState<page, controller>
+abstract class BaseStateView<Page extends View,
+        controller extends BaseController> extends ViewState<Page, controller>
     with WidgetsBindingObserver
     implements IBaseView {
   final AppRouter _router = AppRouter();
@@ -152,7 +152,7 @@ controller extends BaseController> extends ViewState<page, controller>
   void pushScreen(String pageName,
       {bool isAllowBack = true, Object? arguments}) {
     CupertinoPageRoute? newScreen =
-    _router.getRoute(RouteSettings(name: pageName, arguments: arguments));
+        _router.getRoute(RouteSettings(name: pageName, arguments: arguments));
     if (newScreen != null) {
       if (isAllowBack) {
         Navigator.push(context, newScreen).then((value) {
@@ -308,7 +308,7 @@ controller extends BaseController> extends ViewState<page, controller>
   void showGeneralToast(String message) {
     Future.delayed(
       const Duration(microseconds: 500),
-          () {
+      () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
@@ -325,14 +325,14 @@ controller extends BaseController> extends ViewState<page, controller>
 
   @override
   void showPopupWithAction(
-      String message,
-      String okButton, [
-        VoidCallback? okCallback,
-        String? title,
-        String? cancelButton,
-        VoidCallback? cancelCallback,
-        bool? acceptByRequester,
-      ]) {
+    String message,
+    String okButton, [
+    VoidCallback? okCallback,
+    String? title,
+    String? cancelButton,
+    VoidCallback? cancelCallback,
+    bool? acceptByRequester,
+  ]) {
     if (_isThereCurrentDialogShowing(context)) {
       return;
     }

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 
 import '../../../../common/base_controller.dart';
-import '../../home/main/main_view.dart';
 
 class StartupController extends BaseController {
   bool isShowStartButton = false;
@@ -27,7 +27,7 @@ class StartupController extends BaseController {
       Navigator.pushReplacement(
         view.context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) => const MainView(),
+          builder: (BuildContext context) => const SignInView(),
         ),
       );
     });
