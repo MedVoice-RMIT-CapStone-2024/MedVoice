@@ -81,6 +81,7 @@ class Global {
     "white_2": "#FCFCFD",
     "white_3": "#F2EAEA",
     "pink_1": "#EC4B8B",
+    "pink_2": "#FBE8F2",
   };
 
   static int mTimeClick = 0;

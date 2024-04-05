@@ -1,4 +1,5 @@
 // Pre-sets route string for easy asset calling
+// Format to create variable name: ic + AssetName
 
 class IconAssets {
   static const String icBack = 'assets/icons/ic_back.png';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
@@ -39,7 +40,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
     tabs = [
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
-      const MedicalArchiveView()
+      NurseProfileView()
     ];
   }
 
