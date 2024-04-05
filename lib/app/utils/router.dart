@@ -29,7 +29,12 @@ class AppRouter {
       //   ));
 
       case Pages.signUp:
-        return _buildRoute(settings, SignUpView());
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            SignUpView(
+                isFromOnBoarding: arguments[isFromOnBoardingParam] as bool));
 
       case Pages.signIn:
         return _buildRoute(settings, const SignInView());

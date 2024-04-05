@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_voice/app/assets/image_assets.dart';
 
-import '../../../utils/module_utils.dart';
+import '../utils/module_utils.dart';
 
 class BackgroundSetUp extends StatelessWidget {
   const BackgroundSetUp({
@@ -9,13 +10,11 @@ class BackgroundSetUp extends StatelessWidget {
     required this.child,
     required this.link,
     required this.isShowLogo,
-    required this.isSignUpView,
   }) : super(key: key);
 
   final Widget child;
   final String link;
   final bool isShowLogo;
-  final bool isSignUpView;
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +37,14 @@ class BackgroundSetUp extends StatelessWidget {
                   height: toSize(150),
                   width: toSize(150),
                   child: Image.asset(
-                    'assets/images/medVoice.png',
+                    ImageAssets.imgMedVoice,
                     fit: BoxFit.cover,
                   ),
                 ),
               )
             : const SizedBox(),
         Center(
-          child: Padding(
-            padding: (!isSignUpView)
-                ? EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4)
-                : EdgeInsets.zero,
-            child: child,
-          ),
+          child: child,
         )
       ],
     );

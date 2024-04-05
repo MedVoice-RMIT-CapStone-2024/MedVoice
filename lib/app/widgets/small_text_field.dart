@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../../utils/module_utils.dart';
+import '../utils/module_utils.dart';
 
 class SmallTextField extends StatelessWidget {
   const SmallTextField({
@@ -22,7 +22,6 @@ class SmallTextField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: toSize(10)),
       padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-      width: size.width * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import '../../../../common/base_controller.dart';
 
 class ResetController extends BaseController {
-  bool isShowStartButton = false;
-  Timer? timer;
 
   @override
   void onResumed() {}
@@ -13,7 +9,5 @@ class ResetController extends BaseController {
   void onListener() {}
 
   @override
-  void firstLoad() {
-    // startTimer();
-  }
+  void firstLoad() {}
 }
