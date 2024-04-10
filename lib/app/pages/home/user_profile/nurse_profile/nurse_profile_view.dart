@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
@@ -8,7 +8,7 @@ import '../../../../utils/module_utils.dart';
 import '../../../../utils/pages.dart';
 import 'nurse_profile_controller.dart';
 
-class NurseProfileView extends View {
+class NurseProfileView extends clean.View {
   NurseProfileView({Key? key}) : super(key: key);
 
   @override

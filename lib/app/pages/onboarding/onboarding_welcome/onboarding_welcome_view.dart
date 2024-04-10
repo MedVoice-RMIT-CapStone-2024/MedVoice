@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../common/base_controller.dart';
@@ -10,7 +10,7 @@ import '../../../utils/pages.dart';
 import '../signup/sign_up_view.dart';
 import 'onboarding_welcome_controller.dart';
 
-class OnBoardingWelcomeView extends View {
+class OnBoardingWelcomeView extends clean.View {
   OnBoardingWelcomeView({Key? key}) : super(key: key);
 
   @override

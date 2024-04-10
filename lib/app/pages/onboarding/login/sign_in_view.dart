@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_controller.dart';
@@ -14,7 +14,7 @@ import '../../../widgets/background_set.dart';
 import '../../../widgets/small_text_field.dart';
 import '../signup/sign_up_view.dart';
 
-class SignInView extends View {
+class SignInView extends clean.View {
   const SignInView({Key? key}) : super(key: key);
 
   @override

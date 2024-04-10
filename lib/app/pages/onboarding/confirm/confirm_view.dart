@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/widgets/background_set.dart';
@@ -12,7 +12,7 @@ import '../../../utils/global.dart';
 import '../../../utils/module_utils.dart';
 import 'confirm_controller.dart';
 
-class ConfirmView extends View {
+class ConfirmView extends clean.View {
   ConfirmView({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
