@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
@@ -10,7 +10,7 @@ import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
 import 'medical_archive_controller.dart';
 
-class MedicalArchiveView extends View {
+class MedicalArchiveView extends clean.View {
   const MedicalArchiveView({Key? key}) : super(key: key);
 
   @override
@@ -113,10 +113,11 @@ class _MedicalArchiveView
             style: TextStyle(fontSize: toSize(17))),
         SizedBox(height: toSize(35)),
         SizedBox(
-          height: toSize(570),
+          height: toSize(500),
           child: ListView.separated(
             scrollDirection: Axis.vertical,
             itemCount: _controller?.sampleData.length ?? 1,
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return _recordItems(index, _controller?.sampleData.length ?? 1);
             },
@@ -131,7 +132,7 @@ class _MedicalArchiveView
 
   Widget _recordItems(int index, int length) {
     return Container(
-      height: toSize(70),
+      height: toSize(75),
       padding: EdgeInsets.symmetric(vertical: toSize(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

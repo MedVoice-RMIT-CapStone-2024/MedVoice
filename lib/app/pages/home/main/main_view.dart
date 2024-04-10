@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
 
@@ -10,7 +10,7 @@ import '../medical_archive/medical_archive_view.dart';
 import '../recording_documentation/recording/recording_view.dart';
 import 'main_controller.dart';
 
-class MainView extends View {
+class MainView extends clean.View {
   const MainView({Key? key}) : super(key: key);
 
   @override
@@ -90,6 +90,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     currentIndex: mMainController!.currentTabIndex,
                     showSelectedLabels: false,
                     showUnselectedLabels: false,
+
                     items: [
                       // Add _tab([index], [asset location], [title underneath the icon]
                       _tab(0, "assets/main_assets/ic_medical_archive", "Archive"),
@@ -117,14 +118,14 @@ class _MainView extends BaseStateView<MainView, MainController> {
       icon: Stack(
         children: [
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
+              padding: const EdgeInsets.symmetric(vertical: 1),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ImageIcon(
                     imageAsset == "" ? null : AssetImage("${imageAsset!}.png"),
                     color: HexColor(Global.mColors["pink_1"].toString()),
-                    size: 22,
+                    size: 18,
                   ),
                   const SizedBox(height: 5),
                   Text(
@@ -132,7 +133,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
-                      fontSize: 15,
+                      fontSize: 11,
                       color: HexColor(Global.mColors["pink_1"].toString())
                           .withOpacity(0.6),
                     ),
@@ -176,7 +177,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                   ImageIcon(
                     imageAsset == "" ? null : AssetImage("${imageAsset!}.png"),
                     color: HexColor(Global.mColors["pink_1"].toString()),
-                    size: 24,
+                    size: 22,
                   ),
                   const SizedBox(height: 5),
                   Text(
@@ -184,7 +185,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 11,
                       color: HexColor(Global.mColors["pink_1"].toString()),
                     ),
                   )

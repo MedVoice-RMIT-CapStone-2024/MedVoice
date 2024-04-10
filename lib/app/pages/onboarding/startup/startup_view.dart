@@ -1,20 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:med_voice/app/assets/image_assets.dart';
-import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/startup/startup_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../utils/global.dart';
-import '../../../utils/pages.dart';
-import '../signup/sign_up_view.dart';
-import '../../../utils/pages.dart';
 
-class StartupView extends View {
+class StartupView extends clean.View {
   StartupView({Key? key}) : super(key: key);
 
   @override

@@ -1,7 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
@@ -10,7 +10,7 @@ import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
 import '../../../../utils/global.dart';
 
-class RecordingView extends View {
+class RecordingView extends clean.View {
   RecordingView({Key? key}) : super(key: key);
 
   @override
@@ -56,13 +56,19 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                   scrollDirection: Axis.vertical,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: toSize(20), vertical: 50),
-                    child: SizedBox(
-                      height: toSize(400),
+                    child: Container(
+                      height: toSize(200),
                       width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.black.withOpacity(0.1)
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: toSize(15), vertical: toSize(15)),
                       child: Text(recordingController!.guideText)
                     ),
                   ),
                 ),
+                const Spacer(),
                 Padding(
                   padding: EdgeInsets.only(bottom: toSize(110)),
                   child: AvatarGlow(

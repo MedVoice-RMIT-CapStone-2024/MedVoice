@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -12,8 +12,8 @@ import '../app/widgets/confirm_view.dart';
 import 'base_controller.dart';
 import 'i_base_view.dart';
 
-abstract class BaseStateView<Page extends View,
-        controller extends BaseController> extends ViewState<Page, controller>
+abstract class BaseStateView<Page extends clean.View,
+        controller extends BaseController> extends clean.ViewState<Page, controller>
     with WidgetsBindingObserver
     implements IBaseView {
   final AppRouter _router = AppRouter();
@@ -167,7 +167,7 @@ abstract class BaseStateView<Page extends View,
 
   @override
   Widget get view =>
-      ControlledWidgetBuilder<controller>(builder: (context, controller) {
+      clean.ControlledWidgetBuilder<controller>(builder: (context, controller) {
         Future.delayed(Duration(milliseconds: builderDelayTime()), () {
           if (!_isDelayed && mounted) {
             setState(() {

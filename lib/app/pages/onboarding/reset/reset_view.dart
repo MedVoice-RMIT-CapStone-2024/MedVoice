@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/widgets/background_set.dart';
 
@@ -13,7 +13,7 @@ import '../../../utils/module_utils.dart';
 import '../../../utils/pages.dart';
 import 'reset_controller.dart';
 
-class ResetView extends View {
+class ResetView extends clean.View {
   ResetView({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
