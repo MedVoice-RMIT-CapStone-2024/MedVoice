@@ -7,6 +7,7 @@ import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
 import '../medical_archive/medical_archive_view.dart';
+import '../recording_documentation/recording/recording_view.dart';
 import 'main_controller.dart';
 
 class MainView extends View {
@@ -40,7 +41,8 @@ class _MainView extends BaseStateView<MainView, MainController> {
     tabs = [
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
-      NurseProfileView()
+      RecordingView(),
+      NurseProfileView(),
     ];
   }
 
@@ -90,9 +92,9 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     showUnselectedLabels: false,
                     items: [
                       // Add _tab([index], [asset location], [title underneath the icon]
-                      _tab(0, "assets/main_assets/ic_medical_archive",
-                          "Archive"),
-                      _tab(1, "assets/main_assets/ic_nurse_profile", "Profile")
+                      _tab(0, "assets/main_assets/ic_medical_archive", "Archive"),
+                      _tab(1, "assets/main_assets/ic_voice_recording", "Record"),
+                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile"),
                     ],
                   ),
                 ),
