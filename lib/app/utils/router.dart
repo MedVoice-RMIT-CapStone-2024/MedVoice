@@ -1,6 +1,7 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
@@ -50,6 +51,9 @@ class AppRouter {
 
       case Pages.medicalArchive:
         return _buildRoute(settings, const MedicalArchiveView());
+
+      case Pages.nurseProfile:
+        return _buildRoute(settings, NurseProfileView());
 
       default:
         return null;
