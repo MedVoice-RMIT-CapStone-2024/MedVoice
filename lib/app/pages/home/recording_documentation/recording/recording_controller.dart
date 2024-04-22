@@ -7,28 +7,26 @@ import '../../../../../common/base_controller.dart';
 
 class RecordingController extends BaseController {
   SpeechToText? speech;
-  bool _isListening = false;
-  String _guideText = 'Press the button and start speaking';
-  double _confidenceLevel = 1.0;
-  int _recordDuration = 0;
   bool _speechEnabled = false;
   bool _speechAvailable = false;
+  int recordDuration = 0;
   String _lastWords = '';
   String _currentWords = '';
-  bool isNotListening = true;
-
+  String _guideText = 'Press the button and start speaking';
+  double _confidenceLevel = 1.0;
   final String _selectedLocaleId = 'es_MX';
 
   @override
   void firstLoad() {
     speech = SpeechToText();
     _initSpeech();
-    isNotListening = speech!.isNotListening;
   }
 
   void _initSpeech() async {
-    _speechAvailable = await speech!
-        .initialize(onError: errorListener, onStatus: statusListener);
+    _speechAvailable = await speech!.initialize(
+      onError: errorListener,
+      onStatus: statusListener,
+    );
     refreshUI();
   }
 
@@ -46,8 +44,8 @@ class RecordingController extends BaseController {
   @override
   void onListener() {}
 
-  Future startListening() async {
-    stopListening();
+  Future<void> startListening() async {
+    await stopListening();
     debugPrint("=================================================");
     await Future.delayed(const Duration(milliseconds: 50));
     await speech!.listen(
@@ -60,25 +58,22 @@ class RecordingController extends BaseController {
     refreshUI();
   }
 
-  Future stopListening() async {
+  Future<void> stopListening() async {
     _speechEnabled = false;
     await speech!.stop();
     refreshUI();
   }
 
-  /// This is the callback that the SpeechToText plugin calls when
-  /// the platform returns recognized words.
   void _onSpeechResult(SpeechRecognitionResult result) {
     _currentWords = result.recognizedWords;
     refreshUI();
   }
 
   // Getters for exposing controller state to the view
-  bool get isListening => _isListening;
+  bool get isNotListening => !_speechEnabled;
   String get guideText => _guideText;
   double get confidenceLevel => _confidenceLevel;
-  String get currentWords => _currentWords;
-  int get recordDuration => _recordDuration;
+  int get recordDurationMinutes => recordDuration;
 
   String formatNumber(int number) {
     String numberStr = number.toString();
