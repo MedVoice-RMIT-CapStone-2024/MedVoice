@@ -45,9 +45,6 @@ class RecordingController extends BaseController {
   void onListener() {}
 
   Future<void> startListening() async {
-    await stopListening();
-    debugPrint("=================================================");
-    await Future.delayed(const Duration(milliseconds: 50));
     await speech!.listen(
       onResult: _onSpeechResult,
       localeId: _selectedLocaleId,
@@ -62,6 +59,20 @@ class RecordingController extends BaseController {
     _speechEnabled = false;
     await speech!.stop();
     refreshUI();
+  }
+
+  void startContinuousListening() {
+    _continuousListen();
+  }
+
+  void _continuousListen() async {
+    while (true) {
+      if (isNotListening) {
+        await startListening();
+      }
+      // Adjust delay based on your needs to avoid performance issues
+      await Future.delayed(const Duration(seconds: 5));
+    }
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
