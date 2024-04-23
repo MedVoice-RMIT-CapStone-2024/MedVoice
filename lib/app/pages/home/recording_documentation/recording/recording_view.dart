@@ -1,7 +1,8 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
@@ -46,56 +47,64 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
       backgroundColor: Colors.white,
       body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: toSize(10)),
-                Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: toSize(20), vertical: 50),
-                    child: Container(
-                      height: toSize(200),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
+        padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: toSize(10)),
+            Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: toSize(20), vertical: 50),
+                child: Container(
+                    height: toSize(400),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.black.withOpacity(0.1)
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: toSize(15), vertical: toSize(15)),
-                      child: Text(recordingController!.guideText)
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(bottom: toSize(110)),
-                  child: AvatarGlow(
-                    animate: true,
-                    glowColor: HexColor(Global.mColors['pink_1'].toString()),
-                    glowRadiusFactor: 0.3,
-                    duration: const Duration(milliseconds: 1700),
-                    repeat: true,
-                    child: InkWell(
-                        onTap: () {
-                          recordingController!.startListening();
-                        },
-                        child: Container(
-                            height: toSize(80),
-                            width: toSize(80),
-                            decoration: BoxDecoration(
-                                color: HexColor(Global.mColors['pink_1'].toString()),
-                                borderRadius: BorderRadius.circular(50)),
-                            child: Icon(
-                                recordingController!.isListening ? Icons.mic : Icons.mic_none,
-                                size: toSize(35),
-                                color: HexColor(Global.mColors['white_2'].toString())))),
-                  ),
-                ),
-              ],
+                        color: Colors.black.withOpacity(0.1)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: toSize(15), vertical: toSize(15)),
+                    child: Text(recordingController!.guideText)),
+              ),
             ),
-          )),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.only(bottom: toSize(110)),
+              child: AvatarGlow(
+                animate: true,
+                glowColor: HexColor(Global.mColors['pink_1'].toString()),
+                glowRadiusFactor: 0.3,
+                duration: const Duration(milliseconds: 1700),
+                repeat: true,
+                child: InkWell(
+                    onTap: () {
+                      if (!recordingController!.speechEnabled) {
+                        recordingController!.startListening();
+                      } else {
+                        recordingController!.stopListening();
+                      }
+                    },
+                    child: Container(
+                        height: toSize(80),
+                        width: toSize(80),
+                        decoration: BoxDecoration(
+                            color:
+                                HexColor(Global.mColors['pink_1'].toString()),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Icon(
+                            !recordingController!.speechEnabled
+                                ? Icons.mic_off
+                                : Icons.mic,
+                            size: toSize(35),
+                            color: HexColor(
+                                Global.mColors['white_2'].toString())))),
+              ),
+            ),
+          ],
+        ),
+      )),
     );
   }
 
