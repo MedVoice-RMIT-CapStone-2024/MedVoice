@@ -7,14 +7,13 @@ import '../../../../../common/base_controller.dart';
 
 class RecordingController extends BaseController {
   SpeechToText? speech;
-  bool _speechEnabled = false;
-  bool _speechAvailable = false;
+  bool speechEnabled = false;
+  bool speechAvailable = false;
   int recordDuration = 0;
-  String _lastWords = '';
-  String _currentWords = '';
-  String _guideText = 'Press the button and start speaking';
-  double _confidenceLevel = 1.0;
-  final String _selectedLocaleId = 'es_MX';
+  String guideText = 'Press the button and start speaking';
+  String transcriptText = '';
+  double confidenceLevel = 1.0;
+  String selectedLocaleId = 'vi_VN';
 
   @override
   void firstLoad() {
@@ -23,7 +22,7 @@ class RecordingController extends BaseController {
   }
 
   void _initSpeech() async {
-    _speechAvailable = await speech!.initialize(
+    speechAvailable = await speech!.initialize(
       onError: errorListener,
       onStatus: statusListener,
     );
@@ -32,7 +31,7 @@ class RecordingController extends BaseController {
 
   void statusListener(String status) async {
     debugPrint("status $status");
-    if (status == "done" && _speechEnabled) {
+    if (status == "done" && speechEnabled) {
       await startListening();
     }
   }
@@ -46,28 +45,29 @@ class RecordingController extends BaseController {
 
   Future<void> startListening() async {
     await speech!.listen(
-      onResult: _onSpeechResult,
-      localeId: _selectedLocaleId,
+      onResult: onSpeechResult,
+      localeId: selectedLocaleId,
       cancelOnError: false,
       partialResults: true,
     );
-    _speechEnabled = true;
+    speechEnabled = true;
     refreshUI();
   }
 
   Future<void> stopListening() async {
-    _speechEnabled = false;
+    speechEnabled = false;
     await speech!.stop();
+    transcriptText = '';
     refreshUI();
   }
 
   void startContinuousListening() {
-    _continuousListen();
+    continuousListen();
   }
 
-  void _continuousListen() async {
+  void continuousListen() async {
     while (true) {
-      if (isNotListening) {
+      if (!speechEnabled) {
         await startListening();
       }
       // Adjust delay based on your needs to avoid performance issues
@@ -75,16 +75,10 @@ class RecordingController extends BaseController {
     }
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) {
-    _currentWords = result.recognizedWords;
+  void onSpeechResult(SpeechRecognitionResult result) {
+    guideText = result.recognizedWords;
     refreshUI();
   }
-
-  // Getters for exposing controller state to the view
-  bool get isNotListening => !_speechEnabled;
-  String get guideText => _guideText;
-  double get confidenceLevel => _confidenceLevel;
-  int get recordDurationMinutes => recordDuration;
 
   String formatNumber(int number) {
     String numberStr = number.toString();

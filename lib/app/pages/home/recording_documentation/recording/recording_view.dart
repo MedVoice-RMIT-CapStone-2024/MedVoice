@@ -6,9 +6,6 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
@@ -55,15 +52,14 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text(
-                "Confidence level: ${recordingController!.confidenceLevel * 100}%"),
+            Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: toSize(20), vertical: 50),
                 child: Container(
-                    height: toSize(200),
+                    height: toSize(400),
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -84,7 +80,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                 repeat: true,
                 child: InkWell(
                     onTap: () {
-                      if (recordingController!.isNotListening) {
+                      if (!recordingController!.speechEnabled) {
                         recordingController!.startListening();
                       } else {
                         recordingController!.stopListening();
@@ -98,7 +94,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                                 HexColor(Global.mColors['pink_1'].toString()),
                             borderRadius: BorderRadius.circular(50)),
                         child: Icon(
-                            recordingController!.isNotListening
+                            !recordingController!.speechEnabled
                                 ? Icons.mic_off
                                 : Icons.mic,
                             size: toSize(35),
@@ -132,133 +128,3 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
         ));
   }
 }
-
-// class RecordingView extends StatefulWidget {
-//   const RecordingView({Key? key}) : super(key: key);
-
-//   @override
-//   RecordingViewState createState() => RecordingViewState();
-// }
-
-// class RecordingViewState extends State<RecordingView> {
-//   final SpeechToText _speechToText = SpeechToText();
-//   bool _speechEnabled = false;
-//   bool _speechAvailable = false;
-//   String _lastWords = '';
-//   String _currentWords = '';
-//   final String _selectedLocaleId = 'es_MX';
-
-//   printLocales() async {
-//     var locales = await _speechToText.locales();
-//     for (var local in locales) {
-//       debugPrint(local.name);
-//       debugPrint(local.localeId);
-//     }
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _initSpeech();
-//   }
-
-//   void errorListener(SpeechRecognitionError error) {
-//     debugPrint(error.errorMsg.toString());
-//   }
-
-//   void statusListener(String status) async {
-//     debugPrint("status $status");
-//     if (status == "done" && _speechEnabled) {
-//       setState(() {
-//         _lastWords += " $_currentWords";
-//         _currentWords = "";
-//         _speechEnabled = false;
-//       });
-//       await _startListening();
-//     }
-//   }
-
-//   /// This has to happen only once per app
-//   void _initSpeech() async {
-//     _speechAvailable = await _speechToText.initialize(
-//         onError: errorListener, onStatus: statusListener);
-//     setState(() {});
-//   }
-
-//   /// Each time to start a speech recognition session
-//   Future _startListening() async {
-//     debugPrint("=================================================");
-//     await _stopListening();
-//     await Future.delayed(const Duration(milliseconds: 50));
-//     await _speechToText.listen(
-//         onResult: _onSpeechResult,
-//         localeId: _selectedLocaleId,
-//         cancelOnError: false,
-//         partialResults: true,
-//         listenMode: ListenMode.dictation);
-//     setState(() {
-//       _speechEnabled = true;
-//     });
-//   }
-
-//   /// Manually stop the active speech recognition session
-//   /// Note that there are also timeouts that each platform enforces
-//   /// and the SpeechToText plugin supports setting timeouts on the
-//   /// listen method.
-//   Future _stopListening() async {
-//     setState(() {
-//       _speechEnabled = false;
-//     });
-//     await _speechToText.stop();
-//   }
-
-//   /// This is the callback that the SpeechToText plugin calls when
-//   /// the platform returns recognized words.
-//   void _onSpeechResult(SpeechRecognitionResult result) {
-//     setState(() {
-//       _currentWords = result.recognizedWords;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Speech Demo'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Container(
-//               padding: const EdgeInsets.all(16),
-//               child: const Text(
-//                 'Recognized words:',
-//                 style: TextStyle(fontSize: 20.0),
-//               ),
-//             ),
-//             Container(
-//               padding: const EdgeInsets.all(16),
-//               child: Text(
-//                 _lastWords.isNotEmpty
-//                     ? '$_lastWords $_currentWords'
-//                     : _speechAvailable
-//                         ? 'Tap the microphone to start listening...'
-//                         : 'Speech not available',
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: Padding(
-//         padding: const EdgeInsets.all(50.0),
-//         child: FloatingActionButton(
-//           onPressed:
-//               _speechToText.isNotListening ? _startListening : _stopListening,
-//           tooltip: 'Listen',
-//           child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
-//         ),
-//       ),
-//     );
-//   }
-// }
