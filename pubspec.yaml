@@ -69,6 +69,10 @@ dependencies:
   speech_to_text: ^6.1.1
   highlight_text: ^1.7.0
   avatar_glow: ^3.0.1
+  qr_flutter: ^4.0.0
+  pretty_qr_code: ^3.3.0
+  flutter_barcode_scanner: ^2.0.0
+
 
 dependency_overrides:
   package_info_plus: ^4.0.1
