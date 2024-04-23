@@ -8,4 +8,5 @@ class Pages {
   static const String confirm = '/confirm';
   static const String main = '/main';
   static const String medicalArchive = '/medicalArchive';
+  static const String myQR = '/myQR';
 }
