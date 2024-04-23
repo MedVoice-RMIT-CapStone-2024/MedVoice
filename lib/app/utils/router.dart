@@ -19,7 +19,6 @@ class AppRouter {
 
   CupertinoPageRoute? getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       // case Pages.startup:
       //   return _buildRoute(settings, StartupView());
 

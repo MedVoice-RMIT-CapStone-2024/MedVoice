@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
-as clean;
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 
