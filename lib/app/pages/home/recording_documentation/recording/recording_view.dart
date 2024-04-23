@@ -52,7 +52,8 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
+            Text(
+                "Confidence level: ${recordingController!.confidenceLevel * 100}%"),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
