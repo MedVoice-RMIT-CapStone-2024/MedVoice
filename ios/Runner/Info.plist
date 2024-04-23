@@ -51,5 +51,7 @@
 	<string>For the purpose of recoginizing and converting speech to transcript for documentations</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For the purpose of recording documentations</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Camera permission is required for barcode scanning.</string>
 </dict>
 </plist>
