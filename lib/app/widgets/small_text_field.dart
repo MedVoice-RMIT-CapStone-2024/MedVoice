@@ -9,14 +9,26 @@ class SmallTextField extends StatelessWidget {
     Key? key,
     required this.size,
     required this.labelText,
+    required this.validator,
+    required this.controller,
+    required this.showIconButton,
+    this.obscureText = false,
     this.icon,
+    this.iconButton,
     this.hint,
   }) : super(key: key);
 
   final Size size;
   final String labelText;
   final IconData? icon;
+  final IconButton? iconButton;
+  final bool showIconButton;
   final String? hint;
+  final bool obscureText;
+  final String? Function(String?)?
+      validator; // Accepts a function for validation
+  final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,17 +48,19 @@ class SmallTextField extends StatelessWidget {
                 )),
           ),
           TextFormField(
+            obscureText: obscureText,
             decoration: InputDecoration(
                 suffixIcon: Padding(
-                    padding: EdgeInsets.only(right: toSize(8.0)),
-                    child: Icon(icon, color: Colors.black)),
+                  padding: EdgeInsets.only(right: toSize(8.0)),
+                  child: showIconButton ? iconButton : Icon(icon),
+                ),
                 fillColor: HexColor("FBE8F2"),
                 filled: true,
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 border: OutlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(toSize(20)), // Adjusted size
-                  borderSide: BorderSide(color: Colors.black),
+                  borderSide: const BorderSide(color: Colors.black),
                 ),
                 isDense: true,
                 hintText: hint,
@@ -60,6 +74,8 @@ class SmallTextField extends StatelessWidget {
                       BorderRadius.circular(toSize(20)), // Adjusted size
                   borderSide: BorderSide(color: HexColor("#EC4B8B")),
                 )),
+            validator: validator, // Pass the validation function
+            controller: controller,
           ),
         ],
       ),
