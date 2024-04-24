@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
+import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
 import '../pages/onboarding/confirm/confirm_view.dart';
@@ -19,7 +20,6 @@ class AppRouter {
 
   CupertinoPageRoute? getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       // case Pages.startup:
       //   return _buildRoute(settings, StartupView());
 
@@ -54,6 +54,9 @@ class AppRouter {
 
       case Pages.myQR:
         return _buildRoute(settings, MyQRView());
+
+      case Pages.info:
+        return _buildRoute(settings, InfoView());
 
       default:
         return null;
