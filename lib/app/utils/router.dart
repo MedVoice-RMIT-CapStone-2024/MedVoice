@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
+import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
 import '../../domain/entities/recording_archive/recording_info.dart';
@@ -56,6 +57,9 @@ class AppRouter {
 
       case Pages.myQR:
         return _buildRoute(settings, MyQRView());
+
+      case Pages.info:
+        return _buildRoute(settings, InfoView());
 
       case Pages.audioPlayback:
         Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
