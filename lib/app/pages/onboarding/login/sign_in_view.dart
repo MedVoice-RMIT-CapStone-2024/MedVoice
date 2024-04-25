@@ -80,7 +80,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     ),
                     SizedBox(height: toSize(5)),
                     SmallTextField(
-                      size: size,
                       labelText: "EMAIL ADDRESS",
                       hint: "jiara@jiara.com",
                       validator: _controller.validateEmail,
@@ -89,7 +88,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     ),
                     SmallTextField(
                       obscureText: obscureText,
-                      size: size,
                       hint: "Enter your password",
                       labelText: "PASSWORD",
                       iconButton: IconButton(

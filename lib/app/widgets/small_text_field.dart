@@ -7,18 +7,16 @@ import '../utils/module_utils.dart';
 class SmallTextField extends StatelessWidget {
   const SmallTextField({
     Key? key,
-    required this.size,
     required this.labelText,
     required this.validator,
     required this.controller,
     required this.showIconButton,
+    this.onChanged,
     this.obscureText = false,
     this.icon,
     this.iconButton,
     this.hint,
   }) : super(key: key);
-
-  final Size size;
   final String labelText;
   final IconData? icon;
   final IconButton? iconButton;
@@ -28,6 +26,7 @@ class SmallTextField extends StatelessWidget {
   final String? Function(String?)?
       validator; // Accepts a function for validation
   final TextEditingController controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +47,7 @@ class SmallTextField extends StatelessWidget {
                 )),
           ),
           TextFormField(
+            onChanged: onChanged,
             obscureText: obscureText,
             decoration: InputDecoration(
                 suffixIcon: Padding(

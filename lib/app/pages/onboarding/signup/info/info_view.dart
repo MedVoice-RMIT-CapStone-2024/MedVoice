@@ -1,3 +1,4 @@
+import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
@@ -12,6 +13,7 @@ import 'package:med_voice/app/widgets/custom_scaffold.dart';
 import 'package:med_voice/app/widgets/small_text_field.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
+import 'package:password_strength_checker/password_strength_checker.dart';
 
 class InfoView extends clean.View {
   InfoView({Key? key}) : super(key: key);
@@ -25,6 +27,7 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
   _InfoView() : super(InfoController());
   bool obscureText = true;
   bool success = false;
+  final passNotifier = ValueNotifier<PasswordStrength?>(null);
 
   @override
   bool isInitialAppbar() {
@@ -44,111 +47,83 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
       link: ImageAssets.imgBg3,
       child: Form(
         key: _controller.formKey,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SmallTextField(
-                  size: size,
-                  labelText: "NAME",
-                  showIconButton: false,
-                  validator: _controller.validateEmail,
-                  controller: _controller.emailController),
-              SmallTextField(
-                  size: size,
-                  labelText: "EMAIL ADDRESS",
-                  showIconButton: false,
-                  validator: _controller.validateEmail,
-                  controller: _controller.emailController),
-              SmallTextField(
-                size: size,
-                labelText: "PASSWORD",
-                iconButton: IconButton(
-                  icon: Icon(
-                    obscureText == true
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SmallTextField(
+                labelText: "EMAIL ADDRESS",
+                showIconButton: false,
+                validator: _controller.validateEmail,
+                controller: _controller.emailController),
+            SmallTextField(
+              labelText: "PASSWORD",
+              iconButton: IconButton(
+                icon: Icon(
+                  obscureText == true ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.black,
                 ),
-                showIconButton: true,
-                validator: _controller.validatePassword,
-                controller: _controller.passwordController,
-              ),
-              FlutterPwValidator(
-                defaultColor: Colors.grey.shade300,
-                controller: _controller.passwordController,
-                successColor: Colors.green.shade700,
-                minLength: 8,
-                uppercaseCharCount: 2,
-                numericCharCount: 3,
-                specialCharCount: 1,
-                normalCharCount: 3,
-                height: toSize(10),
-                width: size.width * 0.75,
-                onSuccess: () {
+                onPressed: () {
                   setState(() {
-                    success = true;
-                  });
-                },
-                onFail: () {
-                  setState(() {
-                    success = false;
+                    obscureText = !obscureText;
                   });
                 },
               ),
-              SmallTextField(
-                size: size,
-                labelText: "CONFIRM ASSWORD",
-                iconButton: IconButton(
-                  icon: Icon(
-                    obscureText == true
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                ),
-                showIconButton: true,
-                validator: _controller.validateConfirmPassword,
-                controller: _controller.confirmPasswordController,
+              showIconButton: true,
+              validator: _controller.validatePassword,
+              controller: _controller.passwordController,
+              onChanged: (value) {
+                passNotifier.value = PasswordStrength.calculate(text: value);
+              },
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: toSize(30)),
+              child: PasswordStrengthChecker(
+                strength: passNotifier,
               ),
-              Padding(
-                padding: EdgeInsets.all(toSize(20)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_controller.submitForm()) {
-                      pushScreen(Pages.signIn, isAllowBack: false);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: HexColor("#EC4B8B"),
-                    fixedSize: Size(size.width * 0.75, toSize(50)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            ),
+            SmallTextField(
+              labelText: "CONFIRM PASSWORD",
+              iconButton: IconButton(
+                icon: Icon(
+                  obscureText == true ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
+                },
+              ),
+              showIconButton: true,
+              validator: _controller.validateConfirmPassword,
+              controller: _controller.confirmPasswordController,
+            ),
+            Padding(
+              padding: EdgeInsets.all(toSize(20)),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_controller.submitForm()) {
+                    pushScreen(Pages.signIn, isAllowBack: false);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: HexColor("#EC4B8B"),
+                  fixedSize: Size(size.width * 0.75, toSize(50)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
-                    "Sign up",
-                    style: TextStyle(
-                      color: HexColor("#FFFDF5"),
-                      fontSize: toSize(18),
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                child: Text(
+                  "Sign up",
+                  style: TextStyle(
+                    color: HexColor("#FFFDF5"),
+                    fontSize: toSize(18),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

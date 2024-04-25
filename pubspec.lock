@@ -65,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  fancy_password_field:
+    dependency: "direct main"
+    description:
+      name: fancy_password_field
+      sha256: "317f06bc13505a8cce0dd1d1abbeed404ed107e8c1185305bba7ffc7ae189943"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   ffi:
     dependency: transitive
     description:
@@ -309,6 +317,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  password_strength:
+    dependency: transitive
+    description:
+      name: password_strength
+      sha256: "0e51e3d864e37873a1347e658147f88b66e141ee36c58e19828dc5637961e1ce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  password_strength_checker:
+    dependency: "direct main"
+    description:
+      name: password_strength_checker
+      sha256: aeaf889c9528d667d653a159f7488f42d5b79836e0074f709c3048ef6013e08a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.3"
   path:
     dependency: transitive
     description:

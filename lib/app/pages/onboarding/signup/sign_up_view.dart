@@ -92,22 +92,19 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             ),
                             SizedBox(height: toSize(40)),
                             SmallTextField(
-                                size: size,
                                 labelText: "FIRST NAME",
                                 showIconButton: false,
                                 validator: _controller.validateName,
                                 hint: "Jiara",
                                 controller: _controller.fnameController),
                             SmallTextField(
-                                size: size,
                                 labelText: "LAST NAME",
                                 showIconButton: false,
                                 validator: _controller.validateName,
                                 hint: "Martins",
                                 controller: _controller.lnameController),
                             SmallTextField(
-                              size: size,
-                              labelText: "Date of Birth",
+                              labelText: "DATE OF BIRTH",
                               iconButton: IconButton(
                                 icon: const Icon(Icons.calendar_today_outlined),
                                 onPressed: () {
