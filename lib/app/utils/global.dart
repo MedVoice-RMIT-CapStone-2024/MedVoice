@@ -2,8 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 
-class Global {
+import '../../domain/entities/recording_archive/recording_info.dart';
 
+class Global {
   static bool isAppInForeground = true;
 
   // HexColor code sets
@@ -97,4 +98,11 @@ class Global {
   static String mLang = "";
   static String appVersion = "";
 
+  static List<RecordingInfo> sampleData = [
+    RecordingInfo(
+        recordingTitle: 'sample-fixed-data',
+        isToggle: false,
+        duration: 180,
+        path: 'local_path'),
+  ];
 }

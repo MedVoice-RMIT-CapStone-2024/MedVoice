@@ -1,62 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 
 import '../../../../common/base_controller.dart';
+import '../../../../domain/entities/recording_archive/recording_info.dart';
+import '../../../utils/global.dart';
 
 class MedicalArchiveController extends BaseController {
   int currentTabIndex = 0;
   bool resetToggle = false;
   bool toggleEmptyData = false;
-  List<RecordingInfo> sampleData = [];
   List<RecordingInfo> emptyDataTest = [];
 
   @override
-  void firstLoad() {
-    sampleData = [
-      RecordingInfo(
-          recordingTitle: 'patient-0-zombie-symptoms.mp3',
-          minuteDuration: 10,
-          secondDuration: 30,
-          recordingSize: 4.51,
-          isToggle: false),
-      RecordingInfo(
-          recordingTitle: 'patient-with-lung-cancer.mp3',
-          minuteDuration: 30,
-          secondDuration: 24,
-          recordingSize: 10.51,
-          isToggle: false),
-      RecordingInfo(
-          recordingTitle: 'patient-suffering-from-RMIT-deadline.mp3',
-          minuteDuration: 59,
-          secondDuration: 30,
-          recordingSize: 98.51,
-          isToggle: false),
-      RecordingInfo(
-          recordingTitle: 'bald-patient.mp3',
-          minuteDuration: 8,
-          secondDuration: 12,
-          recordingSize: 2.51,
-          isToggle: false),
-      RecordingInfo(
-          recordingTitle: 'patient-symptoms-from-watching-too-much-TikTok.mp3',
-          minuteDuration: 5,
-          secondDuration: 49,
-          recordingSize: 4.32,
-          isToggle: false)
-    ];
-  }
+  void firstLoad() {}
 
   @override
   void onListener() {}
 
   void onChooseRecord(int index) {
-    sampleData[index].isToggle = !sampleData[index].isToggle!;
-    debugPrint("the toggle bool data: ${sampleData[index].isToggle}");
+    Global.sampleData[index].isToggle = !Global.sampleData[index].isToggle!;
+    debugPrint("the toggle bool data: ${Global.sampleData[index].isToggle}");
     refreshUI();
   }
 
   bool handleDeleteItems() {
     int count = 0;
-    for (var item in sampleData) {
+    for (var item in Global.sampleData) {
       if (item.isToggle == true) {
         count++;
       }
@@ -70,31 +40,30 @@ class MedicalArchiveController extends BaseController {
 
   void onDeleteRecordings() {
     List<RecordingInfo> itemsToKeep = [];
-    for (var item in sampleData) {
+    for (var item in Global.sampleData) {
       if (!item.isToggle!) {
         itemsToKeep.add(item);
+      } else {
+        onDelete(item);
       }
     }
-    sampleData = List.from(itemsToKeep);
+    Global.sampleData = List.from(itemsToKeep);
     resetToggle = !resetToggle;
     refreshUI();
   }
 
-}
-
-class RecordingInfo {
-  String? recordingTitle = '';
-  int? minuteDuration = 0;
-  int? secondDuration = 0;
-  double? recordingSize = 0.0;
-  bool? isToggle = false;
-
-  RecordingInfo.buildDefault();
-
-  RecordingInfo(
-      {this.recordingTitle,
-      this.minuteDuration,
-      this.secondDuration,
-      this.recordingSize,
-      this.isToggle});
+  Future<void> onDelete(RecordingInfo item) async {
+    try {
+      final file = File(item.path ?? "");
+      if (await file.exists()) {
+        await file.delete();
+        refreshUI();
+        debugPrint("File deleted successfully: ${item.path}");
+      } else {
+        debugPrint("File does not exist: ${item.path}");
+      }
+    } catch (e) {
+      debugPrint("Failed to delete file: $e");
+    }
+  }
 }

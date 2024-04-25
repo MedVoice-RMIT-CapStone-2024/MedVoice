@@ -1,10 +1,12 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
+import '../../domain/entities/recording_archive/recording_info.dart';
 import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
@@ -54,6 +56,12 @@ class AppRouter {
 
       case Pages.myQR:
         return _buildRoute(settings, MyQRView());
+
+      case Pages.audioPlayback:
+        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
+        return _buildRoute(settings, AudioPlaybackView(
+          recordingInfo: arguments[recordingInfo] as RecordingInfo,
+        ));
 
       default:
         return null;
