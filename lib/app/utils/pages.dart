@@ -9,4 +9,5 @@ class Pages {
   static const String main = '/main';
   static const String medicalArchive = '/medicalArchive';
   static const String myQR = '/myQR';
+  static const String audioPlayback = '/audioPlayback';
 }

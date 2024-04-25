@@ -41,6 +41,13 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
   }
 
   @override
+  void onStateDestroyed() {
+    recordingController?.recordSub?.cancel();
+    recordingController?.amplitudeSub?.cancel();
+    recordingController?.audioRecorder.dispose();
+  }
+
+  @override
   Widget body(BuildContext context, BaseController controller) {
     recordingController = controller as RecordingController;
     return Scaffold(
@@ -57,7 +64,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: toSize(20), vertical: 50),
+                    EdgeInsets.symmetric(horizontal: toSize(20), vertical: 20),
                 child: Container(
                     height: toSize(400),
                     width: double.infinity,
@@ -69,9 +76,11 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                     child: Text(recordingController!.guideText)),
               ),
             ),
-            const Spacer(),
+            recordingController!.speechEnabled
+              ? _buildTimer()
+              : SizedBox(height: toSize(25)),
             Padding(
-              padding: EdgeInsets.only(bottom: toSize(110)),
+              padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
                 animate: true,
                 glowColor: HexColor(Global.mColors['pink_1'].toString()),
@@ -94,7 +103,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                                 HexColor(Global.mColors['pink_1'].toString()),
                             borderRadius: BorderRadius.circular(50)),
                         child: Icon(
-                            !recordingController!.speechEnabled
+                            recordingController!.speechEnabled
                                 ? Icons.mic_off
                                 : Icons.mic,
                             size: toSize(35),
@@ -116,15 +125,13 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
     final String seconds = recordingController!
         .formatNumber(recordingController!.recordDuration % 60);
 
-    return Padding(
-        padding: EdgeInsets.only(left: toSize(10)),
-        child: Text(
-          '$minutes : $seconds',
-          style: TextStyle(
-              color: HexColor(Global.mColors["red_2"].toString()),
-              fontFamily: 'NunitoSans',
-              fontWeight: FontWeight.w700,
-              fontSize: toSize(18)),
-        ));
+    return Text(
+      '$minutes : $seconds',
+      style: TextStyle(
+          color: HexColor(Global.mColors["pink_1"].toString()),
+          fontFamily: 'NunitoSans',
+          fontWeight: FontWeight.w700,
+          fontSize: toSize(18)),
+    );
   }
 }
