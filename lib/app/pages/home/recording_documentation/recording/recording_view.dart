@@ -59,7 +59,8 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
+            Text(
+                "Confidence level: ${recordingController!.confidenceLevel * 100}%"),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
@@ -77,8 +78,8 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
               ),
             ),
             recordingController!.speechEnabled
-              ? _buildTimer()
-              : SizedBox(height: toSize(25)),
+                ? _buildTimer()
+                : SizedBox(height: toSize(25)),
             Padding(
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(

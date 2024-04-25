@@ -94,7 +94,8 @@ class RecordingController extends BaseController {
     recordDuration = 0;
     final path = await audioRecorder.stop();
     if (path != null) {
-      view.showPopupWithAction('your path is: $path, duration: ${duration}s', 'okay');
+      view.showPopupWithAction(
+          'your path is: $path, duration: ${duration}s', 'okay');
       audioPath = path;
     } else {
       debugPrint(path ?? 'path is empty');
@@ -169,13 +170,9 @@ class RecordingController extends BaseController {
     refreshUI();
   }
 
-  void onSaveRecordingToList(String title, int duration, String path){
+  void onSaveRecordingToList(String title, int duration, String path) {
     RecordingInfo item = RecordingInfo(
-        path: path,
-        recordingTitle: title,
-        duration: duration,
-        isToggle: false
-    );
+        path: path, recordingTitle: title, duration: duration, isToggle: false);
     Global.sampleData.add(item);
   }
 }
