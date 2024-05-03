@@ -55,7 +55,7 @@ class IBaseView {
 
   void showPopupWithAction(String message, String okButton,
       [VoidCallback? okCallback,
-        String? title,
-        String? cancelButton,
-        VoidCallback? cancelCallback]) {}
+      String? title,
+      String? cancelButton,
+      VoidCallback? cancelCallback]) {}
 }

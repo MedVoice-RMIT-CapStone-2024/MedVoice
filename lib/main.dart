@@ -6,7 +6,7 @@ import 'config/app_init.dart';
 
 Future<void> main() async {
   AppConfig devAppConfig = AppConfig(
-      appName: 'MedCare',
+    appName: 'MedCare',
   );
   Widget app = await initializeApp(devAppConfig);
   runApp(RestartWidget(child: app));

@@ -374,13 +374,13 @@ abstract class BaseStateView<Page extends clean.View,
   }
 
   void showSaveRecordingPopup(
-      String message,
-      String okButton,
-      String cancelButton,
-      VoidCallback okCallback,
-      VoidCallback cancelCallback,
-      TextEditingController saveNameController,
-      ) {
+    String message,
+    String okButton,
+    String cancelButton,
+    VoidCallback okCallback,
+    VoidCallback cancelCallback,
+    TextEditingController saveNameController,
+  ) {
     if (_isThereCurrentDialogShowing(context)) {
       return;
     }
@@ -408,8 +408,8 @@ abstract class BaseStateView<Page extends clean.View,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                            color: HexColor(Global.mColors['black_4'].toString())
-                              ),
+                              color: HexColor(
+                                  Global.mColors['black_4'].toString())),
                           child: Center(
                             child: Text(cancelButton),
                           ),
@@ -425,7 +425,8 @@ abstract class BaseStateView<Page extends clean.View,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                              color: HexColor(Global.mColors['pink_1'].toString())),
+                              color: HexColor(
+                                  Global.mColors['pink_1'].toString())),
                           child: Center(child: Text(okButton)),
                         ),
                       ))

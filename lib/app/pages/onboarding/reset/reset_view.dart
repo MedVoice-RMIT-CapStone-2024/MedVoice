@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/widgets/background_set.dart';
 
@@ -58,8 +59,8 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                           fontWeight: FontWeight.w900,
                         )),
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 10),
                       child: Text(
                         "Please provide us with your email address, and we will send you a link to regain access to your account.",
                         textAlign: TextAlign.center,
@@ -82,19 +83,21 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                             decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(100),
-                                border: Border.all(width: 2, color: Colors.black)),
+                                border:
+                                    Border.all(width: 2, color: Colors.black)),
                             child: Icon(
                               Icons.email_rounded,
                               color: Colors.white,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                           ),
-                          fillColor: HexColor(Global.mColors['pink_2'].toString()),
+                          fillColor:
+                              HexColor(Global.mColors['pink_2'].toString()),
                           filled: true,
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.circular(toSize(20)), // Adjusted size
+                              borderRadius: BorderRadius.circular(
+                                  toSize(20)), // Adjusted size
                               borderSide: BorderSide(color: Colors.black)),
                           isDense: true,
                           hintText: "hello@reallygreatsite.com",

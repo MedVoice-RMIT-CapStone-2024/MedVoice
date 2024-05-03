@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
@@ -99,8 +100,7 @@ class _MedicalArchiveView
       backgroundColor: HexColor(Global.mColors["white_2"].toString()),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-        child:
-            (Global.sampleData.isNotEmpty) ? _recordList() : _emptyView(),
+        child: (Global.sampleData.isNotEmpty) ? _recordList() : _emptyView(),
       ),
     );
   }
@@ -122,7 +122,8 @@ class _MedicalArchiveView
             itemCount: Global.sampleData.length ?? 1,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return _recordItems(index, Global.sampleData.length ?? 1, Global.sampleData[index]);
+              return _recordItems(index, Global.sampleData.length ?? 1,
+                  Global.sampleData[index]);
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10);
@@ -135,7 +136,7 @@ class _MedicalArchiveView
 
   Widget _recordItems(int index, int length, RecordingInfo item) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         pushScreen(Pages.audioPlayback, arguments: {recordingInfo: item});
       },
       child: Container(
@@ -173,11 +174,11 @@ class _MedicalArchiveView
                   child: Text(Global.sampleData[index].recordingTitle ?? "",
                       maxLines: 1,
                       style: TextStyle(
-                          overflow: TextOverflow.ellipsis, fontSize: toSize(17))),
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: toSize(17))),
                 ),
                 SizedBox(height: toSize(5)),
-                Text(
-                    "${Global.sampleData[index].duration}s",
+                Text("${Global.sampleData[index].duration}s",
                     style: TextStyle(fontSize: toSize(15))),
               ],
             ),

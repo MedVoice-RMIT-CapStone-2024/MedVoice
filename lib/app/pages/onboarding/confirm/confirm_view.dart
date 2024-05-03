@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/widgets/background_set.dart';
@@ -50,7 +51,9 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                   children: [
                     SizedBox(height: toSize(250)),
                     Image.asset(ImageAssets.imgEmail,
-                        width: toSize(190), height: toSize(190), fit: BoxFit.fill),
+                        width: toSize(190),
+                        height: toSize(190),
+                        fit: BoxFit.fill),
                     Text("Check your Inbox",
                         style: TextStyle(
                           color: Colors.black,
@@ -58,8 +61,8 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                           fontWeight: FontWeight.w800,
                         )),
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 70, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 70, vertical: 10),
                       child: Text(
                         "An email containing instructions to reset your password has been sent to @dudu.com",
                         textAlign: TextAlign.center,

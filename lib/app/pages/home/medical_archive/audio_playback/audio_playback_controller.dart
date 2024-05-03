@@ -20,6 +20,5 @@ class AudioPlaybackController extends BaseController {
     // TODO: implement onListener
   }
 
-  void testFunc() {
-  }
+  void testFunc() {}
 }

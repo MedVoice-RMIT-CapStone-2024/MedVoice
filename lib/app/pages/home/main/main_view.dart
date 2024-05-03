@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
 
@@ -90,11 +91,12 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     currentIndex: mMainController!.currentTabIndex,
                     showSelectedLabels: false,
                     showUnselectedLabels: false,
-
                     items: [
                       // Add _tab([index], [asset location], [title underneath the icon]
-                      _tab(0, "assets/main_assets/ic_medical_archive", "Archive"),
-                      _tab(1, "assets/main_assets/ic_voice_recording", "Record"),
+                      _tab(0, "assets/main_assets/ic_medical_archive",
+                          "Archive"),
+                      _tab(
+                          1, "assets/main_assets/ic_voice_recording", "Record"),
                       _tab(2, "assets/main_assets/ic_nurse_profile", "Profile"),
                     ],
                   ),
@@ -112,7 +114,6 @@ class _MainView extends BaseStateView<MainView, MainController> {
       badgeNumber = 0;
     } else {
       // Future implementation
-
     }
     return BottomNavigationBarItem(
       icon: Stack(

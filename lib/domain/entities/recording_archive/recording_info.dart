@@ -6,9 +6,5 @@ class RecordingInfo {
 
   RecordingInfo.buildDefault();
 
-  RecordingInfo(
-      {this.recordingTitle,
-        this.isToggle,
-        this.path,
-        this.duration});
+  RecordingInfo({this.recordingTitle, this.isToggle, this.path, this.duration});
 }

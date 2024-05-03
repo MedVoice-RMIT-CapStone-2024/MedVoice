@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/startup/startup_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
@@ -43,10 +44,9 @@ class _StartupView extends BaseStateView<StartupView, StartupController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: toSize(300),
+                  height: toSize(300),
                   width: toSize(300),
-                  child: Image.asset(ImageAssets.imgMedVoiceLogo)
-              ),
+                  child: Image.asset(ImageAssets.imgMedVoiceLogo)),
               SizedBox(height: toSize(100)),
             ],
           ),

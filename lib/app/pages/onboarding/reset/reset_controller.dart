@@ -1,7 +1,6 @@
 import '../../../../common/base_controller.dart';
 
 class ResetController extends BaseController {
-
   @override
   void onResumed() {}
 

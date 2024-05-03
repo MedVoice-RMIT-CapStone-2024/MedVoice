@@ -68,7 +68,8 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                         ),
                         width: double.infinity,
                         child: Padding(
-                            padding: EdgeInsets.only(top: toSize(15), bottom: toSize(15)),
+                            padding: EdgeInsets.only(
+                                top: toSize(15), bottom: toSize(15)),
                             child: Column(
                               children: [
                                 SizedBox(
@@ -94,8 +95,12 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                   child: QrImageView(
                                     data: 'testing',
                                     size: toSize(165),
-                                    eyeStyle: QrEyeStyle(color: HexColor(Global.mColors['pink_1'].toString())),
-                                    dataModuleStyle: QrDataModuleStyle(color: HexColor(Global.mColors['pink_1'].toString())),
+                                    eyeStyle: QrEyeStyle(
+                                        color: HexColor(Global.mColors['pink_1']
+                                            .toString())),
+                                    dataModuleStyle: QrDataModuleStyle(
+                                        color: HexColor(Global.mColors['pink_1']
+                                            .toString())),
                                     backgroundColor: Colors.white,
                                   ),
                                 ),

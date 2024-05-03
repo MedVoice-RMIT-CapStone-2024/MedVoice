@@ -6,8 +6,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../../../../../common/base_controller.dart';
 
-
-
 class MyQRController extends BaseController {
   bool isShowStartButton = false;
   Timer? timer;

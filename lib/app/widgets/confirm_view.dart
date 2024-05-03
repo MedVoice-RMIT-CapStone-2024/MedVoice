@@ -15,14 +15,13 @@ class ConfirmView extends StatelessWidget {
 
   const ConfirmView(
       {Key? key,
-        required this.title,
-        required this.message,
-        required this.titleButton,
-        this.titleSecondButton,
-        required this.onPressEvent,
-        this.onPressSecondEvent,
-        this.acceptByRequester
-      })
+      required this.title,
+      required this.message,
+      required this.titleButton,
+      this.titleSecondButton,
+      required this.onPressEvent,
+      this.onPressSecondEvent,
+      this.acceptByRequester})
       : super(key: key);
 
   @override
@@ -48,25 +47,26 @@ class ConfirmView extends StatelessWidget {
                   child: Column(children: [
                     acceptByRequester != null && acceptByRequester == true
                         ? Padding(
-                        padding: EdgeInsets.only(bottom: toSize(22),top: toSize(24)),
-                        child: Image.asset(
-                            IconAssets.icAcceptByRequester, width: toSize(68),height: toSize(49)))
+                            padding: EdgeInsets.only(
+                                bottom: toSize(22), top: toSize(24)),
+                            child: Image.asset(IconAssets.icAcceptByRequester,
+                                width: toSize(68), height: toSize(49)))
                         : const SizedBox(height: 18),
                     (title != null)
                         ? Padding(
-                        padding: const EdgeInsets.fromLTRB(19, 0, 19, 15),
-                        child: Text(
-                          title!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: HexColor(
-                                  Global.mColors["pink_1"].toString()),
-                              fontFamily: 'NunitoSans',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ))
+                            padding: const EdgeInsets.fromLTRB(19, 0, 19, 15),
+                            child: Text(
+                              title!,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: HexColor(
+                                      Global.mColors["pink_1"].toString()),
+                                  fontFamily: 'NunitoSans',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ))
                         : Container(),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(19, 0, 19, 0),
@@ -74,8 +74,8 @@ class ConfirmView extends StatelessWidget {
                           message,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color:
-                              HexColor(Global.mColors["black_5"].toString()),
+                              color: HexColor(
+                                  Global.mColors["black_5"].toString()),
                               fontFamily: 'NunitoSans',
                               fontSize: 12,
                               fontWeight: FontWeight.normal),
@@ -84,44 +84,48 @@ class ConfirmView extends StatelessWidget {
                     Row(children: [
                       (titleSecondButton != null)
                           ? Expanded(
-                          flex: 1,
-                          child: Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(19, 0, 3, 0),
-                              child: InkWell(
-                                  onTap: onPressSecondEvent,
-                                  child: Container(
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(6)),
-                                      boxShadow: [
-                                        BoxShadow(
+                              flex: 1,
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(19, 0, 3, 0),
+                                  child: InkWell(
+                                      onTap: onPressSecondEvent,
+                                      child: Container(
+                                        height: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(6)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: HexColor(Global
+                                                    .mColors['black_4']
+                                                    .toString()),
+                                                offset: const Offset(0, 3),
+                                                blurRadius: 6)
+                                          ],
+                                          color: HexColor(Global
+                                              .mColors['white_2']
+                                              .toString()),
+                                          border: Border.all(
                                             color: HexColor(Global
-                                                .mColors['black_4']
+                                                .mColors["pink_1"]
                                                 .toString()),
-                                            offset: const Offset(0, 3),
-                                            blurRadius: 6)
-                                      ],
-                                      color: HexColor(Global
-                                          .mColors['white_2']
-                                          .toString()),
-                                      border: Border.all(
-                                        color: HexColor(Global.mColors["pink_1"].toString()),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Center(
-                                        child: Text(
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Center(
+                                            child: Text(
                                           titleSecondButton!.toUpperCase(),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: HexColor(Global.mColors["pink_1"].toString()),
+                                              color: HexColor(Global
+                                                  .mColors["pink_1"]
+                                                  .toString()),
                                               fontFamily: 'NunitoSans',
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal),
                                         )),
-                                  ))))
+                                      ))))
                           : Container(),
                       Expanded(
                           flex: 1,
@@ -152,14 +156,14 @@ class ConfirmView extends StatelessWidget {
                                     ),
                                     child: Center(
                                         child: Text(
-                                          titleButton.toUpperCase(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'NunitoSans',
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.normal),
-                                        )),
+                                      titleButton.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'NunitoSans',
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.normal),
+                                    )),
                                   )))),
                     ]),
                     const SizedBox(height: 14),

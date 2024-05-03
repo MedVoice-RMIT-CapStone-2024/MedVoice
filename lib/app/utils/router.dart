@@ -22,7 +22,6 @@ class AppRouter {
 
   CupertinoPageRoute? getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       // case Pages.startup:
       //   return _buildRoute(settings, StartupView());
 
@@ -62,10 +61,13 @@ class AppRouter {
         return _buildRoute(settings, InfoView());
 
       case Pages.audioPlayback:
-        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
-        return _buildRoute(settings, AudioPlaybackView(
-          recordingInfo: arguments[recordingInfo] as RecordingInfo,
-        ));
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            AudioPlaybackView(
+              recordingInfo: arguments[recordingInfo] as RecordingInfo,
+            ));
 
       default:
         return null;

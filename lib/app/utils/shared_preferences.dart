@@ -8,7 +8,6 @@ enum SharedData {
 }
 
 class SharedPreferencesHelper {
-
   Future<SharedPreferences> getSharedPreference() async {
     SharedPreferences ref = await SharedPreferences.getInstance();
     await ref.reload();
