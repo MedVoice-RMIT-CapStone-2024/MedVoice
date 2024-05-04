@@ -1,0 +1,3 @@
+class IBasePresenter {
+  void onDestroy() {}
+}
