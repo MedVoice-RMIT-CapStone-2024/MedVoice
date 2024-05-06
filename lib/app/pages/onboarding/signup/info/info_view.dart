@@ -1,9 +1,7 @@
-import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_controller.dart';
