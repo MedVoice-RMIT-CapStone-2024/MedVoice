@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../common/base_controller.dart';
 
@@ -8,6 +9,8 @@ class MedicalArchiveController extends BaseController {
   bool toggleEmptyData = false;
   List<RecordingInfo> sampleData = [];
   List<RecordingInfo> emptyDataTest = [];
+  ThemeMode themeMode = ThemeMode.system;
+  bool isDarkMode = false;
 
   @override
   void firstLoad() {
@@ -43,6 +46,7 @@ class MedicalArchiveController extends BaseController {
           recordingSize: 4.32,
           isToggle: false)
     ];
+    isDarkMode = Theme.of(view.context).brightness == Brightness.dark;
   }
 
   @override
@@ -68,6 +72,11 @@ class MedicalArchiveController extends BaseController {
     }
   }
 
+  void toggleTheme(ThemeMode themeMode) {
+    themeMode = themeMode;
+    refreshUI();
+  }
+
   void onDeleteRecordings() {
     List<RecordingInfo> itemsToKeep = [];
     for (var item in sampleData) {
@@ -79,7 +88,6 @@ class MedicalArchiveController extends BaseController {
     resetToggle = !resetToggle;
     refreshUI();
   }
-
 }
 
 class RecordingInfo {

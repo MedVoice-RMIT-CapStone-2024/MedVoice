@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
+import 'package:med_voice/app/widgets/theme_data.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
@@ -92,8 +94,11 @@ class _MedicalArchiveView
   @override
   Widget body(BuildContext context, BaseController controller) {
     _controller = controller as MedicalArchiveController;
+    ThemeData currentTheme =
+        MyAppThemes.getTheme(context, _controller!.themeMode);
+
     return Scaffold(
-      backgroundColor: HexColor(Global.mColors["white_2"].toString()),
+      backgroundColor: currentTheme.scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
         child:

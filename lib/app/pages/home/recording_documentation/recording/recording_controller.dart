@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -14,6 +15,7 @@ class RecordingController extends BaseController {
   String transcriptText = '';
   double confidenceLevel = 1.0;
   String selectedLocaleId = 'vi_VN';
+  ThemeMode themeMode = ThemeMode.system;
 
   @override
   void firstLoad() {

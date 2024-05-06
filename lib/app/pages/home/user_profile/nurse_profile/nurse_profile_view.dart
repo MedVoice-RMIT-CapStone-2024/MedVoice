@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
-as clean;
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
+import 'package:med_voice/app/widgets/theme_data.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
@@ -44,8 +45,10 @@ class _NurseProfileView
   @override
   Widget body(BuildContext context, BaseController controller) {
     NurseProfileController _controller = controller as NurseProfileController;
+    ThemeData currentTheme =
+        MyAppThemes.getTheme(context, _controller.themeMode);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: currentTheme.scaffoldBackgroundColor,
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: toSize(20)),
           child: Column(
@@ -165,7 +168,8 @@ class _NurseProfileView
                       children: [
                         Text("Version",
                             style: TextStyle(
-                                color: Colors.black, fontSize: toSize(17))),
+                                color: Theme.of(context).primaryColor,
+                                fontSize: toSize(17))),
                         const Spacer(),
                         Text(
                           "1.0.0",
