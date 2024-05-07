@@ -68,7 +68,8 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                         ),
                         width: double.infinity,
                         child: Padding(
-                            padding: EdgeInsets.only(top: toSize(15), bottom: toSize(15)),
+                            padding: EdgeInsets.only(
+                                top: toSize(15), bottom: toSize(15)),
                             child: Column(
                               children: [
                                 SizedBox(
@@ -78,13 +79,14 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                   'Maria Elliot',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: toSize(25)),
+                                      fontSize: toSize(25),
+                                      color: HexColor("#0D0221")),
                                 ),
                                 Text("04 - 04 - 2001",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: toSize(15),
-                                      color: Colors.black,
+                                      color: HexColor("#0D0221"),
                                     )),
                                 Padding(
                                   padding: EdgeInsets.only(
@@ -94,8 +96,12 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                   child: QrImageView(
                                     data: 'testing',
                                     size: toSize(165),
-                                    eyeStyle: QrEyeStyle(color: HexColor(Global.mColors['pink_1'].toString())),
-                                    dataModuleStyle: QrDataModuleStyle(color: HexColor(Global.mColors['pink_1'].toString())),
+                                    eyeStyle: QrEyeStyle(
+                                        color: HexColor(Global.mColors['pink_1']
+                                            .toString())),
+                                    dataModuleStyle: QrDataModuleStyle(
+                                        color: HexColor(Global.mColors['pink_1']
+                                            .toString())),
                                     backgroundColor: Colors.white,
                                   ),
                                 ),
@@ -151,7 +157,7 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                 child: Text(
                   "Scan QR Code",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: HexColor("#0D0221"),
                     fontSize: toSize(18),
                     fontWeight: FontWeight.bold,
                   ),

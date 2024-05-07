@@ -197,9 +197,7 @@ abstract class BaseStateView<Page extends clean.View,
                   child: Container(
                     decoration: (isShowBackground())
                         ? BoxDecoration(
-                            color: getThemeMode() == ThemeMode.dark
-                                ? Colors.black
-                                : Colors.white,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           )
                         : null,
                     child: Scaffold(
@@ -210,9 +208,8 @@ abstract class BaseStateView<Page extends clean.View,
                               MediaQuery.of(context).orientation ==
                                   Orientation.portrait)
                           ? AppBar(
-                              backgroundColor: getThemeMode() == ThemeMode.dark
-                                  ? Colors.black
-                                  : Colors.white,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               centerTitle: true,
                               title: Text(appBarTitle(),
                                   style: TextStyle(

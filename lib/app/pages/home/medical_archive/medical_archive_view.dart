@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
-import 'package:med_voice/app/widgets/theme_data.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../utils/global.dart';
 import 'medical_archive_controller.dart';
 
 class MedicalArchiveView extends clean.View {
@@ -94,11 +91,9 @@ class _MedicalArchiveView
   @override
   Widget body(BuildContext context, BaseController controller) {
     _controller = controller as MedicalArchiveController;
-    ThemeData currentTheme =
-        MyAppThemes.getTheme(context, _controller!.themeMode);
 
     return Scaffold(
-      backgroundColor: currentTheme.scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
         child:
@@ -112,10 +107,18 @@ class _MedicalArchiveView
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: toSize(25)),
-        Text("Voices Library", style: TextStyle(fontSize: toSize(30))),
+        Text(
+          "Voices Library",
+          style: TextStyle(
+            fontSize: toSize(30),
+            color: Theme.of(context).colorScheme.onSecondary,
+          ),
+        ),
         SizedBox(height: toSize(20)),
         Text("MedVoice's recorded files saved will appear here.",
-            style: TextStyle(fontSize: toSize(17))),
+            style: TextStyle(
+                fontSize: toSize(17),
+                color: Theme.of(context).colorScheme.onSecondary)),
         SizedBox(height: toSize(35)),
         SizedBox(
           height: toSize(500),
@@ -171,12 +174,19 @@ class _MedicalArchiveView
                 child: Text(_controller?.sampleData[index].recordingTitle ?? "",
                     maxLines: 1,
                     style: TextStyle(
-                        overflow: TextOverflow.ellipsis, fontSize: toSize(17))),
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: toSize(17),
+                        color: Theme.of(context).colorScheme.onSecondary)),
               ),
               SizedBox(height: toSize(5)),
               Text(
                   "${_controller?.sampleData[index].minuteDuration}m ${_controller?.sampleData[index].secondDuration}s  -  ${_controller?.sampleData[index].recordingSize}mb",
-                  style: TextStyle(fontSize: toSize(15))),
+                  style: TextStyle(
+                      fontSize: toSize(15),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSecondary
+                          .withOpacity(0.8))),
             ],
           ),
           const Spacer(),
@@ -184,7 +194,7 @@ class _MedicalArchiveView
               height: toSize(24),
               width: toSize(24),
               child: Image.asset(IconAssets.icRecordingPlayButton,
-                  color: HexColor(Global.mColors["pink_1"].toString())))
+                  color: Theme.of(context).colorScheme.primary))
         ],
       ),
     );

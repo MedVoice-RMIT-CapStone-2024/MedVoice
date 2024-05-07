@@ -26,17 +26,24 @@ class MyAppThemes {
     fontFamily: 'Poppins',
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
+    hintColor: Colors.transparent,
     colorScheme: ColorScheme.light(
-      primary: HexColor(Global.mColors["blue_1"].toString()),
+      primary: HexColor(Global.mColors["pink_1"].toString()),
       onPrimary: Colors.white,
     ),
   );
 
   static final darkTheme = ThemeData(
-    primaryColor: MyAppColors.white, // Set primary color to white
-    primaryColorDark: Colors.white70, // Use a slightly darker shade of white
+    // primaryColor: HexColor(
+    //     Global.mColors['pink_1'].toString()), // Set primary color to white
+    // primaryColorDark: Colors.white70, // Use a slightly darker shade of white
     brightness: Brightness.dark,
+    primarySwatch: Colors.blue,
     scaffoldBackgroundColor: MyAppColors.darkBlue,
+    colorScheme: ColorScheme.dark(
+      primary: HexColor(Global.mColors["pink_1"].toString()),
+      onPrimary: Colors.white,
+    ),
   );
 
   static ThemeData getTheme(BuildContext context, ThemeMode themeMode) {
