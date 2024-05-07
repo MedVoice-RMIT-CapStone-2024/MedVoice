@@ -278,13 +278,12 @@ class _NurseProfileView
                     ),
                     Row(
                       children: [
-                        Text("Privacy Policy",
+                        Text("sDark / Light Mode",
                             style: TextStyle(
                                 color:
                                     Theme.of(context).colorScheme.onSecondary,
                                 fontSize: toSize(17))),
                         const Spacer(),
-
                         Switch(
                           value: isDarkMode,
                           onChanged: (isOn) {
@@ -293,19 +292,6 @@ class _NurseProfileView
                                 : toggleTheme(ThemeMode.light);
                           },
                         ),
-
-                        // RotatedBox(
-                        //   quarterTurns: 2,
-                        //   child: SizedBox(
-                        //     height: toSize(24),
-                        //     width: toSize(24),
-                        //     child: Image.asset(IconAssets.icBack,
-                        //         color: Theme.of(context)
-                        //             .colorScheme
-                        //             .onPrimary
-                        //             .withOpacity(0.3)),
-                        //   ),
-                        // )
                       ],
                     ),
                   ],

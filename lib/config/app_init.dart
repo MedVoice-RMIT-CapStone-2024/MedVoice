@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:med_voice/app/widgets/theme_data.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app/pages/onboarding/startup/startup_view.dart';
