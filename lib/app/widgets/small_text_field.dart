@@ -49,6 +49,11 @@ class SmallTextField extends StatelessWidget {
           TextFormField(
             onChanged: onChanged,
             obscureText: obscureText,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+              fontSize: toSize(15),
+              fontWeight: FontWeight.w500,
+            ),
             decoration: InputDecoration(
                 suffixIcon: Padding(
                   padding: EdgeInsets.only(right: toSize(8.0)),
