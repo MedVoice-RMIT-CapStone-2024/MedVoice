@@ -105,4 +105,8 @@ class Global {
         duration: 180,
         path: 'local_path'),
   ];
+
+  static bool isDisableHttpLogging = false;
+
+  static String bucketName = "medvoice_audio_bucket";
 }

@@ -3,20 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
-import '../../../../../domain/entities/recording_archive/recording_info.dart';
 import '../../../../utils/global.dart';
 import 'audio_playback_controller.dart';
 
 const recordingInfo = 'recordingInfo';
 
 class AudioPlaybackView extends clean.View {
-  final RecordingInfo recordingInfo;
+  final String recordingInfo;
   AudioPlaybackView({Key? key, required this.recordingInfo}) : super(key: key);
 
   @override
@@ -39,7 +37,7 @@ class _AudioPlaybackView
 
   @override
   String appBarTitle() {
-    return widget.recordingInfo.recordingTitle ?? "";
+    return widget.recordingInfo;
   }
 
   @override
@@ -64,21 +62,15 @@ class _AudioPlaybackView
                   height: toSize(300),
                   width: toSize(300),
                   child: Image.asset(ImageAssets.imgMedVoiceLogo)),
-              Text("${widget.recordingInfo.path}", textAlign: TextAlign.center),
+              Text(widget.recordingInfo, textAlign: TextAlign.center),
               SizedBox(height: toSize(58)),
               InkWell(
                 onTap: () {
                   if (!_controller.isPlaying) {
-                    _controller.player.setAudioSource(
-                        AudioSource.file(widget.recordingInfo.path ?? ""));
+                    _controller.player.setUrl(widget.recordingInfo);
                     _controller.player.play();
                   } else {
-                    if (_controller.player.duration?.inSeconds ==
-                        widget.recordingInfo.duration) {
                       _controller.player.stop();
-                    } else {
-                      _controller.player.pause();
-                    }
                   }
                   _controller.isPlaying = !_controller.isPlaying;
                   _controller.refreshUI();

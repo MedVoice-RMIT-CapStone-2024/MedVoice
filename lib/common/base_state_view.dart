@@ -199,7 +199,6 @@ abstract class BaseStateView<Page extends clean.View,
                         : null,
                     child: Scaffold(
                       key: globalKey,
-                      //resizeToAvoidBottomInset: !isMapView(),
                       backgroundColor: Colors.transparent,
                       appBar: (isInitialAppbar() &&
                               MediaQuery.of(context).orientation ==
@@ -438,7 +437,7 @@ abstract class BaseStateView<Page extends clean.View,
 
   @override
   void showGenericPopup() {
-    showPopupWithAction("Có lỗi xảy ra, vui lòng thử lại sau.", "Đồng ý");
+    showPopupWithAction("An error has occurred, please try again later.", "Okay");
   }
 
   void onGeneralError(e) {

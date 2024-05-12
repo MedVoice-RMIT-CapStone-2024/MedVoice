@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/base_controller.dart';
+import '../../../../data/network/constants.dart';
 
 typedef String? Validator(String? value);
 
 class SignInController extends BaseController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController webHookController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -49,11 +51,14 @@ class SignInController extends BaseController {
       // Extract values from controllers and handle submission logic here
       String email = emailController.text;
       String password = passwordController.text;
+      if (webHookController.text.isNotEmpty){
+        Constants.firstBitUrl = webHookController.text;
+      }
 
       // Perform form submission logic (e.g., API call, navigation, etc.)
       // This is where you handle the submitted data
-      print('Email: $email');
-      print('Email: $password');
+      debugPrint('Email: $email');
+      debugPrint('Email: $password');
       return true;
     }
     return false;

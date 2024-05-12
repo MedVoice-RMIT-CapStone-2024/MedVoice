@@ -6,6 +6,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
+import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
@@ -21,7 +22,7 @@ class RecordingView extends clean.View {
 }
 
 class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
-  _RecordingView() : super(RecordingController());
+  _RecordingView() : super(RecordingController(AudioRepositoryImpl()));
 
   RecordingController? recordingController;
 
