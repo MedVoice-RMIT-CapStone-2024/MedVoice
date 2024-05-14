@@ -73,6 +73,7 @@ dependencies:
   pretty_qr_code: ^3.3.0
   flutter_barcode_scanner: ^2.0.0
   password_strength_checker: ^1.2.3
+  flutter_pw_validator: ^1.6.0
  
 
 

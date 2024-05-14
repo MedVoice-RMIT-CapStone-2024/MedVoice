@@ -8,13 +8,14 @@ import 'package:med_voice/app/pages/onboarding/signup/info/info_controller.dart'
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/app/utils/pages.dart';
 import 'package:med_voice/app/widgets/custom_scaffold.dart';
+import 'package:med_voice/app/widgets/password_strength.dart';
 import 'package:med_voice/app/widgets/small_text_field.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
-import 'package:password_strength_checker/password_strength_checker.dart';
 
 class InfoView extends clean.View {
   InfoView({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _InfoView();
@@ -23,9 +24,6 @@ class InfoView extends clean.View {
 
 class _InfoView extends BaseStateView<InfoView, InfoController> {
   _InfoView() : super(InfoController());
-  bool obscureText = true;
-  bool success = false;
-  final passNotifier = ValueNotifier<PasswordStrength?>(null);
 
   @override
   bool isInitialAppbar() {
@@ -41,6 +39,7 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
   Widget body(BuildContext context, BaseController controller) {
     InfoController _controller = controller as InfoController;
     final Size size = MediaQuery.of(context).size;
+
     return CustomScaffold(
       link: ImageAssets.imgBg3,
       child: Form(
@@ -49,52 +48,58 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SmallTextField(
-                labelText: "EMAIL ADDRESS",
-                showIconButton: false,
-                validator: _controller.validateEmail,
-                controller: _controller.emailController),
-            SmallTextField(
-              labelText: "PASSWORD",
-              iconButton: IconButton(
-                icon: Icon(
-                  obscureText == true ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  setState(() {
-                    obscureText = !obscureText;
-                  });
-                },
-              ),
-              showIconButton: true,
-              validator: _controller.validatePassword,
-              controller: _controller.passwordController,
-              onChanged: (value) {
-                passNotifier.value = PasswordStrength.calculate(text: value);
+              labelText: "EMAIL ADDRESS",
+              showIconButton: false,
+              validator: _controller.validateEmail,
+              controller: _controller.emailController,
+            ),
+            ValueListenableBuilder<bool>(
+              valueListenable: _controller.obscureText,
+              builder: (context, obscureText, child) {
+                return SmallTextField(
+                  labelText: "PASSWORD",
+                  iconButton: IconButton(
+                    icon: Icon(
+                      obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: _controller.togglePasswordVisibility,
+                  ),
+                  showIconButton: true,
+                  validator: _controller.validatePassword,
+                  controller: _controller.passwordController,
+                  obscureText: obscureText,
+                  onChanged: _controller.updatePasswordStrength, // Add this
+                );
               },
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: toSize(30)),
-              child: PasswordStrengthChecker(
-                strength: passNotifier,
-              ),
+            ValueListenableBuilder<PasswordStrength>(
+              valueListenable: _controller.passwordStrengthNotifier,
+              builder: (context, strength, child) {
+                return PasswordStrengthIndicator(
+                  strength: strength.strength,
+                  strengthLabel: strength.strengthLabel,
+                );
+              },
             ),
-            SmallTextField(
-              labelText: "CONFIRM PASSWORD",
-              iconButton: IconButton(
-                icon: Icon(
-                  obscureText == true ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  setState(() {
-                    obscureText = !obscureText;
-                  });
-                },
-              ),
-              showIconButton: true,
-              validator: _controller.validateConfirmPassword,
-              controller: _controller.confirmPasswordController,
+            ValueListenableBuilder<bool>(
+              valueListenable: _controller.obscureText,
+              builder: (context, obscureText, child) {
+                return SmallTextField(
+                  labelText: "CONFIRM PASSWORD",
+                  iconButton: IconButton(
+                    icon: Icon(
+                      obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: _controller.togglePasswordVisibility,
+                  ),
+                  showIconButton: true,
+                  validator: _controller.validateConfirmPassword,
+                  controller: _controller.confirmPasswordController,
+                  obscureText: obscureText,
+                );
+              },
             ),
             Padding(
               padding: EdgeInsets.all(toSize(20)),

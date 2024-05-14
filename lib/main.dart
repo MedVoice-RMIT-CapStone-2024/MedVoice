@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart'; // Import your theme data
-import 'package:med_voice/app/widgets/theme_data.dart';
 import 'package:med_voice/restart_widget.dart';
 
 import 'config/app_config.dart';

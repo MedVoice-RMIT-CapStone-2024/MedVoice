@@ -106,7 +106,8 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             SmallTextField(
                               labelText: "DATE OF BIRTH",
                               iconButton: IconButton(
-                                icon: const Icon(Icons.calendar_today_outlined),
+                                icon: const Icon(Icons.calendar_today_outlined,
+                                    color: Colors.black),
                                 onPressed: () {
                                   showDatePicker(
                                     context: context,

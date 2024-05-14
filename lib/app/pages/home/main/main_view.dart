@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/pages/home/user_profile/nurse_note/nurse_note_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
 
 import '../../../../common/base_controller.dart';
@@ -44,6 +45,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
       const MedicalArchiveView(),
       RecordingView(),
       NurseProfileView(),
+      NurseNoteView()
     ];
   }
 
@@ -97,7 +99,8 @@ class _MainView extends BaseStateView<MainView, MainController> {
                           "Archive"),
                       _tab(
                           1, "assets/main_assets/ic_voice_recording", "Record"),
-                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile"),
+                      _tab(2, "assets/main_assets/ic_nurse_note", "Note"),
+                      _tab(3, "assets/main_assets/ic_nurse_profile", "Profile"),
                     ],
                   ),
                 ),
