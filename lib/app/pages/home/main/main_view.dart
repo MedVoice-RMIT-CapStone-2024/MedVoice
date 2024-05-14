@@ -44,8 +44,8 @@ class _MainView extends BaseStateView<MainView, MainController> {
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
       RecordingView(),
+      NurseNoteView(),
       NurseProfileView(),
-      NurseNoteView()
     ];
   }
 

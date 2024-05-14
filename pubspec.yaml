@@ -72,10 +72,6 @@ dependencies:
   qr_flutter: ^4.0.0
   pretty_qr_code: ^3.3.0
   flutter_barcode_scanner: ^2.0.0
-  password_strength_checker: ^1.2.3
-  flutter_pw_validator: ^1.6.0
- 
-
 
 dependency_overrides:
   package_info_plus: ^4.0.1
@@ -109,6 +105,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/main_assets/
+    - assets/json/nurse_note.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

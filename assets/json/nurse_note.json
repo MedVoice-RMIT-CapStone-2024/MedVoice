@@ -1,0 +1,26 @@
+{
+    "age": "32",
+    "gender": "Male",
+    "diagnosis": "hyperkinetic dysphonia",
+    "occupationStatus": "Researcher",
+    "vhiScore": "15",
+    "rsiScore": "5",
+    "smoker": "No",
+    "cigarettesPerDay": "NU",
+    "alcoholConsumption": "casual drinker",
+    "alcoholPerDay": "5",
+    "waterIntake": "1.5",
+    "carbonatedBeverages": "No",
+    "carbonatedPerDay": "NU",
+    "eatingHabit": "Eating Habit",
+    "coffee": "almost always",
+    "coffeePerDay": "NU",
+    "tomatoes": "sometimes",
+    "chocolate": "almost never",
+    "chocolatePerDay": "NU",
+    "softCheese": "sometimes",
+    "softCheesePerDay": "NU",
+    "citrusFruits": "sometimes",
+    "citrusPerDay": "NU"
+  }
+  
