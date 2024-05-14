@@ -278,7 +278,7 @@ class _NurseProfileView
                     ),
                     Row(
                       children: [
-                        Text("sDark / Light Mode",
+                        Text("Dark Mode",
                             style: TextStyle(
                                 color:
                                     Theme.of(context).colorScheme.onSecondary,

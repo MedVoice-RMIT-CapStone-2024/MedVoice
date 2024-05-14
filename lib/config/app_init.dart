@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
 import 'dart:async';
@@ -71,7 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'MedCare',
       darkTheme: ThemeData(
         useMaterial3: true,
-
+        brightness: Brightness.dark,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         // Define the default brightness and colors.
         colorScheme: ColorScheme.fromSeed(
@@ -83,12 +81,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           onSecondary: HexColor("#FEF9EC"),
           tertiary: HexColor("#0099CC"),
           onBackground: HexColor("#0D0221"),
-          // ···
           brightness: Brightness.dark,
         ),
-
-        // Define the default `TextTheme`. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
       ),
       theme: ThemeData(
         useMaterial3: true,
