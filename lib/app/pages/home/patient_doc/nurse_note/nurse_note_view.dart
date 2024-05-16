@@ -88,14 +88,14 @@ class _NurseNoteViewState
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(29),
                           ),
-                          trailing: Icon(Icons.arrow_forward_ios),
+                          trailing: Icon(Icons.arrow_forward_ios_outlined),
                           title: Text(
                             int.parse(item['id']) > 9
                                 ? "voice 0${item['id']}"
                                 : "voice 00${item['id']}",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSecondary,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w300,
                               fontSize: toSize(16),
                               fontFamily: 'Poppins',
                             ),

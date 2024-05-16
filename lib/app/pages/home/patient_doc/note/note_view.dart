@@ -141,7 +141,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController> {
         Text(
           label,
           style: _customTextStyle(
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onSecondary,
           ),
         ),

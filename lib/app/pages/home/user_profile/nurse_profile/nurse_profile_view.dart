@@ -216,27 +216,32 @@ class _NurseProfileView
                               .onPrimary
                               .withOpacity(0.1)),
                     ),
-                    Row(
-                      children: [
-                        Text("Terms of Service",
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                fontSize: toSize(17))),
-                        const Spacer(),
-                        RotatedBox(
-                          quarterTurns: 2,
-                          child: SizedBox(
-                            height: toSize(24),
-                            width: toSize(24),
-                            child: Image.asset(IconAssets.icBack,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimary
-                                    .withOpacity(0.3)),
-                          ),
-                        )
-                      ],
+                    InkWell(
+                      onTap: () {
+                        pushScreen(Pages.terms);
+                      },
+                      child: Row(
+                        children: [
+                          Text("Terms of Service",
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                  fontSize: toSize(17))),
+                          const Spacer(),
+                          RotatedBox(
+                            quarterTurns: 2,
+                            child: SizedBox(
+                              height: toSize(24),
+                              width: toSize(24),
+                              child: Image.asset(IconAssets.icBack,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary
+                                      .withOpacity(0.3)),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: toSize(8)),
