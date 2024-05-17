@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:med_voice/common/base_controller.dart';
 
-class TermsAndConditionsController extends BaseController {
+class PrivacyPolicyController extends BaseController {
   bool isShowStartButton = false;
   Timer? timer;
-  List<bool> isExpanded = [true, false, false];
+  List<bool> isExpanded = [false, false, false, false, false, false];
   @override
   void onResumed() {}
 
@@ -15,6 +15,5 @@ class TermsAndConditionsController extends BaseController {
   @override
   void firstLoad() {
     // startTimer();
-    isExpanded = [true, false, false];
   }
 }

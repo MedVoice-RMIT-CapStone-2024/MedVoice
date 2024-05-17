@@ -35,7 +35,7 @@ class _TermsAndConditionsView extends BaseStateView<TermsAndConditionsView,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Welcome to MedVoice Terms and Conditions! These terms and conditions list the rules and regulations for using the MedVoice application. By accessing this application, we understand that you accept these terms and conditions. Do not continue to use MedVoice if you do not agree to all of the terms and conditions stated on this page.',
             textAlign: TextAlign.justify,
           ),
@@ -43,11 +43,12 @@ class _TermsAndConditionsView extends BaseStateView<TermsAndConditionsView,
           ExpansionPanelList(
             expansionCallback: (int index, bool isExpanded) {
               setState(() {
-                _controller.isExpanded[index] = !isExpanded;
+                _controller.isExpanded[index] = isExpanded;
               });
             },
             children: [
               ExpansionPanel(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return Padding(
                     padding: EdgeInsets.all(16.0),
@@ -80,6 +81,7 @@ class _TermsAndConditionsView extends BaseStateView<TermsAndConditionsView,
                 ),
               ),
               ExpansionPanel(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return Padding(
                     padding: EdgeInsets.all(16.0),
@@ -117,6 +119,7 @@ class _TermsAndConditionsView extends BaseStateView<TermsAndConditionsView,
                 ),
               ),
               ExpansionPanel(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return Padding(
                     padding: EdgeInsets.all(16.0),

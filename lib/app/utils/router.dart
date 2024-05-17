@@ -1,6 +1,7 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
@@ -62,6 +63,8 @@ class AppRouter {
       case Pages.terms:
         return _buildRoute(settings, TermsAndConditionsView());
 
+      case Pages.privacy:
+        return _buildRoute(settings, PrivacyPolicyView());
       default:
         return null;
     }
