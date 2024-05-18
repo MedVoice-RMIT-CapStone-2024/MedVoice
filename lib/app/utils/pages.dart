@@ -11,4 +11,5 @@ class Pages {
   static const String myQR = '/myQR';
   static const String info = '/info';
   static const String audioPlayback = '/audioPlayback';
+  static const String demoTempTranscript = '/demoTempTranscript';
 }

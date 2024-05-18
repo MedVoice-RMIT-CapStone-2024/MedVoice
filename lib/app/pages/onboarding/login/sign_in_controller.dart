@@ -52,8 +52,8 @@ class SignInController extends BaseController {
 
       // Perform form submission logic (e.g., API call, navigation, etc.)
       // This is where you handle the submitted data
-      print('Email: $email');
-      print('Email: $password');
+      debugPrint('Email: $email');
+      debugPrint('Email: $password');
       return true;
     }
     return false;

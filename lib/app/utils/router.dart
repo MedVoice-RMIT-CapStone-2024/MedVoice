@@ -7,7 +7,8 @@ import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
-import '../../domain/entities/recording_archive/recording_info.dart';
+import '../../domain/entities/recording/audio_transcript_info.dart';
+import '../pages/home/recording_documentation/demo_temp_transcript/demo_temp_transcript_view.dart';
 import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
@@ -64,7 +65,13 @@ class AppRouter {
       case Pages.audioPlayback:
         Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
         return _buildRoute(settings, AudioPlaybackView(
-          recordingInfo: arguments[recordingInfo] as RecordingInfo,
+          recordingInfo: arguments[recordingInfo] as String,
+        ));
+
+      case Pages.demoTempTranscript:
+        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
+        return _buildRoute(settings, DemoTempTranscriptView(
+          audioTranscriptInfo: arguments[audioTranscriptInfo] as AudioTranscriptInfo,
         ));
 
       default:

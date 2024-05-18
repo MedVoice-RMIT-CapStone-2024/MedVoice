@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 pubspec.lock
+/assets/google_api_auth_key
 
 # Symbolication related
 app.*.symbols

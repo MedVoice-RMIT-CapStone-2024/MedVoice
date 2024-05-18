@@ -5,10 +5,10 @@ import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
+import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../../domain/entities/recording_archive/recording_info.dart';
 import '../../../utils/global.dart';
 import '../../../utils/pages.dart';
 import 'medical_archive_controller.dart';
@@ -24,7 +24,7 @@ class MedicalArchiveView extends clean.View {
 
 class _MedicalArchiveView
     extends BaseStateView<MedicalArchiveView, MedicalArchiveController> {
-  _MedicalArchiveView() : super(MedicalArchiveController());
+  _MedicalArchiveView() : super(MedicalArchiveController(AudioRepositoryImpl()));
   MedicalArchiveController? _controller;
   bool toggleDeleteLetter = false;
 
@@ -48,49 +48,51 @@ class _MedicalArchiveView
     return true;
   }
 
-  @override
-  List<Widget>? rightMenu() {
-    return [
-      Row(
-        children: [
-          InkWell(
-            onTap: () {
-              if (_controller != null) {
-                if (_controller!.resetToggle) {
-                  if (_controller!.handleDeleteItems()) {
-                    showPopupWithAction(
-                        'You sure you want to delete these files', 'Yes', () {
-                      _controller!.onDeleteRecordings();
-                      toggleDeleteLetter = !toggleDeleteLetter;
-                      _controller!.refreshUI();
-                    }, 'Deleting these files?', 'No');
-                  } else {
-                    _controller!.resetToggle = !_controller!.resetToggle;
-                    toggleDeleteLetter = !toggleDeleteLetter;
-                    _controller!.refreshUI();
-                  }
-                } else {
-                  _controller!.resetToggle = !_controller!.resetToggle;
-                  toggleDeleteLetter = !toggleDeleteLetter;
-                  _controller!.refreshUI();
-                }
-              }
-            },
-            child: (!toggleDeleteLetter)
-                ? Container(
-                    margin: EdgeInsets.only(right: toSize(20)),
-                    height: toSize(24),
-                    width: toSize(22),
-                    child: Image.asset(IconAssets.icDeleteBin))
-                : Container(
-                    margin: EdgeInsets.only(right: toSize(20)),
-                    child: const Text('Delete',
-                        style: TextStyle(color: Colors.red))),
-          ),
-        ],
-      )
-    ];
-  }
+  // TODO: Will re-implement it once the feature has an API
+
+  // @override
+  // List<Widget>? rightMenu() {
+  //   return [
+  //     Row(
+  //       children: [
+  //         InkWell(
+  //           onTap: () {
+  //             if (_controller != null) {
+  //               if (_controller!.resetToggle) {
+  //                 if (_controller!.handleDeleteItems()) {
+  //                   showPopupWithAction(
+  //                       'You sure you want to delete these files', 'Yes', () {
+  //                     _controller!.onDeleteRecordings();
+  //                     toggleDeleteLetter = !toggleDeleteLetter;
+  //                     _controller!.refreshUI();
+  //                   }, 'Deleting these files?', 'No');
+  //                 } else {
+  //                   _controller!.resetToggle = !_controller!.resetToggle;
+  //                   toggleDeleteLetter = !toggleDeleteLetter;
+  //                   _controller!.refreshUI();
+  //                 }
+  //               } else {
+  //                 _controller!.resetToggle = !_controller!.resetToggle;
+  //                 toggleDeleteLetter = !toggleDeleteLetter;
+  //                 _controller!.refreshUI();
+  //               }
+  //             }
+  //           },
+  //           child: (!toggleDeleteLetter)
+  //               ? Container(
+  //                   margin: EdgeInsets.only(right: toSize(20)),
+  //                   height: toSize(24),
+  //                   width: toSize(22),
+  //                   child: Image.asset(IconAssets.icDeleteBin))
+  //               : Container(
+  //                   margin: EdgeInsets.only(right: toSize(20)),
+  //                   child: const Text('Delete',
+  //                       style: TextStyle(color: Colors.red))),
+  //         ),
+  //       ],
+  //     )
+  //   ];
+  // }
 
   @override
   Widget body(BuildContext context, BaseController controller) {
@@ -100,7 +102,7 @@ class _MedicalArchiveView
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
         child:
-            (Global.sampleData.isNotEmpty) ? _recordList() : _emptyView(),
+            (_controller!.dataLinks != null) ? _recordList() : _emptyView(),
       ),
     );
   }
@@ -119,10 +121,10 @@ class _MedicalArchiveView
           height: toSize(500),
           child: ListView.separated(
             scrollDirection: Axis.vertical,
-            itemCount: Global.sampleData.length ?? 1,
+            itemCount: _controller!.mappedData.length,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return _recordItems(index, Global.sampleData.length ?? 1, Global.sampleData[index]);
+              return _recordItems(index, _controller!.mappedData.length, _controller!.mappedData[index]);
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10);
@@ -133,7 +135,7 @@ class _MedicalArchiveView
     );
   }
 
-  Widget _recordItems(int index, int length, RecordingInfo item) {
+  Widget _recordItems(int index, int length, DisplayArchive item) {
     return InkWell(
       onTap: (){
         pushScreen(Pages.audioPlayback, arguments: {recordingInfo: item});
@@ -170,14 +172,14 @@ class _MedicalArchiveView
                   width: (!_controller!.resetToggle)
                       ? MediaQuery.of(context).size.width * 0.7
                       : MediaQuery.of(context).size.width * 0.63,
-                  child: Text(Global.sampleData[index].recordingTitle ?? "",
+                  child: Text(item.patientName,
                       maxLines: 1,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis, fontSize: toSize(17))),
                 ),
                 SizedBox(height: toSize(5)),
                 Text(
-                    "${Global.sampleData[index].duration}s",
+                    item.dateCreated,
                     style: TextStyle(fontSize: toSize(15))),
               ],
             ),

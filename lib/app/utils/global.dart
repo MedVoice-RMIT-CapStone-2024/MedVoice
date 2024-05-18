@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 
+import '../../domain/entities/recording/recording_archive_info.dart';
 import '../../domain/entities/recording_archive/recording_info.dart';
 
 class Global {
@@ -105,4 +106,8 @@ class Global {
         duration: 180,
         path: 'local_path'),
   ];
+
+  static bool isDisableHttpLogging = false;
+
+  static String bucketName = "medvoice_audio_bucket";
 }
