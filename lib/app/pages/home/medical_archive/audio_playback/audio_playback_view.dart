@@ -50,7 +50,7 @@ class _AudioPlaybackView
   Widget body(BuildContext context, BaseController controller) {
     AudioPlaybackController _controller = controller as AudioPlaybackController;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -62,6 +62,7 @@ class _AudioPlaybackView
                   height: toSize(300),
                   width: toSize(300),
                   child: Image.asset(ImageAssets.imgMedVoiceLogo)),
+              SizedBox(height: toSize(10)),
               Text(widget.recordingInfo, textAlign: TextAlign.center),
               SizedBox(height: toSize(58)),
               InkWell(

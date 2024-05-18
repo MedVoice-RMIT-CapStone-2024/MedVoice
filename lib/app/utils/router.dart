@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
+import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
+import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
@@ -73,6 +75,12 @@ class AppRouter {
         return _buildRoute(settings, DemoTempTranscriptView(
           audioTranscriptInfo: arguments[audioTranscriptInfo] as AudioTranscriptInfo,
         ));
+
+      case Pages.terms:
+        return _buildRoute(settings, TermsAndConditionsView());
+
+      case Pages.privacy:
+        return _buildRoute(settings, PrivacyPolicyView());
 
       default:
         return null;

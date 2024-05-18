@@ -12,4 +12,6 @@ class Pages {
   static const String info = '/info';
   static const String audioPlayback = '/audioPlayback';
   static const String demoTempTranscript = '/demoTempTranscript';
+  static const String terms = '/termsAndConditions';
+  static const String privacy = '/privacyPolicy';
 }

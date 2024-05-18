@@ -169,6 +169,10 @@ abstract class BaseStateView<Page extends clean.View,
   }
 
   @override
+  ThemeMode getThemeMode() {
+    return ThemeMode.system;
+  }
+
   Widget get view =>
       clean.ControlledWidgetBuilder<controller>(builder: (context, controller) {
         Future.delayed(Duration(milliseconds: builderDelayTime()), () {
@@ -194,8 +198,8 @@ abstract class BaseStateView<Page extends clean.View,
                   child: Container(
                     decoration: (isShowBackground())
                         ? BoxDecoration(
-                            color:
-                                HexColor(Global.mColors['white_2'].toString()))
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          )
                         : null,
                     child: Scaffold(
                       key: globalKey,
@@ -204,15 +208,17 @@ abstract class BaseStateView<Page extends clean.View,
                               MediaQuery.of(context).orientation ==
                                   Orientation.portrait)
                           ? AppBar(
-                              backgroundColor: Colors.transparent,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               centerTitle: true,
                               title: Text(appBarTitle(),
                                   style: TextStyle(
                                       fontFamily: 'NunitoSans',
                                       fontSize: 18,
                                       fontWeight: FontWeight.w400,
-                                      color: HexColor(Global.mColors["black_5"]
-                                          .toString()))),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary)),
                               leading: !isHideBackButton()
                                   ? Padding(
                                       padding: const EdgeInsets.only(left: 25),

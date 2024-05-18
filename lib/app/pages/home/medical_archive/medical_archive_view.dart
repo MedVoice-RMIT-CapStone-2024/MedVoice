@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
@@ -98,7 +98,7 @@ class _MedicalArchiveView
   Widget body(BuildContext context, BaseController controller) {
     _controller = controller as MedicalArchiveController;
     return Scaffold(
-      backgroundColor: HexColor(Global.mColors["white_2"].toString()),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
         child:
@@ -112,10 +112,18 @@ class _MedicalArchiveView
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: toSize(25)),
-        Text("Voices Library", style: TextStyle(fontSize: toSize(30))),
+        Text(
+          "Voices Library",
+          style: TextStyle(
+            fontSize: toSize(30),
+            color: Theme.of(context).colorScheme.onSecondary,
+          ),
+        ),
         SizedBox(height: toSize(20)),
         Text("MedVoice's recorded files saved will appear here.",
-            style: TextStyle(fontSize: toSize(17))),
+            style: TextStyle(
+                fontSize: toSize(17),
+                color: Theme.of(context).colorScheme.onSecondary)),
         SizedBox(height: toSize(35)),
         SizedBox(
           height: toSize(500),
@@ -138,7 +146,7 @@ class _MedicalArchiveView
   Widget _recordItems(int index, int length, DisplayArchive item) {
     return InkWell(
       onTap: (){
-        pushScreen(Pages.audioPlayback, arguments: {recordingInfo: item});
+        pushScreen(Pages.audioPlayback, arguments: {recordingInfo: item.patientName});
       },
       child: Container(
         height: toSize(75),
@@ -175,12 +183,15 @@ class _MedicalArchiveView
                   child: Text(item.patientName,
                       maxLines: 1,
                       style: TextStyle(
-                          overflow: TextOverflow.ellipsis, fontSize: toSize(17))),
+                          overflow: TextOverflow.ellipsis, fontSize: toSize(17), color: Theme.of(context).colorScheme.onSecondary)),
                 ),
                 SizedBox(height: toSize(5)),
                 Text(
                     item.dateCreated,
-                    style: TextStyle(fontSize: toSize(15))),
+                    style: TextStyle(fontSize: toSize(15), color: Theme.of(context)
+                        .colorScheme
+                        .onSecondary
+                        .withOpacity(0.8))),
               ],
             ),
             const Spacer(),
@@ -188,7 +199,7 @@ class _MedicalArchiveView
                 height: toSize(24),
                 width: toSize(24),
                 child: Image.asset(IconAssets.icRecordingPlayButton,
-                    color: HexColor(Global.mColors["pink_1"].toString())))
+                    color: Theme.of(context).colorScheme.primary))
           ],
         ),
       ),

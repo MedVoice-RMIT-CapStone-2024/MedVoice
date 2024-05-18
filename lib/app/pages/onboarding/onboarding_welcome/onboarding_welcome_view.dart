@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../common/base_controller.dart';
@@ -11,7 +12,7 @@ import '../signup/sign_up_view.dart';
 import 'onboarding_welcome_controller.dart';
 
 class OnBoardingWelcomeView extends clean.View {
-  OnBoardingWelcomeView({Key? key}) : super(key: key);
+  const OnBoardingWelcomeView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -38,7 +39,7 @@ class _OnBoardingWelcomeView
     OnBoardingWelcomeController _controller =
         controller as OnBoardingWelcomeController;
     return Scaffold(
-      backgroundColor: HexColor(Global.mColors['white_2'].toString()),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SizedBox(
         width: double.infinity,
         child: Padding(
@@ -69,7 +70,12 @@ class _OnBoardingWelcomeView
                 },
               ),
               SizedBox(height: toSize(30)),
-              Text("MedVoice", style: TextStyle(fontSize: toSize(34))),
+              Text(
+                "MedVoice",
+                style: TextStyle(
+                    fontSize: toSize(34),
+                    color: Theme.of(context).colorScheme.onSecondary),
+              ),
               SizedBox(height: toSize(16)),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),

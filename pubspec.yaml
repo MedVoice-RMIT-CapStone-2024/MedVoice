@@ -117,6 +117,7 @@ flutter:
     - assets/images/
     - assets/main_assets/
     - assets/google_api_auth_key/
+    - assets/json/nurse_note.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

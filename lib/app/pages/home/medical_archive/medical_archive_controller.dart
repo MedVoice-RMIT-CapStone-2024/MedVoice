@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_presenter.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../domain/entities/recording/recording_archive_info.dart';
@@ -13,6 +14,8 @@ class MedicalArchiveController extends BaseController {
   bool resetToggle = false;
   bool toggleEmptyData = false;
   List<RecordingInfo> emptyDataTest = [];
+  ThemeMode themeMode = ThemeMode.system;
+  bool isDarkMode = false;
   List<String> dataReturn = [];
   RecordingArchiveInfo? dataLinks;
   List<DisplayArchive> mappedData = [];
@@ -24,6 +27,7 @@ class MedicalArchiveController extends BaseController {
   @override
   void firstLoad() {
     onLoadRecordingArchive();
+    isDarkMode = Theme.of(view.context).brightness == Brightness.dark;
   }
 
   @override
@@ -67,6 +71,11 @@ class MedicalArchiveController extends BaseController {
     } else {
       return false;
     }
+  }
+
+  void toggleTheme(ThemeMode themeMode) {
+    themeMode = themeMode;
+    refreshUI();
   }
 
   void onExtractInformation(RecordingArchiveInfo data) {

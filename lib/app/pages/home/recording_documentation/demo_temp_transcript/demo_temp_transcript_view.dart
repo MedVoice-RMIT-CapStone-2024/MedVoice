@@ -37,20 +37,20 @@ class _DemoTempTranscriptView extends BaseStateView<DemoTempTranscriptView, Demo
   Widget body(BuildContext context, BaseController controller) {
     DemoTempTranscriptController _controller = controller as DemoTempTranscriptController;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+          padding: EdgeInsets.fromLTRB(toSize(20), toSize(20), toSize(20), 0),
           child: Container(
             width: double.infinity,
             height: toSize(500),
             padding: EdgeInsets.all(toSize(20)),
             decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(toSize(10))
             ),
             child: Text(
-              _controller.transcript, style: const TextStyle(color: Colors.black),
+              _controller.transcript, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ),

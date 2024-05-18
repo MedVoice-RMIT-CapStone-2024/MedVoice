@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
@@ -51,8 +50,9 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
   @override
   Widget body(BuildContext context, BaseController controller) {
     recordingController = controller as RecordingController;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -60,7 +60,11 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text("Confidence level: ${recordingController!.confidenceLevel * 100}%"),
+            Text(
+                "Confidence level: ${recordingController!.confidenceLevel * 100}%",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                )),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
@@ -70,11 +74,17 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                     height: toSize(400),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.black.withOpacity(0.1)),
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     padding: EdgeInsets.symmetric(
                         horizontal: toSize(15), vertical: toSize(15)),
-                    child: Text(recordingController!.guideText)),
+                    child: Text(recordingController!.guideText,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            fontFamily: 'NunitoSans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: toSize(18)))),
               ),
             ),
             recordingController!.speechEnabled

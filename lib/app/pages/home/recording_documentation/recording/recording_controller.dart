@@ -3,6 +3,7 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:googleapis_auth/auth.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_presenter.dart';
 import 'package:med_voice/domain/entities/recording_archive/recording_info.dart';
@@ -47,6 +48,7 @@ class RecordingController extends BaseController {
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
+  ThemeMode themeMode = ThemeMode.system;
 
   RecordingController(audioRepository)
       : _presenter = RecordingPresenter(audioRepository) {
@@ -125,7 +127,7 @@ class RecordingController extends BaseController {
       if (await audioRecorder.hasPermission()) {
         if (isTheSameFile == false) {
           view.showSaveRecordingPopup(
-              'Enter the recording name', 'Save', 'Cancel', () {
+              'Enter the patient name', 'Save', 'Cancel', () {
             Navigator.pop(view.context);
             initializeSpeechLib();
           }, () {
