@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_controller.dart';
-import 'package:med_voice/app/pages/home/patient_doc/nurse_note/nurse_note_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';

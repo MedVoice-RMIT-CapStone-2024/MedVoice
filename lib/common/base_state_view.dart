@@ -8,6 +8,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../app/assets/icon_assets.dart';
 import '../app/utils/global.dart';
+import '../app/utils/module_utils.dart';
 import '../app/utils/router.dart';
 import '../app/widgets/confirm_view.dart';
 import 'base_controller.dart';
@@ -202,7 +203,6 @@ abstract class BaseStateView<Page extends clean.View,
                         : null,
                     child: Scaffold(
                       key: globalKey,
-                      //resizeToAvoidBottomInset: !isMapView(),
                       backgroundColor: Colors.transparent,
                       appBar: (isInitialAppbar() &&
                               MediaQuery.of(context).orientation ==
@@ -378,9 +378,72 @@ abstract class BaseStateView<Page extends clean.View,
         }).then((value) => {isShowPopupAction = false});
   }
 
+  void showSaveRecordingPopup(
+      String message,
+      String okButton,
+      String cancelButton,
+      VoidCallback okCallback,
+      VoidCallback cancelCallback,
+      TextEditingController saveNameController,
+      ) {
+    if (_isThereCurrentDialogShowing(context)) {
+      return;
+    }
+    isShowPopupAction = true;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(message),
+            content: TextField(
+              autofocus: true,
+              decoration: const InputDecoration(
+                  hintText: 'Enter your recording file name here'),
+              controller: saveNameController,
+            ),
+            actions: [
+              Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: cancelCallback,
+                        child: Container(
+                          height: toSize(32),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(6)),
+                            color: HexColor(Global.mColors['black_4'].toString())
+                              ),
+                          child: Center(
+                            child: Text(cancelButton),
+                          ),
+                        ),
+                      )),
+                  SizedBox(width: toSize(10)),
+                  Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: okCallback,
+                        child: Container(
+                          height: toSize(32),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(6)),
+                              color: HexColor(Global.mColors['pink_1'].toString())),
+                          child: Center(child: Text(okButton)),
+                        ),
+                      ))
+                ],
+              )
+            ],
+          );
+        }).then((value) => {isShowPopupAction = false});
+  }
+
   @override
   void showGenericPopup() {
-    showPopupWithAction("Có lỗi xảy ra, vui lòng thử lại sau.", "Đồng ý");
+    showPopupWithAction("An error has occurred, please try again later.", "Okay");
   }
 
   void onGeneralError(e) {
@@ -390,20 +453,4 @@ abstract class BaseStateView<Page extends clean.View,
       showErrorFromServer(e);
     }
   }
-
-  // void restartApp() {
-  //   RestartWidget.restartApp(context);
-  // }
-
-// void handleUnauthorizedError() {
-//   void _done() {
-//     SharedPreferencesHelper()
-//         .setStringValue(SharedData.USER_ACCESS_TOKEN.toString(), "");
-//     Global.mToken = "";
-//     pushScreen(Pages.onboardingHome, isAllowBack: false);
-//   }
-//
-//   showPopupWithAction(toText("popup401UnauthorizedLocationMessage"),
-//       toText("popup401UnauthorizedLocationRightButton"), _done);
-// }
 }
