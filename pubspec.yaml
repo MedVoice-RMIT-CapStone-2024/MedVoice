@@ -84,8 +84,7 @@ dependencies:
 
 dependency_overrides:
   package_info_plus: ^4.0.1
-  wakelock_windows: any
-  win32: any
+  win32: 4.1.4
 
 dev_dependencies:
   flutter_test:

@@ -59,6 +59,11 @@ class _NurseNoteViewState
   }
 
   @override
+  bool isHideBackButton() {
+    return true;
+  }
+
+  @override
   Widget body(BuildContext context, BaseController controller) {
     NurseNoteController _controller = controller as NurseNoteController;
 
