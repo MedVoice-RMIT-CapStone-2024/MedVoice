@@ -108,14 +108,6 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                       controller: _controller.passwordController,
                     ),
                     SizedBox(height: toSize(5)),
-                    SmallTextField(
-                      labelText: "WEBHOOK",
-                      hint: "https://81dd-14-191-64-80.ngrok-free.app/",
-                      validator: null,
-                      showIconButton: false,
-                      controller: _controller.webHookController,
-                    ),
-                    SizedBox(height: toSize(5)),
                     Padding(
                       padding: EdgeInsets.all(toSize(10)),
                       child: ElevatedButton(

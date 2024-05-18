@@ -156,7 +156,7 @@ class RecordingController extends BaseController {
         }
       }
       await audioRecorder.start(
-          path: '${dir?.path}/${recordingName.text.replaceAll(' ', '_')}.m4a');
+          path: '${dir?.path}/${recordingName.text.replaceAll(' ', '-')}.m4a');
       isStartingRecording = true;
       isTheSameFile = true;
     }
@@ -166,9 +166,9 @@ class RecordingController extends BaseController {
         recordDuration++;
       });
     });
-    tempName = recordingName.text.replaceAll(' ', '_');
+    tempName = recordingName.text.replaceAll(' ', '-');
     uploadRecordingRequest = UploadRecordingRequest(
-        '1', '${recordingName.text.replaceAll(' ', '_')}.m4a');
+        '1', '${recordingName.text.replaceAll(' ', '-')}.m4a');
 
     await speech!.listen(
       onResult: onSpeechResult,

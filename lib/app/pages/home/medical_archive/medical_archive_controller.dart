@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_presenter.dart';
 
 import '../../../../common/base_controller.dart';
@@ -16,6 +15,7 @@ class MedicalArchiveController extends BaseController {
   List<RecordingInfo> emptyDataTest = [];
   List<String> dataReturn = [];
   RecordingArchiveInfo? dataLinks;
+  List<DisplayArchive> mappedData = [];
 
   MedicalArchiveController(audioRepository) : _presenter = MedicalArchivePresenter(audioRepository) {
     onListener();
@@ -31,6 +31,9 @@ class MedicalArchiveController extends BaseController {
     _presenter.onLoadRecordingArchiveSucceed = (RecordingArchiveInfo response) {
       dataLinks = response;
       debugPrint("load archives info success");
+      if (dataLinks != null) {
+        onExtractInformation(dataLinks!);
+      }
       hideLoadingProgress();
     };
     _presenter.onLoadRecordingArchiveFailed = (e) {
@@ -66,6 +69,15 @@ class MedicalArchiveController extends BaseController {
     }
   }
 
+  void onExtractInformation(RecordingArchiveInfo data) {
+    DisplayArchive itemHolder;
+    for (int i = 0; i < data.mUrls.length; i++) {
+      itemHolder = extractFileNameAndDate(data.mUrls[i]);
+      mappedData.add(itemHolder);
+      debugPrint('name: ${mappedData[i].patientName}, date created: ${mappedData[i].dateCreated}');
+    }
+  }
+
   // void onDeleteRecordings() {
   //   List<RecordingInfo> itemsToKeep = [];
   //   for (var item in Global.sampleData) {
@@ -79,4 +91,44 @@ class MedicalArchiveController extends BaseController {
   //   resetToggle = !resetToggle;
   //   refreshUI();
   // }
+
+  DisplayArchive extractFileNameAndDate(String url) {
+    DisplayArchive extractedItem = DisplayArchive.buildDefault();
+
+    const pattern = r'https:\/\/storage\.googleapis\.com\/medvoice_audio_bucket\/audios\/(.*?)patient_(.*?)date_(.*?)fileID_(.*?)(?:\.mp3|\.m4a)';
+
+    final regExp = RegExp(pattern);
+
+    final match = regExp.firstMatch(url);
+
+    if (match != null) {
+      final fileName = match.group(1);
+      final dateCreated = match.group(2);
+      final audioId = match.group(3);
+      final userId = match.group(4);
+
+      return extractedItem = DisplayArchive(fileName!.replaceAll(RegExp(r'[-_]'), ' '), reformatDateString(dateCreated!), audioId!, userId!);
+    } else {
+      return extractedItem;
+    }
+  }
+
+  String reformatDateString(String dateString) {
+    DateTime dateTime = DateFormat('yyyy-MM-dd_HH-mm-ss').parse(dateString);
+
+    String formattedDate = DateFormat('d/M/yyyy, HH:mm').format(dateTime);
+
+    return formattedDate;
+  }
+}
+
+class DisplayArchive {
+  String patientName = '';
+  String dateCreated = '';
+  String audioId = '';
+  String userId = '';
+
+  DisplayArchive(this.patientName, this.dateCreated, this.audioId, this.userId);
+
+  DisplayArchive.buildDefault();
 }
