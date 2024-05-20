@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:med_voice/app/pages/home/recording_documentation/demo_temp_transcript/demo_temp_transcript_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/domain/entities/recording/audio_transcript_info.dart';
@@ -47,10 +48,10 @@ class _DemoTempTranscriptView extends BaseStateView<DemoTempTranscriptView, Demo
             padding: EdgeInsets.all(toSize(20)),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(toSize(10))
-            ),
+                borderRadius: BorderRadius.circular(toSize(10))),
             child: Text(
-              _controller.transcript, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              _controller.transcript,
+              style: const TextStyle(color: Colors.black),
             ),
           ),
         ),

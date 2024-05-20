@@ -9,7 +9,7 @@ import '../../../../domain/entities/recording_archive/recording_info.dart';
 import '../../../utils/global.dart';
 
 class MedicalArchiveController extends BaseController {
-  MedicalArchivePresenter _presenter;
+  final MedicalArchivePresenter _presenter;
   int currentTabIndex = 0;
   bool resetToggle = false;
   bool toggleEmptyData = false;
@@ -19,8 +19,10 @@ class MedicalArchiveController extends BaseController {
   List<String> dataReturn = [];
   RecordingArchiveInfo? dataLinks;
   List<DisplayArchive> mappedData = [];
+  List<GroupedDate> filteredMappedData = [];
 
-  MedicalArchiveController(audioRepository) : _presenter = MedicalArchivePresenter(audioRepository) {
+  MedicalArchiveController(audioRepository)
+      : _presenter = MedicalArchivePresenter(audioRepository) {
     onListener();
   }
 
@@ -85,21 +87,35 @@ class MedicalArchiveController extends BaseController {
       mappedData.add(itemHolder);
       debugPrint('name: ${mappedData[i].patientName}, date created: ${mappedData[i].dateCreated}');
     }
+
+    filteredMappedData = onGroupDatesFilter(mappedData);
   }
 
-  // void onDeleteRecordings() {
-  //   List<RecordingInfo> itemsToKeep = [];
-  //   for (var item in Global.sampleData) {
-  //     if (!item.isToggle!) {
-  //       itemsToKeep.add(item);
-  //     } else {
-  //       onDelete(item);
-  //     }
-  //   }
-  //   Global.sampleData = List.from(itemsToKeep);
-  //   resetToggle = !resetToggle;
-  //   refreshUI();
-  // }
+  List<GroupedDate> onGroupDatesFilter(List<DisplayArchive> data) {
+    final DateFormat inputFormat = DateFormat('d/M/yyyy, HH:mm:ss');
+    final DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+    final Map<String, List<DisplayArchive>> groupedMap = {};
+
+    for (var archive in data) {
+      try {
+        final DateTime parsedDate = inputFormat.parse(archive.dateCreated);
+        final String date = outputFormat.format(parsedDate);
+
+        if (groupedMap.containsKey(date)) {
+          groupedMap[date]!.add(archive);
+        } else {
+          groupedMap[date] = [archive];
+        }
+      } catch (e) {
+        debugPrint('Error parsing date for archive: ${archive.dateCreated}');
+      }
+    }
+
+    final sortedEntries = groupedMap.entries.toList()
+      ..sort((a, b) => outputFormat.parse(b.key).compareTo(outputFormat.parse(a.key)));
+
+    return sortedEntries.map((entry) => GroupedDate(entry.key, entry.value)).toList();
+  }
 
   DisplayArchive extractFileNameAndDate(String url) {
     DisplayArchive extractedItem = DisplayArchive.buildDefault();
@@ -116,18 +132,56 @@ class MedicalArchiveController extends BaseController {
       final audioId = match.group(3);
       final userId = match.group(4);
 
-      return extractedItem = DisplayArchive(fileName!.replaceAll(RegExp(r'[-_]'), ' '), reformatDateString(dateCreated!), audioId!, userId!);
+      return extractedItem = DisplayArchive(
+          fileName!.replaceAll(RegExp(r'[-_]'), ' '),
+          reformatDateString(dateCreated!, false, false),
+          audioId!,
+          userId!);
     } else {
       return extractedItem;
     }
   }
 
-  String reformatDateString(String dateString) {
-    DateTime dateTime = DateFormat('yyyy-MM-dd_HH-mm-ss').parse(dateString);
+  String reformatDateString(
+      String dateString, bool isForUIDate, bool isForRecordingDate) {
+    DateTime dateTime;
+    String formattedDate;
 
-    String formattedDate = DateFormat('d/M/yyyy, HH:mm').format(dateTime);
-
+    if (!isForUIDate) {
+      dateTime = DateFormat('yyyy-MM-dd_HH-mm-ss').parse(dateString);
+      formattedDate = DateFormat('d/M/yyyy, HH:mm:ss').format(dateTime);
+    } else if (isForRecordingDate) {
+      dateTime = DateFormat('d/M/yyyy, HH:mm:ss').parse(dateString);
+      formattedDate = DateFormat('HH:mm:ss').format(dateTime);
+    } else {
+      dateTime = DateFormat('yyyy-MM-dd').parse(dateString);
+      formattedDate = DateFormat('d/M/yyyy').format(dateTime);
+    }
     return formattedDate;
+  }
+
+  int getItemCount(List<GroupedDate> groupedData) {
+    int itemCount = 0;
+    for (var group in groupedData) {
+      itemCount++;
+      itemCount += group.items!.length;
+    }
+    return itemCount;
+  }
+
+  dynamic getItem(List<GroupedDate> groupedData, int index) {
+    int currentIndex = 0;
+    for (var group in groupedData) {
+      if (currentIndex == index) {
+        return group.date;
+      }
+      currentIndex++;
+      if (index < currentIndex + group.items!.length) {
+        return group.items![index - currentIndex];
+      }
+      currentIndex += group.items!.length;
+    }
+    return null;
   }
 }
 
@@ -140,4 +194,13 @@ class DisplayArchive {
   DisplayArchive(this.patientName, this.dateCreated, this.audioId, this.userId);
 
   DisplayArchive.buildDefault();
+}
+
+class GroupedDate {
+  String date = '';
+  List<DisplayArchive>? items;
+
+  GroupedDate(this.date, this.items);
+
+  GroupedDate.buildDefault();
 }
