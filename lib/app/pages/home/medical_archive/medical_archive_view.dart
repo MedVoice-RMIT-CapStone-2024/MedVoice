@@ -9,7 +9,6 @@ import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../utils/global.dart';
 import '../../../utils/pages.dart';
 import 'medical_archive_controller.dart';
 
@@ -27,16 +26,17 @@ class _MedicalArchiveView
   _MedicalArchiveView()
       : super(MedicalArchiveController(AudioRepositoryImpl()));
   MedicalArchiveController? _controller;
+  Map<String, bool> expandedTiles = {};
   bool toggleDeleteLetter = false;
 
   @override
   bool isInitialAppbar() {
-    return true;
+    return false;
   }
 
   @override
   String appBarTitle() {
-    return "Your library";
+    return "";
   }
 
   @override
@@ -50,40 +50,79 @@ class _MedicalArchiveView
   }
 
   @override
+  void onStateCreated() {
+    if (_controller != null) {
+      for (var group in _controller!.filteredMappedData) {
+        expandedTiles[group.date] = false;
+      }
+    }
+  }
+
+  @override
   Widget body(BuildContext context, BaseController controller) {
     _controller = controller as MedicalArchiveController;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-        child: (_controller!.dataLinks != null) ? _recordList() : _emptyView(),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+          child: (_controller!.dataLinks != null) ? _recordContent() : _emptyView(),
+        ),
       ),
     );
   }
 
-  Column _recordList() {
+  Widget _recordContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: toSize(25)),
+        SizedBox(height: toSize(38)),
         Text(
           "Voices Library",
           style: TextStyle(
-            fontSize: toSize(30),
+            fontSize: toSize(40),
             color: Theme.of(context).colorScheme.onSecondary,
+            fontWeight: FontWeight.w700
           ),
         ),
         SizedBox(height: toSize(15)),
-        Text("MedVoice's recorded files saved will appear here.",
+        Text("Your recordings and transcripts will appear here.",
             style: TextStyle(
                 fontSize: toSize(17),
                 color: Theme.of(context).colorScheme.onSecondary)),
         SizedBox(height: toSize(20)),
         SizedBox(
-            height: MediaQuery.of(context).size.height * 0.68,
-            child: _listViewWithGroupedItems(
-                _controller!, _controller!.filteredMappedData))
+            height: MediaQuery.of(context).size.height * 0.65,
+            child: _listViewWithGroupedItems(_controller!.filteredMappedData)
+        )
       ],
+    );
+  }
+
+  Widget _listViewWithGroupedItems(List<GroupedDate> filteredMappedData) {
+    return ListView.builder(
+      itemCount: filteredMappedData.length,
+      itemBuilder: (context, index) {
+        return _dateListContent(filteredMappedData, index);
+      },
+    );
+  }
+
+  Widget _dateListContent(List<GroupedDate> filteredMappedData, int index) {
+    return ExpansionTile(
+      key: PageStorageKey<String>(filteredMappedData[index].date),
+      tilePadding: EdgeInsets.symmetric(horizontal: toSize(5)),
+      visualDensity: VisualDensity.compact,
+      initiallyExpanded: expandedTiles[filteredMappedData[index].date] ?? false,
+      onExpansionChanged: (bool expanded) {
+        onExpansionChanged(filteredMappedData[index].date, expanded);
+      },
+      title: _dateTitle(filteredMappedData[index].date),
+      children: filteredMappedData[index].items!.map((item) {
+        return ListTile(
+          title: _recordItems(item),
+        );
+      }).toList(),
     );
   }
 
@@ -94,7 +133,7 @@ class _MedicalArchiveView
           : item,
       style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: toSize(30),
+          fontSize: toSize(18),
           color: Theme.of(context).colorScheme.onSecondary),
     );
   }
@@ -106,9 +145,9 @@ class _MedicalArchiveView
             arguments: {recordingInfo: item.patientName});
       },
       child: Container(
-        height: toSize(75),
-        padding: EdgeInsets.symmetric(vertical: toSize(12)),
-        margin: EdgeInsets.only(left: toSize(10)),
+        height: toSize(70),
+        padding: EdgeInsets.symmetric(vertical: toSize(10)),
+        margin: EdgeInsets.only(left: toSize(0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,23 +158,17 @@ class _MedicalArchiveView
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: (!_controller!.resetToggle)
-                      ? MediaQuery.of(context).size.width * 0.7
-                      : MediaQuery.of(context).size.width * 0.63,
-                  child: Text(item.patientName,
-                      maxLines: 1,
-                      style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: toSize(17),
-                          color: Theme.of(context).colorScheme.onSecondary)),
-                ),
-                SizedBox(height: toSize(5)),
-                Text(
-                    _controller!
-                        .reformatDateString(item.dateCreated, true, true),
+                Text(item.patientName,
+                    maxLines: 1,
                     style: TextStyle(
-                        fontSize: toSize(15),
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: toSize(16),
+                        color: Theme.of(context).colorScheme.onSecondary)),
+                const Spacer(),
+                Text(
+                    _controller!.reformatDateString(item.dateCreated, true, true),
+                    style: TextStyle(
+                        fontSize: toSize(14),
                         color: Theme.of(context)
                             .colorScheme
                             .onSecondary
@@ -143,11 +176,20 @@ class _MedicalArchiveView
               ],
             ),
             const Spacer(),
-            SizedBox(
-                height: toSize(24),
-                width: toSize(24),
-                child: Image.asset(IconAssets.icRecordingPlayButton,
-                    color: Theme.of(context).colorScheme.primary))
+            Center(
+              child: RotatedBox(
+                quarterTurns: 2,
+                child: SizedBox(
+                  height: toSize(14),
+                  width: toSize(14),
+                  child: Image.asset(IconAssets.icBack,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.5)),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -177,19 +219,9 @@ class _MedicalArchiveView
     );
   }
 
-  Widget _listViewWithGroupedItems(MedicalArchiveController controller,
-      List<GroupedDate> filteredMappedData) {
-    return ListView.builder(
-      itemCount: controller.getItemCount(filteredMappedData),
-      itemBuilder: (context, index) {
-        final item = controller.getItem(filteredMappedData, index);
-        if (item is String) {
-          return _dateTitle(item);
-        } else if (item is DisplayArchive) {
-          return _recordItems(item);
-        }
-        return _emptyView();
-      },
-    );
+  void onExpansionChanged(String date, bool expanded) {
+    setState(() {
+      expandedTiles[date] = expanded;
+    });
   }
 }

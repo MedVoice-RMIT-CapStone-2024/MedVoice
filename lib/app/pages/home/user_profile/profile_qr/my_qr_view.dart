@@ -139,28 +139,25 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
               ),
             ]),
           ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  controller.scanQRCode();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      HexColor(Global.mColors['pink_2'].toString()),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: ElevatedButton(
+              onPressed: () {
+                controller.scanQRCode();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    HexColor(Global.mColors['pink_2'].toString()),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  "Scan QR Code",
-                  style: TextStyle(
-                    color: HexColor("#0D0221"),
-                    fontSize: toSize(18),
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              child: Text(
+                "Scan QR Code",
+                style: TextStyle(
+                  color: HexColor("#0D0221"),
+                  fontSize: toSize(18),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

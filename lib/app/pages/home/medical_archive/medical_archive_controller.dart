@@ -9,7 +9,7 @@ import '../../../../domain/entities/recording_archive/recording_info.dart';
 import '../../../utils/global.dart';
 
 class MedicalArchiveController extends BaseController {
-  MedicalArchivePresenter _presenter;
+  final MedicalArchivePresenter _presenter;
   int currentTabIndex = 0;
   bool resetToggle = false;
   bool toggleEmptyData = false;
@@ -21,7 +21,8 @@ class MedicalArchiveController extends BaseController {
   List<DisplayArchive> mappedData = [];
   List<GroupedDate> filteredMappedData = [];
 
-  MedicalArchiveController(audioRepository) : _presenter = MedicalArchivePresenter(audioRepository) {
+  MedicalArchiveController(audioRepository)
+      : _presenter = MedicalArchivePresenter(audioRepository) {
     onListener();
   }
 
@@ -91,7 +92,7 @@ class MedicalArchiveController extends BaseController {
   }
 
   List<GroupedDate> onGroupDatesFilter(List<DisplayArchive> data) {
-    final DateFormat inputFormat = DateFormat('d/M/yyyy, HH:mm');
+    final DateFormat inputFormat = DateFormat('d/M/yyyy, HH:mm:ss');
     final DateFormat outputFormat = DateFormat('yyyy-MM-dd');
     final Map<String, List<DisplayArchive>> groupedMap = {};
 
@@ -131,22 +132,27 @@ class MedicalArchiveController extends BaseController {
       final audioId = match.group(3);
       final userId = match.group(4);
 
-      return extractedItem = DisplayArchive(fileName!.replaceAll(RegExp(r'[-_]'), ' '), reformatDateString(dateCreated!, false, false), audioId!, userId!);
+      return extractedItem = DisplayArchive(
+          fileName!.replaceAll(RegExp(r'[-_]'), ' '),
+          reformatDateString(dateCreated!, false, false),
+          audioId!,
+          userId!);
     } else {
       return extractedItem;
     }
   }
 
-  String reformatDateString(String dateString, bool isForUIDate, bool isForRecordingDate) {
+  String reformatDateString(
+      String dateString, bool isForUIDate, bool isForRecordingDate) {
     DateTime dateTime;
     String formattedDate;
 
-    if (!isForUIDate){
+    if (!isForUIDate) {
       dateTime = DateFormat('yyyy-MM-dd_HH-mm-ss').parse(dateString);
-      formattedDate = DateFormat('d/M/yyyy, HH:mm').format(dateTime);
+      formattedDate = DateFormat('d/M/yyyy, HH:mm:ss').format(dateTime);
     } else if (isForRecordingDate) {
-      dateTime = DateFormat('d/M/yyyy, HH:mm').parse(dateString);
-      formattedDate = DateFormat('d/M/yyyy').format(dateTime);
+      dateTime = DateFormat('d/M/yyyy, HH:mm:ss').parse(dateString);
+      formattedDate = DateFormat('HH:mm:ss').format(dateTime);
     } else {
       dateTime = DateFormat('yyyy-MM-dd').parse(dateString);
       formattedDate = DateFormat('d/M/yyyy').format(dateTime);
