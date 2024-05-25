@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
+import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
+import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
@@ -81,6 +83,13 @@ class AppRouter {
 
       case Pages.privacy:
         return _buildRoute(settings, PrivacyPolicyView());
+
+      case Pages.noteArchiveDetails:
+        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
+        return _buildRoute(settings, NoteView(
+          groupDateInfo: arguments[groupDateInfo] as DisplayArchive,
+          audioLink: arguments[audioLink] as String,
+        ));
 
       default:
         return null;

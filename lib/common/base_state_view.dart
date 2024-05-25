@@ -398,7 +398,7 @@ abstract class BaseStateView<Page extends clean.View,
             content: TextField(
               autofocus: true,
               decoration: const InputDecoration(
-                  hintText: 'Enter your recording file name here'),
+                  hintText: 'Enter your patient name here'),
               controller: saveNameController,
             ),
             actions: [

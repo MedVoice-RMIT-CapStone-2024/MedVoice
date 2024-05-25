@@ -14,4 +14,5 @@ class Pages {
   static const String demoTempTranscript = '/demoTempTranscript';
   static const String terms = '/termsAndConditions';
   static const String privacy = '/privacyPolicy';
+  static const String noteArchiveDetails = '/note';
 }

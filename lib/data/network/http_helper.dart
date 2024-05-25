@@ -12,7 +12,6 @@ import '../exceptions/authentication_exception.dart';
 import 'constants.dart';
 
 class HttpHelper {
-
   /// Invokes an `http` request given.
   /// [url] can either be a `string` or a `Uri`.
   /// The [type] can be any of the [RequestType]s.
@@ -24,7 +23,9 @@ class HttpHelper {
     http.Response response;
     Map<String, dynamic>? responseBody;
     try {
-      response = await _invoke(url, type,
+      response = await _invoke(
+        url,
+        type,
         headers: getHeaders(headers, url),
         body: body,
       );
@@ -47,7 +48,9 @@ class HttpHelper {
     http.Response response;
     List<dynamic>? responseBody;
     try {
-      response = await _invoke(url, type,
+      response = await _invoke(
+        url,
+        type,
         headers: getHeaders(headers, url),
         body: body,
       );
@@ -74,12 +77,17 @@ class HttpHelper {
     try {
       List<http.MultipartFile> files = [];
       for (var path in filePaths) {
-        http.MultipartFile multipartFile =
-        await http.MultipartFile.fromPath('files', path.replaceAll('file://', ''), contentType: MediaType("audio", "mpeg"));
+        http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+            'files', path.replaceAll('file://', ''),
+            contentType: MediaType("audio", "mpeg"));
         files.add(multipartFile);
-        debugPrint("MULTIPARTFILE:  files${path.replaceAll('file://', '')}${files[0].contentType}");
+        debugPrint(
+            "MULTIPARTFILE:  files${path.replaceAll('file://', '')}${files[0].contentType}");
       }
-      response = await _invokeFile(url, type, files,
+      response = await _invokeFile(
+        url,
+        type,
+        files,
         headers: getHeadersUploadFile(headers),
         body: body,
       );
@@ -107,10 +115,13 @@ class HttpHelper {
       http.MultipartFile files;
 
       http.MultipartFile multipartFile =
-      await http.MultipartFile.fromPath('files', filePaths);
+          await http.MultipartFile.fromPath('files', filePaths);
       files = multipartFile;
 
-      response = await _invokeSingleFile(url, type, files,
+      response = await _invokeSingleFile(
+        url,
+        type,
+        files,
         headers: getHeadersUploadFile(headers),
         body: body,
       );
@@ -122,7 +133,8 @@ class HttpHelper {
     return responseBody;
   }
 
-  static Map<String, String> getHeaders(Map<String, String>? headers, dynamic url) {
+  static Map<String, String> getHeaders(
+      Map<String, String>? headers, dynamic url) {
     Map<String, String>? customizeHeaders;
     if (headers != null) {
       customizeHeaders = headers;
@@ -163,8 +175,7 @@ class HttpHelper {
     http.Response response;
     List<dynamic> responseBody;
     try {
-      response = await _invoke(url, type,
-          headers: headers, body: body);
+      response = await _invoke(url, type, headers: headers, body: body);
     } on SocketException {
       rethrow;
     }
@@ -182,11 +193,9 @@ class HttpHelper {
       debugPrint("Http: Request Method: ${type.name.toUpperCase()}");
       debugPrint("Http: Request Header: ${headers.toString()}");
       debugPrint(
-          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(
-              DateTime.now())}");
+          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
       debugPrint(
-          "Http: Request body: ${body == null ? "EMPTY" : body
-              .toString()}");
+          "Http: Request body: ${body == null ? "EMPTY" : body.toString()}");
       debugPrint("Http: >>>>");
     }
     http.Response response;
@@ -197,12 +206,10 @@ class HttpHelper {
           response = await http.get(url, headers: headers);
           break;
         case RequestType.post:
-          response = await http.post(url,
-              headers: headers, body: body);
+          response = await http.post(url, headers: headers, body: body);
           break;
         case RequestType.put:
-          response = await http.put(url,
-              headers: headers, body: body);
+          response = await http.put(url, headers: headers, body: body);
           break;
         case RequestType.delete:
           response = await http.delete(url, headers: headers);
@@ -212,11 +219,9 @@ class HttpHelper {
         debugPrint("Http: <<<<");
         debugPrint("Http: Response for Url: ${response.statusCode} - $url");
         debugPrint(
-            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss")
-                .format(DateTime.now())}");
+            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
         debugPrint(
-            "Http: Response: ${response.body.isEmpty ? "EMPTY" : response
-                .body.toString()}");
+            "Http: Response: ${response.body.isEmpty ? "EMPTY" : const JsonEncoder.withIndent(' ').convert(jsonDecode(response.body.toString()))}");
         debugPrint("Http: <<<<");
       }
       // check for any errors
@@ -272,11 +277,9 @@ class HttpHelper {
       debugPrint("Http: Request Method: ${type.name.toUpperCase()}");
       debugPrint("Http: Request Header: ${headers.toString()}");
       debugPrint(
-          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(
-              DateTime.now())}");
+          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
       debugPrint(
-          "Http: Request body: ${body == null ? "EMPTY" : body
-              .toString()}");
+          "Http: Request body: ${body == null ? "EMPTY" : body.toString()}");
       debugPrint("Http: >>>>");
     }
 
@@ -284,7 +287,7 @@ class HttpHelper {
 
     try {
       http.MultipartRequest request =
-      http.MultipartRequest(type.name.toUpperCase(), url);
+          http.MultipartRequest(type.name.toUpperCase(), url);
       if (headers != null) {
         request.headers.addAll(headers);
       }
@@ -296,11 +299,9 @@ class HttpHelper {
         debugPrint("Http: <<<<");
         debugPrint("Http: Response for Url: ${response.statusCode} - $url");
         debugPrint(
-            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss")
-                .format(DateTime.now())}");
+            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
         debugPrint(
-            "Http: Response: ${response.body.isEmpty ? "EMPTY" : response
-                .body.toString()}");
+            "Http: Response: ${response.body.isEmpty ? "EMPTY" : const JsonEncoder.withIndent(' ').convert(jsonDecode(response.body.toString()))}");
         debugPrint("Http: <<<<");
       }
       // check for any errors
@@ -357,11 +358,9 @@ class HttpHelper {
       debugPrint("Http: Request Method: ${type.name.toUpperCase()}");
       debugPrint("Http: Request Header: ${headers.toString()}");
       debugPrint(
-          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(
-              DateTime.now())}");
+          "Http: Request Time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
       debugPrint(
-          "Http: Request body: ${body == null ? "EMPTY" : body
-              .toString()}");
+          "Http: Request body: ${body == null ? "EMPTY" : body.toString()}");
       debugPrint("Http: >>>>");
     }
 
@@ -369,7 +368,7 @@ class HttpHelper {
 
     try {
       http.MultipartRequest request =
-      http.MultipartRequest(type.name.toUpperCase(), url);
+          http.MultipartRequest(type.name.toUpperCase(), url);
       if (headers != null) {
         request.headers.addAll(headers);
       }
@@ -381,11 +380,9 @@ class HttpHelper {
         debugPrint("Http: <<<<");
         debugPrint("Http: Response for Url: ${response.statusCode} - $url");
         debugPrint(
-            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss")
-                .format(DateTime.now())}");
+            "Http: Response time: ${DateFormat("dd MMMM yyyy HH:mm:ss").format(DateTime.now())}");
         debugPrint(
-            "Http: Response: ${response.body.isEmpty ? "EMPTY" : response
-                .body.toString()}");
+            "Http: Response: ${response.body.isEmpty ? "EMPTY" : const JsonEncoder.withIndent(' ').convert(jsonDecode(response.body.toString()))}");
         debugPrint("Http: <<<<");
       }
       // check for any errors

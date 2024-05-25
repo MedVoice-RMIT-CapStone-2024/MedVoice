@@ -5,12 +5,26 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/storage/v1.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:med_voice/data/network/http_helper.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_info.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_response.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/medical_diagnosis_info.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/medical_treatment_response.dart';
 import 'package:med_voice/domain/entities/recording/sentences_info.dart';
 import 'package:med_voice/domain/entities/recording/upload_recording_request.dart';
 import 'package:med_voice/domain/repositories/audio_repository/audio_repository.dart';
 
 import '../../domain/entities/recording/audio_transcript_info.dart';
 import '../../domain/entities/recording/audio_transcript_response.dart';
+import '../../domain/entities/recording/library_transcript/get_library_transcript_json_info.dart';
+import '../../domain/entities/recording/library_transcript/get_library_transcript_json_response.dart';
+import '../../domain/entities/recording/library_transcript/get_library_transcript_request.dart';
+import '../../domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
+import '../../domain/entities/recording/library_transcript/get_library_transcript_text_response.dart';
+import '../../domain/entities/recording/library_transcript/library_transcript_info.dart';
+import '../../domain/entities/recording/library_transcript/library_transcript_response.dart';
+import '../../domain/entities/recording/library_transcript/medical_diagnosis_response.dart';
+import '../../domain/entities/recording/library_transcript/medical_treatment_info.dart';
+import '../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
 import '../../domain/entities/recording/recording_archive_info.dart';
 import '../../domain/entities/recording/recording_archive_response.dart';
@@ -121,5 +135,127 @@ class AudioRepositoryImpl implements AudioRepository {
         arrAudioTranscriptResponse.fileId ??= "", listSentences);
 
     return arrAudioTranscriptInfo;
+  }
+
+  @override
+  Future<LibraryTranscriptInfo> uploadLibraryTranscript(
+      PostTranscriptRequest request) async {
+    LibraryTranscriptInfo libraryTranscriptInfo;
+    LibraryTranscriptResponse libraryTranscriptResponse;
+    Map<String, dynamic>? body;
+
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(Constants.uploadLibraryTranscript
+              .replaceAll('{file_id}', request.fileId ?? "")),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(request.toJson()));
+    } catch (error) {
+      debugPrint("Fail to post library transcript $error");
+      rethrow;
+    }
+    if (body == null) return LibraryTranscriptInfo.buildDefault();
+    libraryTranscriptResponse = LibraryTranscriptResponse.fromJson(body);
+    libraryTranscriptInfo = LibraryTranscriptInfo(
+        libraryTranscriptResponse.fileId ?? "",
+        libraryTranscriptResponse.transcriptUrl ?? "");
+
+    return libraryTranscriptInfo;
+  }
+
+  @override
+  Future<GetLibraryTranscriptTextInfo> getLibraryTranscriptText(
+      GetLibraryTranscriptRequest data) async {
+    GetLibraryTranscriptTextInfo info;
+    GetLibraryTranscriptTextResponse response;
+
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(Constants.getLibraryTranscript
+              .replaceAll('{file_id}', data.mFileId ?? "")
+              .replaceAll('{file_extension}', 'txt')),
+          RequestType.get,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get library transcript text");
+      rethrow;
+    }
+
+    if (body == null) return GetLibraryTranscriptTextInfo.buildDefault();
+
+    response = GetLibraryTranscriptTextResponse.fromJson(body);
+    info = GetLibraryTranscriptTextInfo(response.transcript ?? "", response.message ?? "");
+
+    return info;
+  }
+
+  @override
+  Future<GetLibraryTranscriptJsonInfo> getLibraryTranscriptJson(
+      GetLibraryTranscriptRequest data) async {
+    GetLibraryTranscriptJsonInfo info;
+    GetLibraryTranscriptJsonResponse response;
+
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(Constants.getLibraryTranscript
+              .replaceAll('{file_id}', data.mFileId ?? "")
+              .replaceAll('{file_extension}', 'json')),
+          RequestType.get,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get library transcript text");
+      rethrow;
+    }
+
+    if (body == null) return GetLibraryTranscriptJsonInfo.buildDefault();
+
+    response = GetLibraryTranscriptJsonResponse.fromJson(body);
+
+    List<MedicalDiagnosisInfo> medicalDiagnosisInfoList = [];
+    if (response.medicalDiagnosis != null) {
+      for (int i = 0; i < response.medicalDiagnosis!.length; i++) {
+        MedicalDiagnosisResponse? medicalDiagnosisResponse = response.medicalDiagnosis![i];
+        medicalDiagnosisInfoList.add(MedicalDiagnosisInfo(
+          medicalDiagnosisResponse.name ??= "",
+        ));
+      }
+    }
+    List<MedicalTreatmentInfo> medicalTreatmentInfoList = [];
+    if (response.medicalTreatment != null) {
+      for (int i = 0; i < response.medicalTreatment!.length; i++) {
+        MedicalTreatmentResponse? medicalTreatmentResponse = response.medicalTreatment![i];
+        medicalTreatmentInfoList.add(MedicalTreatmentInfo(
+          medicalTreatmentResponse.name ??= "",
+          medicalTreatmentResponse.prescription ??= "",
+        ));
+      }
+    }
+    List<HealthVitalInfo> healthVitalInfoList = [];
+    if (response.healthVitals != null) {
+      for (int i = 0; i < response.healthVitals!.length; i++) {
+        HealthVitalResponse? healthVitalResponse = response.healthVitals![i];
+        healthVitalInfoList.add(HealthVitalInfo(
+          healthVitalResponse.status ??= "",
+          healthVitalResponse.value ??= "",
+          healthVitalResponse.units ??= "",
+        ));
+      }
+    }
+
+    info = GetLibraryTranscriptJsonInfo(
+        response.patientName ?? "",
+        response.patientAge ?? 0,
+        response.patientGender ?? "",
+        medicalDiagnosisInfoList,
+        medicalTreatmentInfoList,
+        healthVitalInfoList,
+        response.message ?? "");
+
+    return info;
   }
 }

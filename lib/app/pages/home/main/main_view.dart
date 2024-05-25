@@ -44,7 +44,6 @@ class _MainView extends BaseStateView<MainView, MainController> {
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
       RecordingView(),
-      NurseNoteView(),
       NurseProfileView(),
     ];
   }
@@ -97,10 +96,8 @@ class _MainView extends BaseStateView<MainView, MainController> {
                       // Add _tab([index], [asset location], [title underneath the icon]
                       _tab(0, "assets/main_assets/ic_medical_archive",
                           "Archive"),
-                      _tab(
-                          1, "assets/main_assets/ic_voice_recording", "Record"),
-                      _tab(2, "assets/main_assets/ic_nurse_note", "Note"),
-                      _tab(3, "assets/main_assets/ic_nurse_profile", "Profile"),
+                      _tab(1, "assets/main_assets/ic_voice_recording", "Record"),
+                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile"),
                     ],
                   ),
                 ),

@@ -1,7 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/widgets/theme.dart';
+import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
 import 'dart:async';
@@ -84,7 +87,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           brightness: Brightness.dark,
         ),
       ),
-      theme: ThemeData(
+      theme:
+      // Provider.of<ThemeProvider>(context).themeData,
+      ThemeData(
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Poppins',
