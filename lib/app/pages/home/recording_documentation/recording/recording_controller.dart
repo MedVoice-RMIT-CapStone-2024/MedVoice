@@ -2,24 +2,23 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:googleapis_auth/auth.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_presenter.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/library_transcript_info.dart';
 import 'package:med_voice/domain/entities/recording_archive/recording_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:vosk_flutter_2/vosk_flutter_2.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../domain/entities/recording/audio_transcript_info.dart';
+import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
 import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
-import '../../../../utils/pages.dart';
-import '../demo_temp_transcript/demo_temp_transcript_view.dart';
 
 class RecordingController extends BaseController {
   final RecordingPresenter _presenter;
@@ -28,7 +27,6 @@ class RecordingController extends BaseController {
   bool speechAvailable = false;
   int recordDuration = 0;
   String guideText = 'Press the button and start speaking';
-  String transcriptText = '';
   double confidenceLevel = 1.0;
   // String selectedLocaleId = 'vi_VN';
   String selectedLocaleId = 'en_US';
@@ -42,13 +40,23 @@ class RecordingController extends BaseController {
   TextEditingController recordingName = TextEditingController();
   String tempName = '';
   File? audioFile;
-  AuthClient? clientResponse;
   UploadRecordingRequest? uploadRecordingRequest;
   AudioTranscriptInfo? data;
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
   ThemeMode themeMode = ThemeMode.system;
+  PostTranscriptRequest? dataRequest;
+  // ModelLoader? modelLoader;
+  // VoskFlutterPlugin vosk = VoskFlutterPlugin.instance();
+  // Model? modelController;
+  // Recognizer? recognizerController;
+  // SpeechService? speechServiceController;
+  // String modelName = 'vosk-model-small-en-us-0.15';
+  // int sampleRate = 16000;
+  // String? error;
+  // String? partialResults;
+  // String? finalResults;
 
   RecordingController(audioRepository)
       : _presenter = RecordingPresenter(audioRepository) {
@@ -68,15 +76,49 @@ class RecordingController extends BaseController {
       refreshUI();
     });
 
-    speech = SpeechToText();
-    _initSpeech();
+      speech = SpeechToText();
+      _initSpeech();
+      // modelLoader = ModelLoader();
+      // _initSpeech();
   }
 
   void _initSpeech() async {
     speechAvailable = await speech!.initialize(
       onError: errorListener,
       onStatus: statusListener,
+      options: [SpeechToText.webDoNotAggregate],
     );
+    // if (modelLoader != null) {
+    //   modelLoader!
+    //       .loadModelsList()
+    //       .then((modelsList) =>
+    //           modelsList.firstWhere((model) => model.name == modelName))
+    //       .then((modelDescription) => modelLoader!
+    //           .loadFromNetwork(modelDescription.url)) // load model
+    //       .then((modelPath) =>
+    //           vosk.createModel(modelPath)) // create model object
+    //       .then((model) => modelController = model)
+    //       .then((_) => vosk.createRecognizer(
+    //           model: modelController!,
+    //           sampleRate: sampleRate)) // create recognizer
+    //       .then((value) => recognizerController = value)
+    //       .then((recognizer) {
+    //     vosk
+    //         .initSpeechService(recognizerController!) // init speech service
+    //         .then((speechService) => speechServiceController = speechService)
+    //         .catchError((e) {
+    //       error = e.toString();
+    //       return e;
+    //     });
+    //   }).catchError((e) {
+    //     debugPrint("did it get error: $e");
+    //     error = e.toString();
+    //     return null;
+    //   });
+    //   debugPrint("Initialize completed");
+    // } else {
+    //   debugPrint("is it null");
+    // }
     refreshUI();
   }
 
@@ -105,19 +147,26 @@ class RecordingController extends BaseController {
     };
     _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
       data = response;
+      if (data != null) {
+        onUploadLibraryTranscript(data!);
+      }
       hideLoadingProgress();
       debugPrint("Upload audio info succeed");
-      view.showPopupWithAction(
-          'Your file id is: ${data!.mFileId} \nThe first index of the sentence is: ${data!.mSentences![0].mSentence}',
-          'Take me to the rest', () {
-        view.pushScreen(Pages.demoTempTranscript,
-            arguments: {audioTranscriptInfo: data!});
-      });
     };
     _presenter.onUploadAudioInfoFailed = (e) {
       view.showErrorFromServer("Upload audio info failed: $e");
       hideLoadingProgress();
       debugPrint("Upload audio info failed");
+    };
+    _presenter.onUploadLibraryTranscriptSuccess =
+        (LibraryTranscriptInfo response) {
+      debugPrint(
+          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscriptUrl}");
+      hideLoadingProgress();
+    };
+    _presenter.onUploadLibraryTranscriptFailed = (e) {
+      view.showErrorFromServer("Upload library transcript failed: $e");
+      hideLoadingProgress();
     };
     _presenter.onCompleted = () {};
   }
@@ -146,7 +195,7 @@ class RecordingController extends BaseController {
   Future<void> initializeSpeechLib() async {
     if (isStartingRecording == false) {
       final isSupported =
-      await audioRecorder.isEncoderSupported(AudioEncoder.aacLc);
+          await audioRecorder.isEncoderSupported(AudioEncoder.aacLc);
       debugPrint('${AudioEncoder.aacLc.name} supported: $isSupported');
       Directory? dir;
       if (Platform.isIOS) {
@@ -175,9 +224,13 @@ class RecordingController extends BaseController {
     await speech!.listen(
       onResult: onSpeechResult,
       localeId: selectedLocaleId,
-      cancelOnError: false,
-      partialResults: true,
+      listenOptions:
+          SpeechListenOptions(cancelOnError: false, partialResults: true),
     );
+    // if (speechServiceController != null) {
+    //   debugPrint("INITIALIZE LIBRARY CHECKPOINT");
+    //   await speechServiceController!.start();
+    // }
     speechEnabled = true;
     refreshUI();
   }
@@ -191,22 +244,50 @@ class RecordingController extends BaseController {
     recordDuration = 0;
     final path = await audioRecorder.stop();
     if (path != null) {
-      view.showPopupWithAction('your path is: $path', 'okay');
+      view.showPopupWithAction('Recording finished! Kindly wait as audio is now being processed', 'okay');
       audioPath = path;
       pathForDelete = path;
     } else {
       debugPrint('path is empty');
     }
     await speech!.stop();
-    transcriptText = '';
+    // if (speechServiceController != null) {
+    //   debugPrint("FINALIZE LIBRARY CHECKPOINT");
+    //   await speechServiceController!.stop();
+    // }
     onSaveRecordingToList(tempName, duration, audioPath);
     recordingName.clear();
     refreshUI();
   }
+  //
+  // void onVoskSpeechResults() {
+  //   debugPrint("Did it go into PARTIAL SPEECH");
+  //   if (speechServiceController != null) {
+  //     speechServiceController!.onPartial().listen((data) {
+  //       partialResults = data.toString();
+  //       debugPrint("Did it go into PARTIAL SPEECH data: $partialResults");
+  //     });
+  //     refreshUI();
+  //   }
+  // }
+  //
+  // void onVoskSpeechFinalResults() {
+  //   debugPrint("Did it go into FINAL SPEECH");
+  //   if (speechServiceController != null) {
+  //     speechServiceController!.onResult().listen((data) {
+  //       finalResults = data.toString();
+  //       debugPrint("Did it go into FINAL SPEECH data: $finalResults");
+  //     });
+  //     refreshUI();
+  //   }
+  // }
 
   void onSpeechResult(SpeechRecognitionResult result) {
-    guideText = result.recognizedWords;
-    refreshUI();
+    debugPrint("Speech recognized: ${result.recognizedWords}");
+    view.setState(() {
+      guideText = result.recognizedWords;
+    });
+    debugPrint("guideText updated to: $guideText");
   }
 
   void onSaveRecordingToList(String title, int duration, String path) {
@@ -217,7 +298,7 @@ class RecordingController extends BaseController {
     audioPath = '';
     if (audioFile != null) {
       RecordingUploadInfo temp =
-      RecordingUploadInfo(audioFile, Global.bucketName);
+          RecordingUploadInfo(audioFile, Global.bucketName);
       onUploadAudioFile(temp);
     }
     refreshUI();
@@ -231,6 +312,11 @@ class RecordingController extends BaseController {
   void onUploadAudioInfo() {
     showLoadingProgress();
     _presenter.executeUploadAudioInfo(uploadRecordingRequest!);
+  }
+
+  void onUploadLibraryTranscript(AudioTranscriptInfo data) {
+    dataRequest = PostTranscriptRequest(data.mFileId, [guideText]);
+    _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 
   Future<void> onDelete(String path) async {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
 import 'package:med_voice/app/pages/home/patient_doc/nurse_note/nurse_note_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
@@ -110,13 +109,13 @@ class _NurseNoteViewState
                                 _items.firstWhere(
                                     (element) => element['id'] == item['id']);
                             // Display the details of the selected item
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NoteView(items: selectedData),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         NoteView(items: selectedData),
+                            //   ),
+                            // );
                           },
                         ),
                       );

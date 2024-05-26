@@ -3,7 +3,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
-import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
+import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 
@@ -66,7 +66,9 @@ class _MedicalArchiveView
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-          child: (_controller!.dataLinks != null) ? _recordContent() : _emptyView(),
+          child: (_controller!.dataLinks != null)
+              ? _recordContent()
+              : _emptyView(),
         ),
       ),
     );
@@ -80,10 +82,9 @@ class _MedicalArchiveView
         Text(
           "Voices Library",
           style: TextStyle(
-            fontSize: toSize(40),
-            color: Theme.of(context).colorScheme.onSecondary,
-            fontWeight: FontWeight.w700
-          ),
+              fontSize: toSize(40),
+              color: Theme.of(context).colorScheme.onSecondary,
+              fontWeight: FontWeight.w700),
         ),
         SizedBox(height: toSize(15)),
         Text("Your recordings and transcripts will appear here.",
@@ -93,8 +94,7 @@ class _MedicalArchiveView
         SizedBox(height: toSize(20)),
         SizedBox(
             height: MediaQuery.of(context).size.height * 0.65,
-            child: _listViewWithGroupedItems(_controller!.filteredMappedData)
-        )
+            child: _listViewWithGroupedItems(_controller!.filteredMappedData))
       ],
     );
   }
@@ -118,11 +118,13 @@ class _MedicalArchiveView
         onExpansionChanged(filteredMappedData[index].date, expanded);
       },
       title: _dateTitle(filteredMappedData[index].date),
-      children: filteredMappedData[index].items!.map((item) {
-        return ListTile(
-          title: _recordItems(item),
-        );
-      }).toList(),
+      children: List.generate(
+        filteredMappedData[index].items!.length,
+        (itemIndex) {
+          return _recordItems(
+              filteredMappedData[index].items![itemIndex], itemIndex);
+        },
+      ),
     );
   }
 
@@ -138,11 +140,13 @@ class _MedicalArchiveView
     );
   }
 
-  Widget _recordItems(DisplayArchive item) {
+  Widget _recordItems(DisplayArchive item, int index) {
     return InkWell(
       onTap: () {
-        pushScreen(Pages.audioPlayback,
-            arguments: {recordingInfo: item.patientName});
+        pushScreen(Pages.noteArchiveDetails, arguments: {
+          groupDateInfo: item,
+          audioLink: _controller!.dataLinks!.mUrls[index]
+        });
       },
       child: Container(
         height: toSize(70),
@@ -166,7 +170,8 @@ class _MedicalArchiveView
                         color: Theme.of(context).colorScheme.onSecondary)),
                 const Spacer(),
                 Text(
-                    _controller!.reformatDateString(item.dateCreated, true, true),
+                    _controller!
+                        .reformatDateString(item.dateCreated, true, true),
                     style: TextStyle(
                         fontSize: toSize(14),
                         color: Theme.of(context)

@@ -3,6 +3,8 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
+import 'package:med_voice/app/widgets/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
@@ -86,13 +88,15 @@ class _NurseProfileView
                         children: [
                           Text("Nurse name",
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary)),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary)),
                           Spacer(),
                           Text("nurse_email@email.com",
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary)),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary)),
                         ],
                       ),
                       const Spacer(),
@@ -131,7 +135,8 @@ class _NurseProfileView
                       children: [
                         Text("QR Code",
                             style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSecondary,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                                 fontSize: toSize(17))),
                         const Spacer(),
                         RotatedBox(
@@ -225,8 +230,9 @@ class _NurseProfileView
                           children: [
                             Text("Terms of Service",
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onSecondary,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
                                     fontSize: toSize(17))),
                             const Spacer(),
                             RotatedBox(
@@ -260,8 +266,9 @@ class _NurseProfileView
                           children: [
                             Text("Privacy Policy",
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onSecondary,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
                                     fontSize: toSize(17))),
                             const Spacer(),
                             RotatedBox(
@@ -295,7 +302,17 @@ class _NurseProfileView
                                       Theme.of(context).colorScheme.onSecondary,
                                   fontSize: toSize(17))),
                           const Spacer(),
-                          Switch(
+                          // Consumer<ThemeProvider>(
+                          //   builder: (context, themeProvider, child) {
+                          //     return Switch(
+                          //       value: themeProvider.isDarkMode,
+                          //       onChanged: (value) {
+                          //         themeProvider.toggleTheme();
+                          //       },
+                          //     );
+                          //   },
+                          // ),
+                        Switch(
                             value: isDarkMode,
                             onChanged: (isOn) {
                               isOn
@@ -320,12 +337,15 @@ class _NurseProfileView
                         margin: EdgeInsets.symmetric(horizontal: toSize(35)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(toSize(10)),
-                            color: HexColor(Global.mColors['pink_1'].toString())),
+                            color:
+                                HexColor(Global.mColors['pink_1'].toString())),
                         child: Center(
                             child: Text("Sign out",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).colorScheme.background,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
                                     fontSize: toSize(20))))),
                   ),
                 ),

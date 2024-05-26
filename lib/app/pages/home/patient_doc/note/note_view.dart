@@ -1,25 +1,43 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
+import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/assets/icon_assets.dart';
+import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
+import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
+
+import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
+import '../../../../utils/global.dart';
+
+const groupDateInfo = 'groupDateInfo';
+const audioLink = 'audioLink';
 
 class NoteView extends clean.View {
-  const NoteView({Key? key, required this.items}) : super(key: key);
-  final Map<String, dynamic> items;
+  final DisplayArchive groupDateInfo;
+  final String audioLink;
+  const NoteView(
+      {Key? key, required this.groupDateInfo, required this.audioLink})
+      : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return _NoteViewState();
+    return _NoteViewState(groupDateInfo, audioLink);
   }
 }
 
-class _NoteViewState extends BaseStateView<NoteView, NoteController> {
-  _NoteViewState() : super(NoteController());
+class _NoteViewState extends BaseStateView<NoteView, NoteController>
+    with WidgetsBindingObserver {
+  _NoteViewState(groupDateInfo, audioLink)
+      : super(NoteController(groupDateInfo, AudioRepositoryImpl()));
+
+  final scrollController = ScrollController();
+  NoteController? _controller;
 
   TextStyle _customTextStyle({
     FontWeight? fontWeight,
@@ -36,121 +54,448 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController> {
 
   @override
   bool isInitialAppbar() {
-    return true;
+    return false;
   }
 
   @override
   String appBarTitle() {
-    return "voice00${widget.items['id']}";
+    return widget.groupDateInfo.patientName;
   }
 
   @override
   Widget body(BuildContext context, BaseController controller) {
-    NoteController _controller = controller as NoteController;
-    Map<String, dynamic> items = widget.items;
+    _controller = controller as NoteController;
+    return (_controller!.jsonData != null)
+        ? (_controller!.jsonData!.mMessage!.isEmpty)
+            ? _jsonTranscriptContent()
+            : (_controller!.textData != null)
+                ? _textTranscriptContent(
+                    _controller!.textData!, widget.groupDateInfo)
+                : const SizedBox()
+        : const SizedBox();
+  }
 
+  Widget _textTranscriptContent(
+      GetLibraryTranscriptTextInfo textData, DisplayArchive displayData) {
     return SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.all(toSize(16.0)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: toSize(20.0)),
+      scrollDirection: Axis.vertical,
 
-                _buildRow('Age', items['age'], 36.0),
-                _buildRow('Gender', items['gender'], 36.0),
-                _buildRow('Diagnosis', items['diagnosis'], 20.0),
-                _buildRow('Occupation status', items['occupationStatus'], 20.0),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Voice Handicap Index (VHI) Score', items['vhiScore'],
-                    25.0),
-                _buildRow('Reflux Symptom Index (RSI) Score', items['rsiScore'],
-                    25.0),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Smoker', items['smoker'], 31.0),
-                _buildRow('Number of cigarettes smoked per day',
-                    items['cigarettesPerDay'], 20.0),
-                SizedBox(height: toSize(20.0)),
-                _buildRow(
-                    'Alcohol consumption', items['alcoholConsumption'], 20.0),
-                _buildRow(
-                    'Number of glasses containing alcoholic \n beverage drinked in a day',
-                    items['alcoholPerDay'],
-                    10.0),
-                _buildRow("Amount of water's litres drink every day",
-                    items['waterIntake'], 20.0),
-                SizedBox(height: toSize(20.0)),
-                _buildRow(
-                    'Carbonated beverages', items['carbonatedBeverages'], 20.0),
-                _buildRow('Amount of glasses drinked in a day',
-                    items['carbonatedPerDay'], 20.0),
-                SizedBox(height: toSize(20.0)),
-                // Another section
-                Row(
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              SizedBox(
+                height: toSize(250),
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Eating Habit',
-                      style: TextStyle(
-                        color: Colors.pink,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
+                    SizedBox(height: toSize(80)),
+                    const Text("Replay audio"),
+                    SizedBox(height: toSize(20)),
+                    InkWell(
+                      onTap: () {
+                        if (!_controller!.isPlaying) {
+                          _controller!.player.setUrl(widget.audioLink);
+                          _controller!.player.play();
+                        } else {
+                          _controller!.player.stop();
+                        }
+                        _controller!.isPlaying = !_controller!.isPlaying;
+                        _controller!.refreshUI();
+                      },
+                      child: Container(
+                        height: toSize(45),
+                        width: toSize(45),
+                        decoration: BoxDecoration(
+                            color:
+                            HexColor(Global.mColors['pink_1'].toString()),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: _controller!.isPlaying
+                            ? const Icon(
+                          Icons.pause,
+                          color: Colors.white,
+                        )
+                            : const Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const VerticalDivider(),
-                    Container(
-                      height: 1.0,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                   ],
                 ),
-                SizedBox(height: toSize(10.0)),
-                _buildRow('Coffee', items['coffee'], 20),
-                _buildRow('Amount of glasses drinked in a day',
-                    items['coffeePerDay'], 20),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Tomatoes', items['tomatoes'], 20),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Chocolate', items['chocolate'], 20),
-                _buildRow(
-                    'Number of glasses containing alcoholic \n beverage drinked in a day',
-                    items['chocolatePerDay'],
-                    20),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Chocolate', items['chocolate'], 20),
-                _buildRow('Gramme of chocolate eaten in a day',
-                    items['chocolatePerDay'], 20),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Soft cheese', items['softCheese'], 20),
-                _buildRow('Gramme of soft cheese eaten in a day',
-                    items['softCheesePerDay'], 20),
-                SizedBox(height: toSize(20.0)),
-                _buildRow('Citrus fruits', items['citrusFruits'], 20),
-                _buildRow('Gramme of citrus fruits eaten in a day',
-                    items['citrusPerDay'], 20),
-                SizedBox(height: toSize(20.0)),
-              ],
-            )));
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: toSize(23), top: toSize(50)),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            onBack();
+                          },
+                          child: Container(
+                              height: toSize(34),
+                              width: toSize(34),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(color: Colors.grey)),
+                              child: Image.asset(IconAssets.icBack,
+                                  color: Colors.white)),
+                        ),
+                        SizedBox(height: toSize(130)),
+                        Container(
+                          height: toSize(28),
+                          width: toSize(90),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Center(
+                              child: Text(
+                                  _controller!.convertDateTime(
+                                      widget.groupDateInfo.dateCreated),
+                                  style: TextStyle(fontSize: toSize(12)))),
+                        )
+                      ],
+                    )),
+              )
+            ],
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: toSize(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: toSize(20)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Recording name'),
+                      Text(displayData.dateCreated),
+                    ],
+                  ),
+                  SizedBox(height: toSize(10)),
+                  _libraryContainerContent(displayData.patientName, false),
+                  SizedBox(height: toSize(20)),
+                  const Text('Content'),
+                  SizedBox(height: toSize(10)),
+                  _libraryContainerContent(
+                      (textData.mMessage!.isEmpty)
+                          ? textData.mTranscript ?? ""
+                          : "No file found with the given ID",
+                      true),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
-  Widget _buildRow(String label, dynamic value, double maxLines) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: _customTextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSecondary,
-          ),
-        ),
-        SizedBox(width: toSize(maxLines)),
-        Text(
-          value.toString(),
+  Widget _libraryContainerContent(String label, bool isTranscript) {
+    return Container(
+      width: double.infinity,
+      height: (isTranscript) ? MediaQuery.of(context).size.height * 0.4 : null,
+      padding: EdgeInsets.all(toSize(5)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: toSize(0.5)),
+          borderRadius: BorderRadius.circular(toSize(8)),
+          color: Colors.white),
+      child: Text(label,
           style: _customTextStyle(
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.onSecondary,
+            color: Colors.black,
+          )),
+    );
+  }
+
+  Widget _jsonTranscriptContent() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              SizedBox(
+                height: toSize(250),
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: toSize(80)),
+                    const Text("Replay audio"),
+                    SizedBox(height: toSize(20)),
+                    InkWell(
+                      onTap: () {
+                        if (!_controller!.isPlaying) {
+                          _controller!.player.setUrl(widget.audioLink);
+                          _controller!.player.play();
+                        } else {
+                          _controller!.player.stop();
+                        }
+                        _controller!.isPlaying = !_controller!.isPlaying;
+                        _controller!.refreshUI();
+                      },
+                      child: Container(
+                        height: toSize(45),
+                        width: toSize(45),
+                        decoration: BoxDecoration(
+                            color:
+                                HexColor(Global.mColors['pink_1'].toString()),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: _controller!.isPlaying
+                            ? const Icon(
+                                Icons.pause,
+                                color: Colors.white,
+                              )
+                            : const Icon(
+                                Icons.play_arrow,
+                                color: Colors.white,
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: toSize(23), top: toSize(50)),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            onBack();
+                          },
+                          child: Container(
+                              height: toSize(34),
+                              width: toSize(34),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(color: Colors.grey)),
+                              child: Image.asset(IconAssets.icBack,
+                                  color: Colors.white)),
+                        ),
+                        SizedBox(height: toSize(130)),
+                        Container(
+                          height: toSize(28),
+                          width: toSize(90),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Center(
+                              child: Text(
+                                  _controller!.convertDateTime(
+                                      widget.groupDateInfo.dateCreated),
+                                  style: TextStyle(fontSize: toSize(12)))),
+                        )
+                      ],
+                    )),
+              )
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                borderRadius: BorderRadius.circular(4)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _contentLabel("Patient Information"),
+                SizedBox(height: toSize(5)),
+                _basicContentRow(
+                    'Name', _controller!.jsonData!.mPatientName, false),
+                _basicContentRow(
+                    'Age', _controller!.jsonData!.mPatientAge, false),
+                _basicContentRow(
+                    'Gender', _controller!.jsonData!.mPatientGender, true),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Diagnosis"),
+                _expansionTileDiagnosis(),
+                _contentLabel("Treatment"),
+                _expansionTileTreatment(),
+                _contentLabel("Health Vitals"),
+                _expansionTileVitals(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _expansionTileVitals() {
+    return ExpansionTile(
+      title: Text(
+          'Vital count: ${_controller!.jsonData!.mHealthVitals?.length ?? 0}',
+          style: TextStyle(fontSize: toSize(15))),
+      children: [
+        SizedBox(
+          height: toSize(110),
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            itemCount: _controller!.jsonData!.mHealthVitals?.length ?? 0,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Status: ${_controller!.jsonData!.mHealthVitals?[index].mStatus}",
+                      style:
+                          TextStyle(color: Colors.white, fontSize: toSize(15)),
+                    ),
+                    SizedBox(height: toSize(12)),
+                    Text(
+                      "Value: ${_controller!.jsonData!.mHealthVitals?[index].mValue}",
+                      style:
+                          TextStyle(color: Colors.white, fontSize: toSize(15)),
+                    ),
+                    SizedBox(height: toSize(12)),
+                    Text(
+                      "Units: ${_controller!.jsonData!.mHealthVitals?[index].mUnits}",
+                      style:
+                          TextStyle(color: Colors.white, fontSize: toSize(15)),
+                    ),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(10)),
+                child: const Divider(color: Colors.grey),
+              );
+            },
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _expansionTileTreatment() {
+    return ExpansionTile(
+      title: Text(
+          'Treatment count: ${_controller!.jsonData!.mMedicalTreatment?.length ?? 0}',
+          style: TextStyle(fontSize: toSize(15))),
+      children: [
+        SizedBox(
+          height: toSize(80),
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            itemCount: _controller!.jsonData!.mMedicalTreatment?.length ?? 0,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Name: ${_controller!.jsonData!.mMedicalTreatment?[index].mName}",
+                      style:
+                          TextStyle(color: Colors.white, fontSize: toSize(15)),
+                    ),
+                    SizedBox(height: toSize(12)),
+                    Text(
+                      "Prescription: ${_controller!.jsonData!.mMedicalTreatment?[index].mPrescription}",
+                      style:
+                          TextStyle(color: Colors.white, fontSize: toSize(15)),
+                    ),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(color: Colors.grey);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _expansionTileDiagnosis() {
+    return ExpansionTile(
+      title: Text(
+          'Diagnosis count: ${_controller!.jsonData!.mMedicalDiagnosis?.length ?? 0}',
+          style: TextStyle(fontSize: toSize(15))),
+      children: [
+        SizedBox(
+          height: toSize(65),
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            itemCount: _controller!.jsonData!.mMedicalDiagnosis?.length ?? 0,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  _controller!.jsonData!.mMedicalDiagnosis?[index].mName ??
+                      "N/A",
+                  style: TextStyle(color: Colors.white, fontSize: toSize(15)),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(color: Colors.grey);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _contentLabel(String label) {
+    return Container(
+        width: double.infinity,
+        height: toSize(50),
+        decoration: BoxDecoration(
+          border: Border(
+              top: BorderSide(
+                  color: Colors.white.withOpacity(0.4), width: toSize(2)),
+              bottom: BorderSide(
+                  color: Colors.white.withOpacity(0.4), width: toSize(2))),
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        padding:
+            EdgeInsets.symmetric(horizontal: toSize(15), vertical: toSize(7)),
+        child: Row(children: [
+          Text(label,
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))
+        ]));
+  }
+
+  Widget _basicContentRow(String label, dynamic value, bool isLastItem) {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: toSize(15)),
+          height: toSize(40),
+          child: Row(
+            children: [
+              Text("$label:",
+                  style: const TextStyle(fontWeight: FontWeight.w700)),
+              const Spacer(),
+              Text((value is String)
+                  ? value
+                  : (value is int)
+                      ? value.toString()
+                      : "N/A")
+            ],
+          ),
+        ),
+        (!isLastItem)
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(15)),
+                child: const Divider(color: Colors.grey),
+              )
+            : const SizedBox(),
       ],
     );
   }
