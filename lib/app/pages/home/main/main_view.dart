@@ -4,10 +4,12 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/patient_doc/nurse_note/nurse_note_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
+import '../../../widgets/theme_provider.dart';
 import '../medical_archive/medical_archive_view.dart';
 import '../recording_documentation/recording/recording_view.dart';
 import 'main_controller.dart';
@@ -58,10 +60,11 @@ class _MainView extends BaseStateView<MainView, MainController> {
 
   @override
   Widget body(BuildContext context, BaseController controller) {
-    return _body(controller);
+    ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
+    return _body(controller, theme);
   }
 
-  Widget _body(BaseController controller) {
+  Widget _body(BaseController controller, ThemeData theme) {
     mMainController = controller as MainController;
     return Stack(children: [
       tabs![mMainController!.currentTabIndex],
@@ -88,16 +91,16 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     elevation: 0,
                     type: BottomNavigationBarType.fixed,
                     onTap: onTapped,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor: theme.colorScheme.surface,
                     currentIndex: mMainController!.currentTabIndex,
                     showSelectedLabels: false,
                     showUnselectedLabels: false,
                     items: [
                       // Add _tab([index], [asset location], [title underneath the icon]
                       _tab(0, "assets/main_assets/ic_medical_archive",
-                          "Archive"),
-                      _tab(1, "assets/main_assets/ic_voice_recording", "Record"),
-                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile"),
+                          "Archive", theme),
+                      _tab(1, "assets/main_assets/ic_voice_recording", "Record", theme),
+                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile", theme),
                     ],
                   ),
                 ),
@@ -108,7 +111,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
     ]);
   }
 
-  BottomNavigationBarItem _tab(int index, String? imageAsset, String namePage) {
+  BottomNavigationBarItem _tab(int index, String? imageAsset, String namePage, ThemeData theme) {
     int badgeNumber = -1;
     if (index == 0 || index == 1 || index == 3 || index == 4) {
       badgeNumber = 0;
@@ -125,7 +128,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                 children: [
                   ImageIcon(
                     imageAsset == "" ? null : AssetImage("${imageAsset!}.png"),
-                    color: HexColor(Global.mColors["pink_1"].toString()),
+                    color: theme.colorScheme.secondary,
                     size: 18,
                   ),
                   const SizedBox(height: 5),
@@ -135,8 +138,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
-                      color: HexColor(Global.mColors["pink_1"].toString())
-                          .withOpacity(0.6),
+                      color: theme.colorScheme.secondary.withOpacity(0.7),
                     ),
                   )
                 ],
@@ -177,7 +179,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                 children: [
                   ImageIcon(
                     imageAsset == "" ? null : AssetImage("${imageAsset!}.png"),
-                    color: HexColor(Global.mColors["pink_1"].toString()),
+                    color: theme.colorScheme.onSecondary,
                     size: 22,
                   ),
                   const SizedBox(height: 5),
@@ -185,9 +187,9 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     namePage,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w900,
                       fontSize: 11,
-                      color: HexColor(Global.mColors["pink_1"].toString()),
+                      color: theme.colorScheme.onSecondary,
                     ),
                   )
                 ],

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
 import '../../../utils/module_utils.dart';
 import '../../../utils/pages.dart';
+import '../../../widgets/theme_provider.dart';
 import '../signup/sign_up_view.dart';
 import 'onboarding_welcome_controller.dart';
 
@@ -38,6 +40,8 @@ class _OnBoardingWelcomeView
   Widget body(BuildContext context, BaseController controller) {
     OnBoardingWelcomeController _controller =
         controller as OnBoardingWelcomeController;
+    ThemeData theme = Provider.of<ThemeProvider>(context, listen: false).themeData;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SizedBox(
@@ -74,7 +78,7 @@ class _OnBoardingWelcomeView
                 "MedVoice",
                 style: TextStyle(
                     fontSize: toSize(34),
-                    color: Theme.of(context).colorScheme.onSecondary),
+                    color: theme.colorScheme.primary),
               ),
               SizedBox(height: toSize(16)),
               AnimatedSwitcher(
@@ -82,7 +86,7 @@ class _OnBoardingWelcomeView
                 child: Text(
                   _controller.onBoardingWelcomeMessage[_controller.currentStep],
                   key: ValueKey<int>(_controller.currentStep),
-                  style: TextStyle(fontSize: toSize(20)),
+                  style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground),
                   textAlign: TextAlign.center,
                 ),
                 transitionBuilder: (child, animation) {
@@ -147,8 +151,7 @@ class _OnBoardingWelcomeView
                       child: Text("Get Started",
                           style: TextStyle(
                               fontSize: toSize(20),
-                              color: HexColor(
-                                  Global.mColors['white_2'].toString())))),
+                              color: theme.colorScheme.onPrimary))),
                 ),
               ),
               SizedBox(height: toSize(20)),
@@ -160,11 +163,11 @@ class _OnBoardingWelcomeView
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Already have an account? ',
+                        text: 'Already have an account?  ',
                         style: TextStyle(
                             fontSize: toSize(17),
                             color:
-                                HexColor(Global.mColors['black_2'].toString())),
+                                theme.colorScheme.onBackground),
                       ),
                       TextSpan(
                         text: 'Login',

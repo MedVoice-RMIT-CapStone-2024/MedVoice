@@ -5,12 +5,14 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 
 import '../app/assets/icon_assets.dart';
 import '../app/utils/global.dart';
 import '../app/utils/module_utils.dart';
 import '../app/utils/router.dart';
 import '../app/widgets/confirm_view.dart';
+import '../app/widgets/theme_provider.dart';
 import 'base_controller.dart';
 import 'i_base_view.dart';
 
@@ -168,13 +170,9 @@ abstract class BaseStateView<Page extends clean.View,
     }
   }
 
-  @override
-  ThemeMode getThemeMode() {
-    return ThemeMode.system;
-  }
-
   Widget get view =>
       clean.ControlledWidgetBuilder<controller>(builder: (context, controller) {
+        ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
         Future.delayed(Duration(milliseconds: builderDelayTime()), () {
           if (!_isDelayed && mounted) {
             setState(() {
@@ -198,7 +196,7 @@ abstract class BaseStateView<Page extends clean.View,
                   child: Container(
                     decoration: (isShowBackground())
                         ? BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: theme.scaffoldBackgroundColor,
                           )
                         : null,
                     child: Scaffold(
@@ -209,16 +207,13 @@ abstract class BaseStateView<Page extends clean.View,
                                   Orientation.portrait)
                           ? AppBar(
                               backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
+                                  theme.primaryColor,
                               centerTitle: true,
                               title: Text(appBarTitle(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontFamily: 'NunitoSans',
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary)),
+                                      fontWeight: FontWeight.w400)),
                               leading: !isHideBackButton()
                                   ? Padding(
                                       padding: const EdgeInsets.only(left: 25),
@@ -229,7 +224,7 @@ abstract class BaseStateView<Page extends clean.View,
                                           }
                                         },
                                         icon: Image.asset(IconAssets.icBack,
-                                            width: 11, height: 16),
+                                            width: 11, height: 16, color: theme.colorScheme.onSurface),
                                         alignment: Alignment.center,
                                       ),
                                     )
@@ -243,7 +238,6 @@ abstract class BaseStateView<Page extends clean.View,
                           : Container(),
                     ),
                   ),
-                  // color: Colors.grey,
                 )));
         // return body(context);
       });
@@ -341,7 +335,6 @@ abstract class BaseStateView<Page extends clean.View,
     String? title,
     String? cancelButton,
     VoidCallback? cancelCallback,
-    bool? acceptByRequester,
   ]) {
     if (_isThereCurrentDialogShowing(context)) {
       return;
@@ -372,7 +365,6 @@ abstract class BaseStateView<Page extends clean.View,
                   cancelCallback();
                 }
               },
-              acceptByRequester: acceptByRequester,
             ),
           );
         }).then((value) => {isShowPopupAction = false});
@@ -386,6 +378,7 @@ abstract class BaseStateView<Page extends clean.View,
       VoidCallback cancelCallback,
       TextEditingController saveNameController,
       ) {
+    ThemeData theme = Provider.of<ThemeProvider>(context, listen: false).themeData;
     if (_isThereCurrentDialogShowing(context)) {
       return;
     }
@@ -394,11 +387,15 @@ abstract class BaseStateView<Page extends clean.View,
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(message),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(toSize(20))),
+            backgroundColor: theme.colorScheme.background,
+            elevation: 0,
+            title: Text(message, style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground)),
             content: TextField(
               autofocus: true,
               decoration: const InputDecoration(
                   hintText: 'Enter your patient name here'),
+              style: TextStyle(color: theme.colorScheme.onBackground),
               controller: saveNameController,
             ),
             actions: [
@@ -413,10 +410,10 @@ abstract class BaseStateView<Page extends clean.View,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                            color: HexColor(Global.mColors['black_4'].toString())
+                            color: theme.colorScheme.surface
                               ),
                           child: Center(
-                            child: Text(cancelButton),
+                            child: Text(cancelButton, style: TextStyle(color: theme.colorScheme.onSurface)),
                           ),
                         ),
                       )),
@@ -430,8 +427,8 @@ abstract class BaseStateView<Page extends clean.View,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                              color: HexColor(Global.mColors['pink_1'].toString())),
-                          child: Center(child: Text(okButton)),
+                              color: theme.colorScheme.primary),
+                          child: Center(child: Text(okButton, style: TextStyle(color: theme.colorScheme.onPrimary))),
                         ),
                       ))
                 ],

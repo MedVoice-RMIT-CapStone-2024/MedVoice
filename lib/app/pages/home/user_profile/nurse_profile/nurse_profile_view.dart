@@ -44,17 +44,9 @@ class _NurseProfileView
   @override
   Widget body(BuildContext context, BaseController controller) {
     NurseProfileController _controller = controller as NurseProfileController;
-
-    ThemeMode themeMode = ThemeMode.system;
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    void toggleTheme(ThemeMode themeMode) {
-      setState(() {
-        themeMode = themeMode;
-      });
-    }
+    ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -63,16 +55,13 @@ class _NurseProfileView
               children: [
                 SizedBox(height: toSize(23)),
                 Container(
-                  height: toSize(88),
+                  height: toSize(90),
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
                       horizontal: toSize(17), vertical: toSize(20)),
                   decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(toSize(15))),
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(toSize(10))),
                   child: Row(
                     children: [
                       Container(
@@ -88,28 +77,21 @@ class _NurseProfileView
                         children: [
                           Text("Nurse name",
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary)),
-                          Spacer(),
+                                  color: theme.colorScheme.onSurface)),
+                          const Spacer(),
                           Text("nurse_email@email.com",
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary)),
+                                  color: theme.colorScheme.onSurface)),
                         ],
                       ),
                       const Spacer(),
                       RotatedBox(
                         quarterTurns: 2,
                         child: SizedBox(
-                          height: toSize(24),
-                          width: toSize(24),
+                          height: toSize(20),
+                          width: toSize(20),
                           child: Image.asset(IconAssets.icBack,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimary
-                                  .withOpacity(0.3)),
+                              color: theme.colorScheme.onSurface),
                         ),
                       )
                     ],
@@ -117,16 +99,13 @@ class _NurseProfileView
                 ),
                 const SizedBox(height: 14),
                 Container(
-                  height: toSize(88),
+                  height: toSize(60),
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
                       horizontal: toSize(17), vertical: toSize(20)),
                   decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(toSize(15))),
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(toSize(10))),
                   child: InkWell(
                     onTap: () {
                       pushScreen(Pages.myQR);
@@ -135,20 +114,16 @@ class _NurseProfileView
                       children: [
                         Text("QR Code",
                             style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                color: theme.colorScheme.onSurface,
                                 fontSize: toSize(17))),
                         const Spacer(),
                         RotatedBox(
                           quarterTurns: 2,
                           child: SizedBox(
-                            height: toSize(24),
-                            width: toSize(24),
+                            height: toSize(20),
+                            width: toSize(20),
                             child: Image.asset(IconAssets.icBack,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimary
-                                    .withOpacity(0.3)),
+                                color: theme.colorScheme.onSurface),
                           ),
                         )
                       ],
@@ -157,16 +132,42 @@ class _NurseProfileView
                 ),
                 SizedBox(height: toSize(17)),
                 Container(
-                  height: toSize(260),
+                  height: toSize(60),
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
                       horizontal: toSize(17), vertical: toSize(20)),
                   decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(toSize(15))),
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(toSize(10))),
+                  child: Row(
+                    children: [
+                      Text("Dark Mode",
+                          style: TextStyle(
+                              color: theme.colorScheme.onSurface,
+                              fontSize: toSize(17))),
+                      const Spacer(),
+                      Consumer<ThemeProvider>(
+                        builder: (context, themeProvider, child) {
+                          return Switch(
+                            value: themeProvider.isDarkMode,
+                            onChanged: (value) {
+                              themeProvider.toggleTheme();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: toSize(17)),
+                Container(
+                  height: toSize(269),
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: toSize(17), vertical: toSize(20)),
+                  decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(toSize(10))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -174,38 +175,33 @@ class _NurseProfileView
                         children: [
                           Text("What's New",
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
+                                  color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17))),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
                             child: SizedBox(
-                              height: toSize(24),
-                              width: toSize(24),
+                              height: toSize(20),
+                              width: toSize(20),
                               child: Image.asset(IconAssets.icBack,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimary
-                                      .withOpacity(0.3)),
+                                  color: theme.colorScheme.onSurface),
                             ),
                           )
                         ],
                       ),
+                      SizedBox(height: toSize(5)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                         child: Divider(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.1)),
+                            color:
+                                theme.colorScheme.background.withOpacity(0.5)),
                       ),
+                      SizedBox(height: toSize(5)),
                       Row(
                         children: [
                           Text("Version",
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
+                                  color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17))),
                           const Spacer(),
                           Text(
@@ -214,14 +210,14 @@ class _NurseProfileView
                           )
                         ],
                       ),
+                      SizedBox(height: toSize(5)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                         child: Divider(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.1)),
+                            color:
+                                theme.colorScheme.background.withOpacity(0.5)),
                       ),
+                      SizedBox(height: toSize(5)),
                       InkWell(
                         onTap: () {
                           pushScreen(Pages.terms);
@@ -230,34 +226,29 @@ class _NurseProfileView
                           children: [
                             Text("Terms of Service",
                                 style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
+                                    color: theme.colorScheme.onSurface,
                                     fontSize: toSize(17))),
                             const Spacer(),
                             RotatedBox(
                               quarterTurns: 2,
                               child: SizedBox(
-                                height: toSize(24),
-                                width: toSize(24),
+                                height: toSize(20),
+                                width: toSize(20),
                                 child: Image.asset(IconAssets.icBack,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary
-                                        .withOpacity(0.3)),
+                                    color: theme.colorScheme.onSurface),
                               ),
                             )
                           ],
                         ),
                       ),
+                      SizedBox(height: toSize(5)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                         child: Divider(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.1)),
+                            color:
+                                theme.colorScheme.background.withOpacity(0.5)),
                       ),
+                      SizedBox(height: toSize(5)),
                       InkWell(
                         onTap: () {
                           pushScreen(Pages.privacy);
@@ -266,87 +257,44 @@ class _NurseProfileView
                           children: [
                             Text("Privacy Policy",
                                 style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
+                                    color: theme.colorScheme.onSurface,
                                     fontSize: toSize(17))),
                             const Spacer(),
                             RotatedBox(
                               quarterTurns: 2,
                               child: SizedBox(
-                                height: toSize(24),
-                                width: toSize(24),
+                                height: toSize(20),
+                                width: toSize(20),
                                 child: Image.asset(IconAssets.icBack,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary
-                                        .withOpacity(0.3)),
+                                    color: theme.colorScheme.onSurface),
                               ),
                             )
                           ],
                         ),
                       ),
+                      SizedBox(height: toSize(5)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                         child: Divider(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.1)),
+                            color:
+                                theme.colorScheme.background.withOpacity(0.5)),
                       ),
-                      Row(
-                        children: [
-                          Text("Dark Mode",
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  fontSize: toSize(17))),
-                          const Spacer(),
-                          // Consumer<ThemeProvider>(
-                          //   builder: (context, themeProvider, child) {
-                          //     return Switch(
-                          //       value: themeProvider.isDarkMode,
-                          //       onChanged: (value) {
-                          //         themeProvider.toggleTheme();
-                          //       },
-                          //     );
-                          //   },
-                          // ),
-                        Switch(
-                            value: isDarkMode,
-                            onChanged: (isOn) {
-                              isOn
-                                  ? toggleTheme(ThemeMode.dark)
-                                  : toggleTheme(ThemeMode.light);
-                            },
-                          ),
-                        ],
+                      SizedBox(height: toSize(5)),
+                      InkWell(
+                        onTap: () {
+                          pushScreen(Pages.signIn, isAllowBack: false);
+                        },
+                        child: Row(
+                          children: [
+                            Text("Sign out",
+                                style: TextStyle(
+                                    color: theme.colorScheme.primary,
+                                    fontSize: toSize(17),
+                                    fontWeight: FontWeight.w700)),
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(bottom: toSize(100)),
-                  child: InkWell(
-                    onTap: () {
-                      pushScreen(Pages.signIn, isAllowBack: false);
-                    },
-                    child: Container(
-                        height: toSize(50),
-                        margin: EdgeInsets.symmetric(horizontal: toSize(35)),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(toSize(10)),
-                            color:
-                                HexColor(Global.mColors['pink_1'].toString())),
-                        child: Center(
-                            child: Text("Sign out",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                    fontSize: toSize(20))))),
                   ),
                 ),
               ],

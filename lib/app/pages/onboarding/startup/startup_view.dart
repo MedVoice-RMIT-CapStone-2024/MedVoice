@@ -4,9 +4,11 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as c
 import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/startup/startup_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
+import '../../../widgets/theme_provider.dart';
 
 class StartupView extends clean.View {
   StartupView({Key? key}) : super(key: key);
@@ -33,8 +35,9 @@ class _StartupView extends BaseStateView<StartupView, StartupController> {
   @override
   Widget body(BuildContext context, BaseController controller) {
     StartupController startupController = controller as StartupController;
+    ThemeData theme = Provider.of<ThemeProvider>(context, listen: false).themeData;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.primaryColor,
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
