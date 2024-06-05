@@ -1,9 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/widgets/theme.dart';
+import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
+import 'package:provider/provider.dart';
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
 import 'dart:async';
@@ -69,17 +70,44 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MedCare',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.transparent,
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // Define the default brightness and colors.
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pink,
+          primary: HexColor("#EC4B8B"),
+          onPrimary: HexColor("#FEF9EC"),
+          background: HexColor("#0D0221"),
+          secondary: HexColor("#FDE8E9"),
+          onSecondary: HexColor("#FEF9EC"),
+          tertiary: HexColor("#0099CC"),
+          onBackground: HexColor("#0D0221"),
+          brightness: Brightness.dark,
+        ),
+      ),
+      theme:
+      // Provider.of<ThemeProvider>(context).themeData,
+      ThemeData(
+        useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Poppins',
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        colorScheme: ColorScheme.light(
-          primary: HexColor(Global.mColors["blue_1"].toString()),
-          onPrimary: Colors.white,
+        hintColor: Colors.transparent,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pink,
+          background: HexColor("#FEF9EC"),
+          onBackground: HexColor("#EC4B8B"),
+          primary: HexColor(Global.mColors["pink_1"].toString()),
+          onPrimary: HexColor("#1F2232"),
+          secondary:
+              HexColor(Global.mColors['pink_1'].toString()).withOpacity(0.2),
+          onSecondary: HexColor("#0D0221"),
         ),
       ),
+      themeMode: ThemeMode.system,
       home: StartupView(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(

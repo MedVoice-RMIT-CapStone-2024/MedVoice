@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart' as clean;
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
+    as clean;
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
+import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
+import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../utils/global.dart';
+import '../../../utils/pages.dart';
 import 'medical_archive_controller.dart';
 
 class MedicalArchiveView extends clean.View {
@@ -21,18 +23,20 @@ class MedicalArchiveView extends clean.View {
 
 class _MedicalArchiveView
     extends BaseStateView<MedicalArchiveView, MedicalArchiveController> {
-  _MedicalArchiveView() : super(MedicalArchiveController());
+  _MedicalArchiveView()
+      : super(MedicalArchiveController(AudioRepositoryImpl()));
   MedicalArchiveController? _controller;
+  Map<String, bool> expandedTiles = {};
   bool toggleDeleteLetter = false;
 
   @override
   bool isInitialAppbar() {
-    return true;
+    return false;
   }
 
   @override
   String appBarTitle() {
-    return "Your library";
+    return "";
   }
 
   @override
@@ -46,141 +50,153 @@ class _MedicalArchiveView
   }
 
   @override
-  List<Widget>? rightMenu() {
-    return [
-      Row(
-        children: [
-          InkWell(
-            onTap: () {
-              if (_controller != null) {
-                if (_controller!.resetToggle) {
-                  if (_controller!.handleDeleteItems()) {
-                    showPopupWithAction(
-                        'You sure you want to delete these files', 'Yes', () {
-                      _controller!.onDeleteRecordings();
-                      toggleDeleteLetter = !toggleDeleteLetter;
-                      _controller!.refreshUI();
-                    }, 'Deleting these files?', 'No');
-                  } else {
-                    _controller!.resetToggle = !_controller!.resetToggle;
-                    toggleDeleteLetter = !toggleDeleteLetter;
-                    _controller!.refreshUI();
-                  }
-                } else {
-                  _controller!.resetToggle = !_controller!.resetToggle;
-                  toggleDeleteLetter = !toggleDeleteLetter;
-                  _controller!.refreshUI();
-                }
-              }
-            },
-            child: (!toggleDeleteLetter)
-                ? Container(
-                    margin: EdgeInsets.only(right: toSize(20)),
-                    height: toSize(24),
-                    width: toSize(22),
-                    child: Image.asset(IconAssets.icDeleteBin))
-                : Container(
-                    margin: EdgeInsets.only(right: toSize(20)),
-                    child: const Text('Delete',
-                        style: TextStyle(color: Colors.red))),
-          ),
-        ],
-      )
-    ];
+  void onStateCreated() {
+    if (_controller != null) {
+      for (var group in _controller!.filteredMappedData) {
+        expandedTiles[group.date] = false;
+      }
+    }
   }
 
   @override
   Widget body(BuildContext context, BaseController controller) {
     _controller = controller as MedicalArchiveController;
     return Scaffold(
-      backgroundColor: HexColor(Global.mColors["white_2"].toString()),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-        child:
-            (_controller!.sampleData.isNotEmpty) ? _recordList() : _emptyView(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+          child: (_controller!.dataLinks != null)
+              ? _recordContent()
+              : _emptyView(),
+        ),
       ),
     );
   }
 
-  Column _recordList() {
+  Widget _recordContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: toSize(25)),
-        Text("Voices Library", style: TextStyle(fontSize: toSize(30))),
+        SizedBox(height: toSize(38)),
+        Text(
+          "Voices Library",
+          style: TextStyle(
+              fontSize: toSize(40),
+              color: Theme.of(context).colorScheme.onSecondary,
+              fontWeight: FontWeight.w700),
+        ),
+        SizedBox(height: toSize(15)),
+        Text("Your recordings and transcripts will appear here.",
+            style: TextStyle(
+                fontSize: toSize(17),
+                color: Theme.of(context).colorScheme.onSecondary)),
         SizedBox(height: toSize(20)),
-        Text("MedVoice's recorded files saved will appear here.",
-            style: TextStyle(fontSize: toSize(17))),
-        SizedBox(height: toSize(35)),
         SizedBox(
-          height: toSize(500),
-          child: ListView.separated(
-            scrollDirection: Axis.vertical,
-            itemCount: _controller?.sampleData.length ?? 1,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _recordItems(index, _controller?.sampleData.length ?? 1);
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10);
-            },
-          ),
-        )
+            height: MediaQuery.of(context).size.height * 0.65,
+            child: _listViewWithGroupedItems(_controller!.filteredMappedData))
       ],
     );
   }
 
-  Widget _recordItems(int index, int length) {
-    return Container(
-      height: toSize(75),
-      padding: EdgeInsets.symmetric(vertical: toSize(12)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          (_controller!.resetToggle)
-              ? Center(
-                  child: InkWell(
-                  onTap: () {
-                    _controller!.onChooseRecord(index);
-                  },
-                  child: Container(
-                      margin: EdgeInsets.only(right: toSize(12)),
-                      height: toSize(20),
-                      width: toSize(20),
-                      child: (!_controller!.sampleData[index].isToggle!)
-                          ? Image.asset(IconAssets.icCheckBoxEmpty)
-                          : Image.asset(IconAssets.icCheckBoxFilled)),
-                ))
-              : const SizedBox(),
-          Image.asset(IconAssets.icRecordingMicrophone),
-          SizedBox(width: toSize(12)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: (!_controller!.resetToggle)
-                    ? MediaQuery.of(context).size.width * 0.7
-                    : MediaQuery.of(context).size.width * 0.63,
-                child: Text(_controller?.sampleData[index].recordingTitle ?? "",
+  Widget _listViewWithGroupedItems(List<GroupedDate> filteredMappedData) {
+    return ListView.builder(
+      itemCount: filteredMappedData.length,
+      itemBuilder: (context, index) {
+        return _dateListContent(filteredMappedData, index);
+      },
+    );
+  }
+
+  Widget _dateListContent(List<GroupedDate> filteredMappedData, int index) {
+    return ExpansionTile(
+      key: PageStorageKey<String>(filteredMappedData[index].date),
+      tilePadding: EdgeInsets.symmetric(horizontal: toSize(5)),
+      visualDensity: VisualDensity.compact,
+      initiallyExpanded: expandedTiles[filteredMappedData[index].date] ?? false,
+      onExpansionChanged: (bool expanded) {
+        onExpansionChanged(filteredMappedData[index].date, expanded);
+      },
+      title: _dateTitle(filteredMappedData[index].date),
+      children: List.generate(
+        filteredMappedData[index].items!.length,
+        (itemIndex) {
+          return _recordItems(
+              filteredMappedData[index].items![itemIndex], itemIndex);
+        },
+      ),
+    );
+  }
+
+  Widget _dateTitle(String item) {
+    return Text(
+      (_controller != null)
+          ? _controller!.reformatDateString(item, true, false)
+          : item,
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: toSize(18),
+          color: Theme.of(context).colorScheme.onSecondary),
+    );
+  }
+
+  Widget _recordItems(DisplayArchive item, int index) {
+    return InkWell(
+      onTap: () {
+        pushScreen(Pages.noteArchiveDetails, arguments: {
+          groupDateInfo: item,
+          audioLink: _controller!.dataLinks!.mUrls[index]
+        });
+      },
+      child: Container(
+        height: toSize(70),
+        padding: EdgeInsets.symmetric(vertical: toSize(10)),
+        margin: EdgeInsets.only(left: toSize(0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(IconAssets.icRecordingMicrophone),
+            SizedBox(width: toSize(6)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(item.patientName,
                     maxLines: 1,
                     style: TextStyle(
-                        overflow: TextOverflow.ellipsis, fontSize: toSize(17))),
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: toSize(16),
+                        color: Theme.of(context).colorScheme.onSecondary)),
+                const Spacer(),
+                Text(
+                    _controller!
+                        .reformatDateString(item.dateCreated, true, true),
+                    style: TextStyle(
+                        fontSize: toSize(14),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSecondary
+                            .withOpacity(0.8))),
+              ],
+            ),
+            const Spacer(),
+            Center(
+              child: RotatedBox(
+                quarterTurns: 2,
+                child: SizedBox(
+                  height: toSize(14),
+                  width: toSize(14),
+                  child: Image.asset(IconAssets.icBack,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.5)),
+                ),
               ),
-              SizedBox(height: toSize(5)),
-              Text(
-                  "${_controller?.sampleData[index].minuteDuration}m ${_controller?.sampleData[index].secondDuration}s  -  ${_controller?.sampleData[index].recordingSize}mb",
-                  style: TextStyle(fontSize: toSize(15))),
-            ],
-          ),
-          const Spacer(),
-          SizedBox(
-              height: toSize(24),
-              width: toSize(24),
-              child: Image.asset(IconAssets.icRecordingPlayButton,
-                  color: HexColor(Global.mColors["pink_1"].toString())))
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -206,5 +222,11 @@ class _MedicalArchiveView
         ),
       ),
     );
+  }
+
+  void onExpansionChanged(String date, bool expanded) {
+    setState(() {
+      expandedTiles[date] = expanded;
+    });
   }
 }
