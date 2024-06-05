@@ -1,16 +1,12 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
-<<<<<<< HEAD
-import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_view.dart';
-=======
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
->>>>>>> da2393e72d31bf094779dca02948f3e295e73646
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
@@ -31,9 +27,7 @@ class AppRouter {
 
   CupertinoPageRoute? getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       // case Pages.startup:
-      //   return _buildRoute(settings, StartupView());
 
       // case Pages.foodDetails:
       //   Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
@@ -71,16 +65,23 @@ class AppRouter {
         return _buildRoute(settings, InfoView());
 
       case Pages.audioPlayback:
-        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
-        return _buildRoute(settings, AudioPlaybackView(
-          recordingInfo: arguments[recordingInfo] as String,
-        ));
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            AudioPlaybackView(
+              recordingInfo: arguments[recordingInfo] as String,
+            ));
 
       case Pages.demoTempTranscript:
-        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
-        return _buildRoute(settings, DemoTempTranscriptView(
-          audioTranscriptInfo: arguments[audioTranscriptInfo] as AudioTranscriptInfo,
-        ));
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            DemoTempTranscriptView(
+              audioTranscriptInfo:
+                  arguments[audioTranscriptInfo] as AudioTranscriptInfo,
+            ));
 
       case Pages.terms:
         return _buildRoute(settings, TermsAndConditionsView());
@@ -89,11 +90,14 @@ class AppRouter {
         return _buildRoute(settings, PrivacyPolicyView());
 
       case Pages.noteArchiveDetails:
-        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
-        return _buildRoute(settings, NoteView(
-          groupDateInfo: arguments[groupDateInfo] as DisplayArchive,
-          audioLink: arguments[audioLink] as String,
-        ));
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            NoteView(
+              groupDateInfo: arguments[groupDateInfo] as DisplayArchive,
+              audioLink: arguments[audioLink] as String,
+            ));
 
       default:
         return null;
