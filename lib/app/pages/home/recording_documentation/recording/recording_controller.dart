@@ -76,10 +76,10 @@ class RecordingController extends BaseController {
       refreshUI();
     });
 
-      speech = SpeechToText();
-      _initSpeech();
-      // modelLoader = ModelLoader();
-      // _initSpeech();
+    speech = SpeechToText();
+    _initSpeech();
+    // modelLoader = ModelLoader();
+    // _initSpeech();
   }
 
   void _initSpeech() async {
@@ -137,7 +137,8 @@ class RecordingController extends BaseController {
   void onListener() {
     _presenter.onUploadRecordingSuccess = (bool responses) {
       onDelete(pathForDelete);
-      onUploadAudioInfo();
+      // onUploadAudioInfo();
+      //  onUploadLibraryTranscript(data!); => This is where this function is called in the future
       debugPrint("Upload audio succeed");
     };
     _presenter.onUploadRecordingFailed = (e) {
@@ -244,7 +245,9 @@ class RecordingController extends BaseController {
     recordDuration = 0;
     final path = await audioRecorder.stop();
     if (path != null) {
-      view.showPopupWithAction('Recording finished! Kindly wait as audio is now being processed', 'okay');
+      view.showPopupWithAction(
+          'Recording finished! Kindly wait as audio is now being processed',
+          'okay');
       audioPath = path;
       pathForDelete = path;
     } else {
