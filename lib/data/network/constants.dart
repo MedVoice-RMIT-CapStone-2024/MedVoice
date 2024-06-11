@@ -7,7 +7,7 @@ class Constants {
   static String baseballList = 'https://api.sampleapis.com/baseball/hitsSingleSeason';
 
   // fetching audio
-  static String audioArchive = "${firstBitUrl}get_audio/1";
+  static String audioArchive = "${firstBitUrl}get_audios_from_user/1";
 
   // uploading audio info to backend
   static String uploadAudioInfo = "${firstBitUrl}process_audio_v2?user_id={user_id}&file_name={file_name}";

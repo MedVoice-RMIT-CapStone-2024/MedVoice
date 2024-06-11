@@ -11,7 +11,6 @@ import 'package:record/record.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:vosk_flutter_2/vosk_flutter_2.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../domain/entities/recording/audio_transcript_info.dart';
@@ -47,16 +46,6 @@ class RecordingController extends BaseController {
   String pathForDelete = '';
   ThemeMode themeMode = ThemeMode.system;
   PostTranscriptRequest? dataRequest;
-  // ModelLoader? modelLoader;
-  // VoskFlutterPlugin vosk = VoskFlutterPlugin.instance();
-  // Model? modelController;
-  // Recognizer? recognizerController;
-  // SpeechService? speechServiceController;
-  // String modelName = 'vosk-model-small-en-us-0.15';
-  // int sampleRate = 16000;
-  // String? error;
-  // String? partialResults;
-  // String? finalResults;
 
   RecordingController(audioRepository)
       : _presenter = RecordingPresenter(audioRepository) {
@@ -78,8 +67,6 @@ class RecordingController extends BaseController {
 
     speech = SpeechToText();
     _initSpeech();
-    // modelLoader = ModelLoader();
-    // _initSpeech();
   }
 
   void _initSpeech() async {
@@ -228,10 +215,6 @@ class RecordingController extends BaseController {
       listenOptions:
           SpeechListenOptions(cancelOnError: false, partialResults: true),
     );
-    // if (speechServiceController != null) {
-    //   debugPrint("INITIALIZE LIBRARY CHECKPOINT");
-    //   await speechServiceController!.start();
-    // }
     speechEnabled = true;
     refreshUI();
   }
@@ -254,36 +237,10 @@ class RecordingController extends BaseController {
       debugPrint('path is empty');
     }
     await speech!.stop();
-    // if (speechServiceController != null) {
-    //   debugPrint("FINALIZE LIBRARY CHECKPOINT");
-    //   await speechServiceController!.stop();
-    // }
     onSaveRecordingToList(tempName, duration, audioPath);
     recordingName.clear();
     refreshUI();
   }
-  //
-  // void onVoskSpeechResults() {
-  //   debugPrint("Did it go into PARTIAL SPEECH");
-  //   if (speechServiceController != null) {
-  //     speechServiceController!.onPartial().listen((data) {
-  //       partialResults = data.toString();
-  //       debugPrint("Did it go into PARTIAL SPEECH data: $partialResults");
-  //     });
-  //     refreshUI();
-  //   }
-  // }
-  //
-  // void onVoskSpeechFinalResults() {
-  //   debugPrint("Did it go into FINAL SPEECH");
-  //   if (speechServiceController != null) {
-  //     speechServiceController!.onResult().listen((data) {
-  //       finalResults = data.toString();
-  //       debugPrint("Did it go into FINAL SPEECH data: $finalResults");
-  //     });
-  //     refreshUI();
-  //   }
-  // }
 
   void onSpeechResult(SpeechRecognitionResult result) {
     debugPrint("Speech recognized: ${result.recognizedWords}");

@@ -70,44 +70,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MedCare',
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        // Define the default brightness and colors.
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.pink,
-          primary: HexColor("#EC4B8B"),
-          onPrimary: HexColor("#FEF9EC"),
-          background: HexColor("#0D0221"),
-          secondary: HexColor("#FDE8E9"),
-          onSecondary: HexColor("#FEF9EC"),
-          tertiary: HexColor("#0099CC"),
-          onBackground: HexColor("#0D0221"),
-          brightness: Brightness.dark,
-        ),
-      ),
-      theme:
-      // Provider.of<ThemeProvider>(context).themeData,
-      ThemeData(
-        useMaterial3: true,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hintColor: Colors.transparent,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.pink,
-          background: HexColor("#FEF9EC"),
-          onBackground: HexColor("#EC4B8B"),
-          primary: HexColor(Global.mColors["pink_1"].toString()),
-          onPrimary: HexColor("#1F2232"),
-          secondary:
-              HexColor(Global.mColors['pink_1'].toString()).withOpacity(0.2),
-          onSecondary: HexColor("#0D0221"),
-        ),
-      ),
-      themeMode: ThemeMode.system,
+      theme: Provider.of<ThemeProvider>(context).themeData,
       home: StartupView(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
