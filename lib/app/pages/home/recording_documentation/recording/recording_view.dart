@@ -6,10 +6,12 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
 import '../../../../utils/global.dart';
+import '../../../../widgets/theme_provider.dart';
 
 class RecordingView extends clean.View {
   RecordingView({Key? key}) : super(key: key);
@@ -50,9 +52,9 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
   @override
   Widget body(BuildContext context, BaseController controller) {
     recordingController = controller as RecordingController;
+    ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -63,7 +65,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
             Text(
                 "Confidence level: ${recordingController!.confidenceLevel * 100}%",
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: theme.colorScheme.onBackground,
                 )),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -74,14 +76,14 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                     height: toSize(400),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.symmetric(
                         horizontal: toSize(15), vertical: toSize(15)),
                     child: Text(recordingController!.guideText,
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: theme.colorScheme.onSurface,
                             fontFamily: 'NunitoSans',
                             fontWeight: FontWeight.w500,
                             fontSize: toSize(18)))),
@@ -94,7 +96,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
                 animate: true,
-                glowColor: HexColor(Global.mColors['pink_1'].toString()),
+                glowColor: theme.colorScheme.primary,
                 glowRadiusFactor: 0.3,
                 duration: const Duration(milliseconds: 1700),
                 repeat: true,
@@ -111,7 +113,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                         width: toSize(80),
                         decoration: BoxDecoration(
                             color:
-                                HexColor(Global.mColors['pink_1'].toString()),
+                            theme.colorScheme.primary,
                             borderRadius: BorderRadius.circular(50)),
                         child: Icon(
                             recordingController!.speechEnabled

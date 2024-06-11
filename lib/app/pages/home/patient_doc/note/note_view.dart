@@ -11,9 +11,11 @@ import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
 import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
 import '../../../../utils/global.dart';
+import '../../../../widgets/theme_provider.dart';
 
 const groupDateInfo = 'groupDateInfo';
 const audioLink = 'audioLink';
@@ -64,22 +66,23 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
 
   @override
   Widget body(BuildContext context, BaseController controller) {
+    ThemeData theme =
+        Provider.of<ThemeProvider>(context, listen: false).themeData;
     _controller = controller as NoteController;
     return (_controller!.jsonData != null)
         ? (_controller!.jsonData!.mMessage!.isEmpty)
-            ? _jsonTranscriptContent()
+            ? _jsonTranscriptContent(theme)
             : (_controller!.textData != null)
                 ? _textTranscriptContent(
-                    _controller!.textData!, widget.groupDateInfo)
+                    _controller!.textData!, widget.groupDateInfo, theme)
                 : const SizedBox()
         : const SizedBox();
   }
 
-  Widget _textTranscriptContent(
-      GetLibraryTranscriptTextInfo textData, DisplayArchive displayData) {
+  Widget _textTranscriptContent(GetLibraryTranscriptTextInfo textData,
+      DisplayArchive displayData, ThemeData theme) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-
       child: Column(
         children: [
           Stack(
@@ -90,8 +93,10 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: toSize(80)),
-                    const Text("Replay audio"),
+                    SizedBox(height: toSize(60)),
+                    Text("Replay audio",
+                        style:
+                            TextStyle(color: theme.colorScheme.onBackground)),
                     SizedBox(height: toSize(20)),
                     InkWell(
                       onTap: () {
@@ -108,154 +113,16 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                         height: toSize(45),
                         width: toSize(45),
                         decoration: BoxDecoration(
-                            color:
-                            HexColor(Global.mColors['pink_1'].toString()),
+                            color: theme.colorScheme.primary,
                             borderRadius: BorderRadius.circular(50)),
                         child: _controller!.isPlaying
-                            ? const Icon(
-                          Icons.pause,
-                          color: Colors.white,
-                        )
-                            : const Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: toSize(23), top: toSize(50)),
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            onBack();
-                          },
-                          child: Container(
-                              height: toSize(34),
-                              width: toSize(34),
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(color: Colors.grey)),
-                              child: Image.asset(IconAssets.icBack,
-                                  color: Colors.white)),
-                        ),
-                        SizedBox(height: toSize(130)),
-                        Container(
-                          height: toSize(28),
-                          width: toSize(90),
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Center(
-                              child: Text(
-                                  _controller!.convertDateTime(
-                                      widget.groupDateInfo.dateCreated),
-                                  style: TextStyle(fontSize: toSize(12)))),
-                        )
-                      ],
-                    )),
-              )
-            ],
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: toSize(10)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: toSize(20)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Recording name'),
-                      Text(displayData.dateCreated),
-                    ],
-                  ),
-                  SizedBox(height: toSize(10)),
-                  _libraryContainerContent(displayData.patientName, false),
-                  SizedBox(height: toSize(20)),
-                  const Text('Content'),
-                  SizedBox(height: toSize(10)),
-                  _libraryContainerContent(
-                      (textData.mMessage!.isEmpty)
-                          ? textData.mTranscript ?? ""
-                          : "No file found with the given ID",
-                      true),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _libraryContainerContent(String label, bool isTranscript) {
-    return Container(
-      width: double.infinity,
-      height: (isTranscript) ? MediaQuery.of(context).size.height * 0.4 : null,
-      padding: EdgeInsets.all(toSize(5)),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: toSize(0.5)),
-          borderRadius: BorderRadius.circular(toSize(8)),
-          color: Colors.white),
-      child: Text(label,
-          style: _customTextStyle(
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          )),
-    );
-  }
-
-  Widget _jsonTranscriptContent() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              SizedBox(
-                height: toSize(250),
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: toSize(80)),
-                    const Text("Replay audio"),
-                    SizedBox(height: toSize(20)),
-                    InkWell(
-                      onTap: () {
-                        if (!_controller!.isPlaying) {
-                          _controller!.player.setUrl(widget.audioLink);
-                          _controller!.player.play();
-                        } else {
-                          _controller!.player.stop();
-                        }
-                        _controller!.isPlaying = !_controller!.isPlaying;
-                        _controller!.refreshUI();
-                      },
-                      child: Container(
-                        height: toSize(45),
-                        width: toSize(45),
-                        decoration: BoxDecoration(
-                            color:
-                                HexColor(Global.mColors['pink_1'].toString()),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: _controller!.isPlaying
-                            ? const Icon(
+                            ? Icon(
                                 Icons.pause,
-                                color: Colors.white,
+                                color: theme.colorScheme.background,
                               )
-                            : const Icon(
+                            : Icon(
                                 Icons.play_arrow,
-                                color: Colors.white,
+                                color: theme.colorScheme.background,
                               ),
                       ),
                     ),
@@ -278,53 +145,62 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                               width: toSize(34),
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  color: Colors.black,
+                                  color: theme.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(color: Colors.grey)),
+                                  border: Border.all(color: theme.colorScheme.surface
+                                      .withOpacity(0.7))),
                               child: Image.asset(IconAssets.icBack,
-                                  color: Colors.white)),
+                                  color: theme.colorScheme.onPrimary)),
                         ),
-                        SizedBox(height: toSize(130)),
+                        SizedBox(height: toSize(150)),
                         Container(
-                          height: toSize(28),
+                          height: toSize(27),
                           width: toSize(90),
                           decoration: BoxDecoration(
-                              color: Colors.black,
-                              border: Border.all(color: Colors.grey),
+                              color: theme.colorScheme.primary,
+                              border: Border.all(color: theme.colorScheme.surface
+                                  .withOpacity(0.7)),
                               borderRadius: BorderRadius.circular(25)),
                           child: Center(
                               child: Text(
                                   _controller!.convertDateTime(
                                       widget.groupDateInfo.dateCreated),
-                                  style: TextStyle(fontSize: toSize(12)))),
+                                  style: TextStyle(
+                                      fontSize: toSize(12),
+                                      color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w700))),
                         )
                       ],
                     )),
               )
             ],
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                borderRadius: BorderRadius.circular(4)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: toSize(10)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _contentLabel("Patient Information"),
-                SizedBox(height: toSize(5)),
-                _basicContentRow(
-                    'Name', _controller!.jsonData!.mPatientName, false),
-                _basicContentRow(
-                    'Age', _controller!.jsonData!.mPatientAge, false),
-                _basicContentRow(
-                    'Gender', _controller!.jsonData!.mPatientGender, true),
+                SizedBox(height: toSize(20)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Recording name',
+                        style:
+                            TextStyle(color: theme.colorScheme.onBackground)),
+                    Text(displayData.dateCreated),
+                  ],
+                ),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Diagnosis"),
-                _expansionTileDiagnosis(),
-                _contentLabel("Treatment"),
-                _expansionTileTreatment(),
-                _contentLabel("Health Vitals"),
-                _expansionTileVitals(),
+                _libraryContainerContent(displayData.patientName, false, theme),
+                SizedBox(height: toSize(20)),
+                Text('Content',
+                    style: TextStyle(color: theme.colorScheme.onBackground)),
+                SizedBox(height: toSize(10)),
+                _libraryContainerContent(
+                    (textData.mMessage!.isEmpty)
+                        ? textData.mTranscript ?? ""
+                        : "No file found with the given ID",
+                    true,
+                    theme),
               ],
             ),
           ),
@@ -333,47 +209,203 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     );
   }
 
-  Widget _expansionTileVitals() {
+  Widget _libraryContainerContent(
+      String label, bool isTranscript, ThemeData theme) {
+    return Container(
+      width: double.infinity,
+      height: (isTranscript) ? MediaQuery.of(context).size.height * 0.4 : null,
+      padding: EdgeInsets.all(toSize(10)),
+      decoration: BoxDecoration(
+          border: Border.all(color: theme.colorScheme.onSurface, width: toSize(0.5)),
+          borderRadius: BorderRadius.circular(toSize(8)),
+          color: theme.colorScheme.surface),
+      child: Text(label,
+          style: _customTextStyle(
+            fontWeight: FontWeight.w400,
+            color: theme.colorScheme.onSurface,
+          )),
+    );
+  }
+
+  Widget _jsonTranscriptContent(ThemeData theme) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              SizedBox(
+                height: toSize(270),
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: toSize(60)),
+                    Text("Replay audio",
+                        style:
+                            TextStyle(color: theme.colorScheme.onBackground)),
+                    SizedBox(height: toSize(20)),
+                    InkWell(
+                      onTap: () {
+                        if (!_controller!.isPlaying) {
+                          _controller!.player.setUrl(widget.audioLink);
+                          _controller!.player.play();
+                        } else {
+                          _controller!.player.stop();
+                        }
+                        _controller!.isPlaying = !_controller!.isPlaying;
+                        _controller!.refreshUI();
+                      },
+                      child: Container(
+                        height: toSize(45),
+                        width: toSize(45),
+                        decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: _controller!.isPlaying
+                            ? Icon(
+                                Icons.pause,
+                                color: theme.colorScheme.background,
+                              )
+                            : Icon(
+                                Icons.play_arrow,
+                                color: theme.colorScheme.background,
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: toSize(23), top: toSize(50)),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            onBack();
+                          },
+                          child: Container(
+                              height: toSize(34),
+                              width: toSize(34),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: theme.colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                      color: theme.colorScheme.surface
+                                          .withOpacity(0.7))),
+                              child: Image.asset(IconAssets.icBack,
+                                  color: theme.colorScheme.onPrimary)),
+                        ),
+                        SizedBox(height: toSize(150)),
+                        Container(
+                          height: toSize(27),
+                          width: toSize(90),
+                          decoration: BoxDecoration(
+                              color: theme.colorScheme.primary,
+                              border: Border.all(
+                                  color: theme.colorScheme.surface
+                                      .withOpacity(0.7)),
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Center(
+                              child: Text(
+                                  _controller!.convertDateTime(
+                                      widget.groupDateInfo.dateCreated),
+                                  style: TextStyle(
+                                      fontSize: toSize(12),
+                                      color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w700))),
+                        )
+                      ],
+                    )),
+              )
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: theme.colorScheme.background,
+                borderRadius: BorderRadius.circular(4)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _contentLabel("Patient Information", theme),
+                SizedBox(height: toSize(5)),
+                _basicContentRow(
+                    'Name', _controller!.jsonData!.mPatientName, false, theme),
+                _basicContentRow(
+                    'Age', _controller!.jsonData!.mPatientAge, false, theme),
+                _basicContentRow('Gender',
+                    _controller!.jsonData!.mPatientGender, true, theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Diagnosis", theme),
+                _expansionTileDiagnosis(theme),
+                _contentLabel("Treatment", theme),
+                _expansionTileTreatment(theme),
+                _contentLabel("Health Vitals", theme),
+                _expansionTileVitals(theme),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _expansionTileVitals(ThemeData theme) {
     return ExpansionTile(
       title: Text(
           'Vital count: ${_controller!.jsonData!.mHealthVitals?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
+      textColor: theme.colorScheme.primary,
+      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       children: [
-        SizedBox(
-          height: toSize(110),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+              minHeight: toSize(110)),
           child: ListView.separated(
+            shrinkWrap: true,
             padding: EdgeInsets.zero,
             itemCount: _controller!.jsonData!.mHealthVitals?.length ?? 0,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Status: ${_controller!.jsonData!.mHealthVitals?[index].mStatus}",
-                      style:
-                          TextStyle(color: Colors.white, fontSize: toSize(15)),
-                    ),
-                    SizedBox(height: toSize(12)),
-                    Text(
-                      "Value: ${_controller!.jsonData!.mHealthVitals?[index].mValue}",
-                      style:
-                          TextStyle(color: Colors.white, fontSize: toSize(15)),
-                    ),
-                    SizedBox(height: toSize(12)),
-                    Text(
-                      "Units: ${_controller!.jsonData!.mHealthVitals?[index].mUnits}",
-                      style:
-                          TextStyle(color: Colors.white, fontSize: toSize(15)),
-                    ),
-                  ],
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: ListTile(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Status: ${_controller!.jsonData!.mHealthVitals?[index].mStatus}",
+                        style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: toSize(15)),
+                      ),
+                      SizedBox(height: toSize(12)),
+                      Text(
+                        "Value: ${_controller!.jsonData!.mHealthVitals?[index].mValue}",
+                        style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: toSize(15)),
+                      ),
+                      SizedBox(height: toSize(12)),
+                      Text(
+                        "Units: ${_controller!.jsonData!.mHealthVitals?[index].mUnits}",
+                        style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: toSize(15)),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
             separatorBuilder: (context, index) {
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(10)),
-                child: const Divider(color: Colors.grey),
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: Divider(
+                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
               );
             },
           ),
@@ -382,39 +414,53 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     );
   }
 
-  Widget _expansionTileTreatment() {
+  Widget _expansionTileTreatment(ThemeData theme) {
     return ExpansionTile(
+      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
           'Treatment count: ${_controller!.jsonData!.mMedicalTreatment?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
+      textColor: theme.colorScheme.primary,
       children: [
-        SizedBox(
-          height: toSize(80),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+              minHeight: toSize(80)),
           child: ListView.separated(
+            shrinkWrap: true,
             padding: EdgeInsets.zero,
             itemCount: _controller!.jsonData!.mMedicalTreatment?.length ?? 0,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Name: ${_controller!.jsonData!.mMedicalTreatment?[index].mName}",
-                      style:
-                          TextStyle(color: Colors.white, fontSize: toSize(15)),
-                    ),
-                    SizedBox(height: toSize(12)),
-                    Text(
-                      "Prescription: ${_controller!.jsonData!.mMedicalTreatment?[index].mPrescription}",
-                      style:
-                          TextStyle(color: Colors.white, fontSize: toSize(15)),
-                    ),
-                  ],
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: ListTile(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Name: ${_controller!.jsonData!.mMedicalTreatment?[index].mName}",
+                        style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: toSize(15)),
+                      ),
+                      SizedBox(height: toSize(12)),
+                      Text(
+                        "Prescription: ${_controller!.jsonData!.mMedicalTreatment?[index].mPrescription}",
+                        style: TextStyle(
+                            color: theme.colorScheme.onSurface,
+                            fontSize: toSize(15)),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
             separatorBuilder: (context, index) {
-              return const Divider(color: Colors.grey);
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: Divider(
+                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
+              );
             },
           ),
         ),
@@ -422,28 +468,41 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     );
   }
 
-  Widget _expansionTileDiagnosis() {
+  Widget _expansionTileDiagnosis(ThemeData theme) {
     return ExpansionTile(
+      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
           'Diagnosis count: ${_controller!.jsonData!.mMedicalDiagnosis?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
+      textColor: theme.colorScheme.primary,
       children: [
-        SizedBox(
-          height: toSize(65),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+              minHeight: toSize(65)),
           child: ListView.separated(
+            shrinkWrap: true,
             padding: EdgeInsets.zero,
             itemCount: _controller!.jsonData!.mMedicalDiagnosis?.length ?? 0,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  _controller!.jsonData!.mMedicalDiagnosis?[index].mName ??
-                      "N/A",
-                  style: TextStyle(color: Colors.white, fontSize: toSize(15)),
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: ListTile(
+                  title: Text(
+                    "Name: ${_controller!.jsonData!.mMedicalDiagnosis?[index].mName}",
+                    style: TextStyle(
+                        fontSize: toSize(15),
+                        color: theme.colorScheme.onSurface),
+                  ),
                 ),
               );
             },
             separatorBuilder: (context, index) {
-              return const Divider(color: Colors.grey);
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                child: Divider(
+                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
+              );
             },
           ),
         ),
@@ -451,49 +510,59 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     );
   }
 
-  Widget _contentLabel(String label) {
+  Widget _contentLabel(String label, ThemeData theme) {
     return Container(
         width: double.infinity,
         height: toSize(50),
         decoration: BoxDecoration(
-          border: Border(
-              top: BorderSide(
-                  color: Colors.white.withOpacity(0.4), width: toSize(2)),
-              bottom: BorderSide(
-                  color: Colors.white.withOpacity(0.4), width: toSize(2))),
-          color: Theme.of(context).colorScheme.primary,
+          // border: Border(
+              // top: BorderSide(
+              //     color: theme.colorScheme.primary.withOpacity(0.7),
+              //     width: toSize(2)),
+              // bottom: BorderSide(
+              //     color: theme.colorScheme.primary.withOpacity(0.7),
+              //     width: toSize(2))),
+          color: theme.colorScheme.surface,
         ),
         padding:
-            EdgeInsets.symmetric(horizontal: toSize(15), vertical: toSize(7)),
+            EdgeInsets.symmetric(horizontal: toSize(20), vertical: toSize(7)),
         child: Row(children: [
           Text(label,
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))
+              style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700))
         ]));
   }
 
-  Widget _basicContentRow(String label, dynamic value, bool isLastItem) {
+  Widget _basicContentRow(
+      String label, dynamic value, bool isLastItem, ThemeData theme) {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: toSize(15)),
+          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
           height: toSize(40),
           child: Row(
             children: [
               Text("$label:",
-                  style: const TextStyle(fontWeight: FontWeight.w700)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: theme.colorScheme.onSurface)),
               const Spacer(),
-              Text((value is String)
-                  ? value
-                  : (value is int)
-                      ? value.toString()
-                      : "N/A")
+              Text(
+                  (value is String)
+                      ? value
+                      : (value is int)
+                          ? value.toString()
+                          : "N/A",
+                  style: TextStyle(color: theme.colorScheme.onSurface))
             ],
           ),
         ),
         (!isLastItem)
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: toSize(15)),
-                child: const Divider(color: Colors.grey),
+                child: Divider(
+                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
               )
             : const SizedBox(),
       ],

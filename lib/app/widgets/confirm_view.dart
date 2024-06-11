@@ -11,7 +11,6 @@ class ConfirmView extends StatelessWidget {
   final String? titleSecondButton;
   final VoidCallback? onPressEvent;
   final VoidCallback? onPressSecondEvent;
-  final bool? acceptByRequester;
 
   const ConfirmView(
       {Key? key,
@@ -21,7 +20,6 @@ class ConfirmView extends StatelessWidget {
         this.titleSecondButton,
         required this.onPressEvent,
         this.onPressSecondEvent,
-        this.acceptByRequester
       })
       : super(key: key);
 
@@ -46,12 +44,7 @@ class ConfirmView extends StatelessWidget {
                     color: Colors.white,
                   ),
                   child: Column(children: [
-                    acceptByRequester != null && acceptByRequester == true
-                        ? Padding(
-                        padding: EdgeInsets.only(bottom: toSize(22),top: toSize(24)),
-                        child: Image.asset(
-                            IconAssets.icAcceptByRequester, width: toSize(68),height: toSize(49)))
-                        : const SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     (title != null)
                         ? Padding(
                         padding: const EdgeInsets.fromLTRB(19, 0, 19, 15),

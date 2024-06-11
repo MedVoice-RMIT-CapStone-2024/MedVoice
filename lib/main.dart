@@ -13,7 +13,6 @@ void main() async {
     // Add other configuration parameters as needed
   );
   Widget app = await initializeApp(devAppConfig);
-  // runApp(ChangeNotifierProvider(
-  //     create: (context) => ThemeProvider(), child: RestartWidget(child: app)));
-  runApp(RestartWidget(child: app));
+  runApp(ChangeNotifierProvider(
+      create: (context) => ThemeProvider(), child: RestartWidget(child: app)));
 }
