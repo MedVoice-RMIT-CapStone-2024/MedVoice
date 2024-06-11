@@ -123,6 +123,7 @@ class RecordingController extends BaseController {
   @override
   void onListener() {
     _presenter.onUploadRecordingSuccess = (bool responses) {
+      onUploadLibraryTranscript();
       onDelete(pathForDelete);
       // onUploadAudioInfo();
       //  onUploadLibraryTranscript(data!); => This is where this function is called in the future
@@ -133,23 +134,10 @@ class RecordingController extends BaseController {
       hideLoadingProgress();
       debugPrint("Upload audio failed");
     };
-    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
-      data = response;
-      if (data != null) {
-        onUploadLibraryTranscript(data!);
-      }
-      hideLoadingProgress();
-      debugPrint("Upload audio info succeed");
-    };
-    _presenter.onUploadAudioInfoFailed = (e) {
-      view.showErrorFromServer("Upload audio info failed: $e");
-      hideLoadingProgress();
-      debugPrint("Upload audio info failed");
-    };
     _presenter.onUploadLibraryTranscriptSuccess =
         (LibraryTranscriptInfo response) {
       debugPrint(
-          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscriptUrl}");
+          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscript}");
       hideLoadingProgress();
     };
     _presenter.onUploadLibraryTranscriptFailed = (e) {
@@ -274,8 +262,8 @@ class RecordingController extends BaseController {
     _presenter.executeUploadAudioInfo(uploadRecordingRequest!);
   }
 
-  void onUploadLibraryTranscript(AudioTranscriptInfo data) {
-    dataRequest = PostTranscriptRequest(data.mFileId, [guideText]);
+  void onUploadLibraryTranscript() {
+    dataRequest = PostTranscriptRequest(tempName, [guideText]);
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 

@@ -1,8 +1,8 @@
 class PostTranscriptRequest {
-  String? fileId = '';
+  String? fileName = '';
   List<String>? transcript = [];
 
-  PostTranscriptRequest(this.fileId, this.transcript);
+  PostTranscriptRequest(this.fileName, this.transcript);
 
   PostTranscriptRequest.buildDefault();
 
