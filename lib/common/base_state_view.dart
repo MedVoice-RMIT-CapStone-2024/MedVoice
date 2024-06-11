@@ -231,6 +231,14 @@ abstract class BaseStateView<Page extends clean.View,
                                   : Container(),
                               elevation: 0,
                               actions: rightMenu(),
+                        bottom: PreferredSize(
+                          preferredSize: Size(MediaQuery.of(context).size.width, 1),
+                          child: Divider(
+                            color: Colors.black.withOpacity(0.1),
+                            height: 1,
+                            thickness: 1,
+                          ),
+                        ),
                             )
                           : null,
                       body: (_isDelayed)

@@ -40,6 +40,10 @@ class Global {
     "blue_15": "#030E1E",
     "blue_16": "#030E1E",
     "blue_17": "#023179",
+    "blue_18": "#C3E6FF",
+    "blue_19": "#3E8BFF",
+    "blue_20": "#0095FF",
+    "blue_21": "#E7F5FF",
     "green": "#4CAF50",
     "green_2": "#125C66",
     "green_3": "#134E54",
@@ -118,4 +122,6 @@ class Global {
   static bool isDisableHttpLogging = false;
 
   static String bucketName = "medvoice_audio_bucket";
+
+  static bool isSpeechServiceInitialized = false;
 }

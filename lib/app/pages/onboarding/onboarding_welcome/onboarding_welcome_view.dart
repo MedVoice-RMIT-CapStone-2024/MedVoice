@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
-import '../../../utils/global.dart';
 import '../../../utils/module_utils.dart';
 import '../../../utils/pages.dart';
 import '../../../widgets/theme_provider.dart';
@@ -111,6 +109,7 @@ class _OnBoardingWelcomeView
                   height: toSize(40),
                   width: toSize(104),
                   key: ValueKey<int>(_controller.currentStep),
+                  color: theme.colorScheme.primary,
                 ),
                 transitionBuilder: (child, animation) {
                   return FadeTransition(
@@ -146,7 +145,7 @@ class _OnBoardingWelcomeView
                   width: toSize(319),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: HexColor(Global.mColors['pink_1'].toString())),
+                      color: theme.colorScheme.primary),
                   child: Center(
                       child: Text("Get Started",
                           style: TextStyle(
@@ -174,7 +173,7 @@ class _OnBoardingWelcomeView
                         style: TextStyle(
                             fontSize: toSize(17),
                             color:
-                                HexColor(Global.mColors['pink_1'].toString()),
+                                theme.colorScheme.primary,
                             fontWeight: FontWeight.bold),
                       ),
                     ],

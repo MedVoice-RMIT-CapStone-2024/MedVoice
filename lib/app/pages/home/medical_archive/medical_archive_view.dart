@@ -162,7 +162,7 @@ class _MedicalArchiveView
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(IconAssets.icRecordingMicrophone),
+            Image.asset(IconAssets.icRecordingMicrophone, color: theme.colorScheme.primary),
             SizedBox(width: toSize(15)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
@@ -12,6 +14,7 @@ import '../../../utils/global.dart';
 import '../../../widgets/theme_provider.dart';
 import '../medical_archive/medical_archive_view.dart';
 import '../recording_documentation/recording/recording_view.dart';
+import '../recording_documentation/recording_android/recording_android_view.dart';
 import 'main_controller.dart';
 
 class MainView extends clean.View {
@@ -45,7 +48,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
     tabs = [
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
-      RecordingView(),
+      (Platform.isIOS) ? RecordingView() : RecordingAndroidView(),
       NurseProfileView(),
     ];
   }
@@ -78,20 +81,25 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                     primaryColor: Colors.transparent),
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                        //offset: Offset(0, 4),
-                        color: Colors.black.withOpacity(0.1), //edited
-                        spreadRadius: 2,
-                        blurRadius: 11 //edited
-                        )
-                  ]),
-                  height: 80,
+                  decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      boxShadow: [
+                        BoxShadow(
+                            //offset: Offset(0, 4),
+                            color: Colors.black.withOpacity(0.1), //edited
+                            spreadRadius: 2,
+                            blurRadius: 11 //edited
+                            )
+                      ],
+                      border: Border.all(color: Colors.black.withOpacity(0.1)),
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24))),
+                  height: 82,
                   child: BottomNavigationBar(
                     elevation: 0,
                     type: BottomNavigationBarType.fixed,
                     onTap: onTapped,
-                    backgroundColor: theme.colorScheme.surface,
                     currentIndex: mMainController!.currentTabIndex,
                     showSelectedLabels: false,
                     showUnselectedLabels: false,
@@ -99,8 +107,10 @@ class _MainView extends BaseStateView<MainView, MainController> {
                       // Add _tab([index], [asset location], [title underneath the icon]
                       _tab(0, "assets/main_assets/ic_medical_archive",
                           "Archive", theme),
-                      _tab(1, "assets/main_assets/ic_voice_recording", "Record", theme),
-                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile", theme),
+                      _tab(1, "assets/main_assets/ic_voice_recording", "Record",
+                          theme),
+                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile",
+                          theme),
                     ],
                   ),
                 ),
@@ -111,7 +121,8 @@ class _MainView extends BaseStateView<MainView, MainController> {
     ]);
   }
 
-  BottomNavigationBarItem _tab(int index, String? imageAsset, String namePage, ThemeData theme) {
+  BottomNavigationBarItem _tab(
+      int index, String? imageAsset, String namePage, ThemeData theme) {
     int badgeNumber = -1;
     if (index == 0 || index == 1 || index == 3 || index == 4) {
       badgeNumber = 0;
