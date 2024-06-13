@@ -108,11 +108,10 @@ class AudioRepositoryImpl implements AudioRepository {
     try {
       body = await HttpHelper.invokeHttp(
         Uri.parse(Constants.uploadAudioInfo
-            .replaceAll("{user_id}", request.userId ?? "")
-            .replaceAll("{file_name}", request.fileName ?? "")),
+            .replaceAll("{file_id}", request.fileId ?? "")),
         RequestType.post,
         headers: null,
-        body: const JsonEncoder().convert(request.toJson()),
+        body: null,
       );
     } catch (error) {
       debugPrint("Invoke HTTP failed: $error");
@@ -122,17 +121,8 @@ class AudioRepositoryImpl implements AudioRepository {
 
     arrAudioTranscriptResponse = AudioTranscriptResponse.fromJson(body);
 
-    List<SentencesInfo> listSentences = [];
-
-    if (arrAudioTranscriptResponse.sentences != null) {
-      for (int i = 0; i < arrAudioTranscriptResponse.sentences!.length; i++) {
-        SentencesResponse item = arrAudioTranscriptResponse.sentences![i];
-        listSentences.add(SentencesInfo(item.speakerTag, item.sentence));
-      }
-    }
-
     arrAudioTranscriptInfo = AudioTranscriptInfo(
-        arrAudioTranscriptResponse.fileId ??= "", listSentences);
+        arrAudioTranscriptResponse.fileId ??= "");
 
     return arrAudioTranscriptInfo;
   }

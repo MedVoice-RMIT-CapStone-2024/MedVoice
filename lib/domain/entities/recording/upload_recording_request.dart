@@ -1,14 +1,7 @@
 class UploadRecordingRequest {
-  String? userId = "";
-  String? fileName = "";
+  String? fileId = "";
 
-  UploadRecordingRequest(this.userId, this.fileName);
+  UploadRecordingRequest(this.fileId);
 
   UploadRecordingRequest.buildDefault();
-
-  Map<String, dynamic> toJson() => {
-    'user_id': userId,
-    'file_name': fileName,
-  };
-
 }

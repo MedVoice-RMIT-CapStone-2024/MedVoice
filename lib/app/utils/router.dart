@@ -11,8 +11,8 @@ import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
-import '../../domain/entities/recording/audio_transcript_info.dart';
-import '../pages/home/recording_documentation/demo_temp_transcript/demo_temp_transcript_view.dart';
+import '../pages/home/patient_doc/enhanced_note/enhanced_note_view.dart';
+import '../pages/home/patient_doc/note/note_view.dart';
 import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
@@ -73,16 +73,6 @@ class AppRouter {
               recordingInfo: arguments[recordingInfo] as String,
             ));
 
-      case Pages.demoTempTranscript:
-        Map<String, dynamic> arguments =
-            settings.arguments as Map<String, dynamic>;
-        return _buildRoute(
-            settings,
-            DemoTempTranscriptView(
-              audioTranscriptInfo:
-                  arguments[audioTranscriptInfo] as AudioTranscriptInfo,
-            ));
-
       case Pages.terms:
         return _buildRoute(settings, TermsAndConditionsView());
 
@@ -97,6 +87,16 @@ class AppRouter {
             NoteView(
               groupDateInfo: arguments[groupDateInfo] as DisplayArchive,
               audioLink: arguments[audioLink] as String,
+            ));
+
+      case Pages.noteArchiveEnhancedDetails:
+        Map<String, dynamic> arguments =
+        settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            EnhancedNoteView(
+              enhancedGroupDateInfoParam: arguments[enhancedGroupDateInfo] as DisplayArchive,
+              enhancedAudioLink: arguments[enhancedAudioLink] as String,
             ));
 
       default:

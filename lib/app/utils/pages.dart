@@ -11,8 +11,8 @@ class Pages {
   static const String myQR = '/myQR';
   static const String info = '/info';
   static const String audioPlayback = '/audioPlayback';
-  static const String demoTempTranscript = '/demoTempTranscript';
   static const String terms = '/termsAndConditions';
   static const String privacy = '/privacyPolicy';
   static const String noteArchiveDetails = '/note';
+  static const String noteArchiveEnhancedDetails = '/enhancedNote';
 }

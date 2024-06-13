@@ -13,10 +13,8 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../common/base_controller.dart';
-import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingController extends BaseController {
@@ -27,7 +25,6 @@ class RecordingController extends BaseController {
   int recordDuration = 0;
   String guideText = 'Press the button and start speaking';
   double confidenceLevel = 1.0;
-  // String selectedLocaleId = 'vi_VN';
   String selectedLocaleId = 'en_US';
   final audioRecorder = Record();
   StreamSubscription<RecordState>? recordSub;
@@ -39,12 +36,9 @@ class RecordingController extends BaseController {
   TextEditingController recordingName = TextEditingController();
   String tempName = '';
   File? audioFile;
-  UploadRecordingRequest? uploadRecordingRequest;
-  AudioTranscriptInfo? data;
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
-  ThemeMode themeMode = ThemeMode.system;
   PostTranscriptRequest? dataRequest;
 
   RecordingController(audioRepository)
@@ -75,37 +69,6 @@ class RecordingController extends BaseController {
       onStatus: statusListener,
       options: [SpeechToText.webDoNotAggregate],
     );
-    // if (modelLoader != null) {
-    //   modelLoader!
-    //       .loadModelsList()
-    //       .then((modelsList) =>
-    //           modelsList.firstWhere((model) => model.name == modelName))
-    //       .then((modelDescription) => modelLoader!
-    //           .loadFromNetwork(modelDescription.url)) // load model
-    //       .then((modelPath) =>
-    //           vosk.createModel(modelPath)) // create model object
-    //       .then((model) => modelController = model)
-    //       .then((_) => vosk.createRecognizer(
-    //           model: modelController!,
-    //           sampleRate: sampleRate)) // create recognizer
-    //       .then((value) => recognizerController = value)
-    //       .then((recognizer) {
-    //     vosk
-    //         .initSpeechService(recognizerController!) // init speech service
-    //         .then((speechService) => speechServiceController = speechService)
-    //         .catchError((e) {
-    //       error = e.toString();
-    //       return e;
-    //     });
-    //   }).catchError((e) {
-    //     debugPrint("did it get error: $e");
-    //     error = e.toString();
-    //     return null;
-    //   });
-    //   debugPrint("Initialize completed");
-    // } else {
-    //   debugPrint("is it null");
-    // }
     refreshUI();
   }
 
@@ -125,8 +88,6 @@ class RecordingController extends BaseController {
     _presenter.onUploadRecordingSuccess = (bool responses) {
       onUploadLibraryTranscript();
       onDelete(pathForDelete);
-      // onUploadAudioInfo();
-      //  onUploadLibraryTranscript(data!); => This is where this function is called in the future
       debugPrint("Upload audio succeed");
     };
     _presenter.onUploadRecordingFailed = (e) {
@@ -194,8 +155,6 @@ class RecordingController extends BaseController {
       });
     });
     tempName = recordingName.text.replaceAll(' ', '-');
-    uploadRecordingRequest = UploadRecordingRequest(
-        '1', '${recordingName.text.replaceAll(' ', '-')}.m4a');
 
     await speech!.listen(
       onResult: onSpeechResult,
@@ -226,6 +185,8 @@ class RecordingController extends BaseController {
     }
     await speech!.stop();
     onSaveRecordingToList(tempName, duration, audioPath);
+    dataRequest = PostTranscriptRequest(
+        '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
     recordingName.clear();
     refreshUI();
   }
@@ -257,13 +218,7 @@ class RecordingController extends BaseController {
     _presenter.executeUploadRecording(data);
   }
 
-  void onUploadAudioInfo() {
-    showLoadingProgress();
-    _presenter.executeUploadAudioInfo(uploadRecordingRequest!);
-  }
-
   void onUploadLibraryTranscript() {
-    dataRequest = PostTranscriptRequest(tempName, [guideText]);
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 
