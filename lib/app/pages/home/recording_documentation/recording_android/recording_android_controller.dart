@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
@@ -9,26 +10,18 @@ import 'package:med_voice/domain/entities/recording_archive/recording_info.dart'
 import 'package:path_provider/path_provider.dart';
 
 import 'package:record/record.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:vosk_flutter_2/vosk_flutter_2.dart';
 
 import '../../../../../common/base_controller.dart';
-import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingAndroidController extends BaseController {
   final RecordingAndroidPresenter _presenter;
   bool speechEnabled = false;
-  bool speechAvailable = false;
   int recordDuration = 0;
   String guideText = 'Press the button and start speaking';
-  double confidenceLevel = 1.0;
-  // String selectedLocaleId = 'vi_VN';
-  String selectedLocaleId = 'en_US';
   final audioRecorder = Record();
   StreamSubscription<RecordState>? recordSub;
   RecordState recordState = RecordState.stop;
@@ -39,23 +32,19 @@ class RecordingAndroidController extends BaseController {
   TextEditingController recordingName = TextEditingController();
   String tempName = '';
   File? audioFile;
-  UploadRecordingRequest? uploadRecordingRequest;
-  AudioTranscriptInfo? data;
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
-  ThemeMode themeMode = ThemeMode.system;
   PostTranscriptRequest? dataRequest;
   ModelLoader? modelLoader;
   VoskFlutterPlugin vosk = VoskFlutterPlugin.instance();
   Model? modelController;
   Recognizer? recognizerController;
   SpeechService? speechServiceController;
-  String modelName = 'vosk-model-small-en-us-0.15';
   int sampleRate = 16000;
   String? error;
-  String? partialResults;
-  String? finalResults;
+  List<String> resultTranscript = [];
+  List<String> resultTranscriptFiltered = [];
 
   RecordingAndroidController(audioRepository)
       : _presenter = RecordingAndroidPresenter(audioRepository) {
@@ -82,34 +71,22 @@ class RecordingAndroidController extends BaseController {
     showLoadingProgress();
     if (modelLoader != null) {
       try {
-        // Step 1: Load the model from assets
-        // if (await modelLoader!.isModelAlreadyLoaded('vosk-model-small-en-us-0.15')) {
-        //   onDeleteFolder();
-        // }
         String modelPath = await modelLoader!.loadFromAssets(
             "assets/vosk_model/vosk-model-small-en-us-0.15.zip");
-
         debugPrint("Model path: $modelPath");
-        // Step 2: Create the model
+
         var model = await vosk.createModel(modelPath);
         modelController = model;
         debugPrint("Model created successfully");
 
-        // Step 3: Create the recognizer
         var recognizer = await vosk.createRecognizer(
           model: modelController!,
           sampleRate: sampleRate,
         );
         recognizerController = recognizer;
-        debugPrint("Recognizer created successfully");
 
-        // Step 5: Initialize the speech service
-        var speechService =
-            await vosk.initSpeechService(recognizerController!);
+        var speechService = await vosk.initSpeechService(recognizerController!);
         speechServiceController = speechService;
-        debugPrint("Speech service initialized successfully");
-
-        debugPrint("Initialize completed");
       } catch (e) {
         error = "Initialization error: ${e.toString()}";
         debugPrint(error);
@@ -130,15 +107,11 @@ class RecordingAndroidController extends BaseController {
     }
   }
 
-  void errorListener(SpeechRecognitionError error) {
-    debugPrint(error.errorMsg.toString());
-  }
-
   @override
   void onListener() {
     _presenter.onUploadRecordingSuccess = (bool responses) {
+      onUploadLibraryTranscript();
       onDelete(pathForDelete);
-      onUploadAudioInfo();
       debugPrint("Upload audio succeed");
     };
     _presenter.onUploadRecordingFailed = (e) {
@@ -146,23 +119,8 @@ class RecordingAndroidController extends BaseController {
       hideLoadingProgress();
       debugPrint("Upload audio failed");
     };
-    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
-      data = response;
-      if (data != null) {
-        onUploadLibraryTranscript(data!);
-      }
-      hideLoadingProgress();
-      debugPrint("Upload audio info succeed");
-    };
-    _presenter.onUploadAudioInfoFailed = (e) {
-      view.showErrorFromServer("Upload audio info failed: $e");
-      hideLoadingProgress();
-      debugPrint("Upload audio info failed");
-    };
     _presenter.onUploadLibraryTranscriptSuccess =
         (LibraryTranscriptInfo response) {
-      debugPrint(
-          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscriptUrl}");
       hideLoadingProgress();
     };
     _presenter.onUploadLibraryTranscriptFailed = (e) {
@@ -219,8 +177,6 @@ class RecordingAndroidController extends BaseController {
       });
     });
     tempName = recordingName.text.replaceAll(' ', '-');
-    uploadRecordingRequest = UploadRecordingRequest(
-        '1', '${recordingName.text.replaceAll(' ', '-')}.m4a');
 
     if (speechServiceController != null) {
       await speechServiceController!.start();
@@ -251,16 +207,10 @@ class RecordingAndroidController extends BaseController {
       await speechServiceController!.stop();
     }
     onSaveRecordingToList(tempName, duration, audioPath);
+    addUniqueStrings(resultTranscript);
+    dataRequest = PostTranscriptRequest('${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
     recordingName.clear();
     refreshUI();
-  }
-
-  void onSpeechResult(SpeechRecognitionResult result) {
-    debugPrint("Speech recognized: ${result.recognizedWords}");
-    view.setState(() {
-      guideText = result.recognizedWords;
-    });
-    debugPrint("guideText updated to: $guideText");
   }
 
   void onSaveRecordingToList(String title, int duration, String path) {
@@ -282,13 +232,7 @@ class RecordingAndroidController extends BaseController {
     _presenter.executeUploadRecording(data);
   }
 
-  void onUploadAudioInfo() {
-    showLoadingProgress();
-    _presenter.executeUploadAudioInfo(uploadRecordingRequest!);
-  }
-
-  void onUploadLibraryTranscript(AudioTranscriptInfo data) {
-    dataRequest = PostTranscriptRequest(data.mFileId, [guideText]);
+  void onUploadLibraryTranscript() {
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 
@@ -308,35 +252,33 @@ class RecordingAndroidController extends BaseController {
     }
   }
 
-  Future<void> onDeleteFolder() async {
-    try {
-      String extDir = await modelLoader!.loadFromAssets("assets/vosk_model/vosk-model-small-en-us-0.15.zip");
-      debugPrint("DATA: $extDir");
-
-      String filteredDirPath = extDir.replaceAll('/vosk-model-small-en-us-0.15', '');
-      Directory dir = Directory(filteredDirPath);
-
-      if (await dir.exists()) {
-        try {
-          dir.deleteSync(recursive: true);
-          debugPrint("Folder deleted successfully: $filteredDirPath");
-        } catch (e) {
-          debugPrint("Error deleting folder: $e");
-        }
-        refreshUI();
-      } else {
-        debugPrint("Folder does not exist: $filteredDirPath");
-      }
-    } catch (e) {
-      debugPrint("Failed to delete file: $e");
-    }
-  }
-
   String formatNumber(int number) {
     String numberStr = number.toString();
     if (number < 10) {
       numberStr = '0$numberStr';
     }
     return numberStr;
+  }
+
+  String decodePartialTranscript(String data) {
+    final convertedData = jsonDecode(data);
+    return convertedData['partial'];
+  }
+
+  String decodeCompleteTranscript(String data) {
+    final convertedData = jsonDecode(data);
+    resultTranscript.add(convertedData['text']);
+    return convertedData['text'];
+  }
+
+  void addUniqueStrings(List<String> unfilteredString) {
+    resultTranscriptFiltered = [];
+    for (String str in unfilteredString) {
+      if (resultTranscriptFiltered.isEmpty || resultTranscriptFiltered.last != str) {
+        debugPrint("DATA FILTERED: $str");
+        resultTranscriptFiltered.add(str);
+      }
+    }
+    refreshUI();
   }
 }

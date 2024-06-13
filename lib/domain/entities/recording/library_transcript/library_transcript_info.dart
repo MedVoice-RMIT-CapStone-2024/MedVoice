@@ -1,8 +1,8 @@
 class LibraryTranscriptInfo {
   String? mFileId = '';
-  String? mTranscriptUrl = '';
+  String? mTranscript = '';
 
-  LibraryTranscriptInfo(this.mFileId, this.mTranscriptUrl);
+  LibraryTranscriptInfo(this.mFileId, this.mTranscript);
 
   LibraryTranscriptInfo.buildDefault();
 }

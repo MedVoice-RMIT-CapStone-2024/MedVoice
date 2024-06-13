@@ -13,10 +13,8 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../common/base_controller.dart';
-import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingController extends BaseController {
@@ -27,7 +25,6 @@ class RecordingController extends BaseController {
   int recordDuration = 0;
   String guideText = 'Press the button and start speaking';
   double confidenceLevel = 1.0;
-  // String selectedLocaleId = 'vi_VN';
   String selectedLocaleId = 'en_US';
   final audioRecorder = Record();
   StreamSubscription<RecordState>? recordSub;
@@ -39,12 +36,9 @@ class RecordingController extends BaseController {
   TextEditingController recordingName = TextEditingController();
   String tempName = '';
   File? audioFile;
-  UploadRecordingRequest? uploadRecordingRequest;
-  AudioTranscriptInfo? data;
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
-  ThemeMode themeMode = ThemeMode.system;
   PostTranscriptRequest? dataRequest;
 
   RecordingController(audioRepository)
@@ -65,8 +59,8 @@ class RecordingController extends BaseController {
       refreshUI();
     });
 
-      speech = SpeechToText();
-      _initSpeech();
+    speech = SpeechToText();
+    _initSpeech();
   }
 
   void _initSpeech() async {
@@ -75,37 +69,6 @@ class RecordingController extends BaseController {
       onStatus: statusListener,
       options: [SpeechToText.webDoNotAggregate],
     );
-    // if (modelLoader != null) {
-    //   modelLoader!
-    //       .loadModelsList()
-    //       .then((modelsList) =>
-    //           modelsList.firstWhere((model) => model.name == modelName))
-    //       .then((modelDescription) => modelLoader!
-    //           .loadFromNetwork(modelDescription.url)) // load model
-    //       .then((modelPath) =>
-    //           vosk.createModel(modelPath)) // create model object
-    //       .then((model) => modelController = model)
-    //       .then((_) => vosk.createRecognizer(
-    //           model: modelController!,
-    //           sampleRate: sampleRate)) // create recognizer
-    //       .then((value) => recognizerController = value)
-    //       .then((recognizer) {
-    //     vosk
-    //         .initSpeechService(recognizerController!) // init speech service
-    //         .then((speechService) => speechServiceController = speechService)
-    //         .catchError((e) {
-    //       error = e.toString();
-    //       return e;
-    //     });
-    //   }).catchError((e) {
-    //     debugPrint("did it get error: $e");
-    //     error = e.toString();
-    //     return null;
-    //   });
-    //   debugPrint("Initialize completed");
-    // } else {
-    //   debugPrint("is it null");
-    // }
     refreshUI();
   }
 
@@ -123,8 +86,8 @@ class RecordingController extends BaseController {
   @override
   void onListener() {
     _presenter.onUploadRecordingSuccess = (bool responses) {
+      onUploadLibraryTranscript();
       onDelete(pathForDelete);
-      onUploadAudioInfo();
       debugPrint("Upload audio succeed");
     };
     _presenter.onUploadRecordingFailed = (e) {
@@ -132,23 +95,10 @@ class RecordingController extends BaseController {
       hideLoadingProgress();
       debugPrint("Upload audio failed");
     };
-    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
-      data = response;
-      if (data != null) {
-        onUploadLibraryTranscript(data!);
-      }
-      hideLoadingProgress();
-      debugPrint("Upload audio info succeed");
-    };
-    _presenter.onUploadAudioInfoFailed = (e) {
-      view.showErrorFromServer("Upload audio info failed: $e");
-      hideLoadingProgress();
-      debugPrint("Upload audio info failed");
-    };
     _presenter.onUploadLibraryTranscriptSuccess =
         (LibraryTranscriptInfo response) {
       debugPrint(
-          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscriptUrl}");
+          "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscript}");
       hideLoadingProgress();
     };
     _presenter.onUploadLibraryTranscriptFailed = (e) {
@@ -205,8 +155,6 @@ class RecordingController extends BaseController {
       });
     });
     tempName = recordingName.text.replaceAll(' ', '-');
-    uploadRecordingRequest = UploadRecordingRequest(
-        '1', '${recordingName.text.replaceAll(' ', '-')}.m4a');
 
     await speech!.listen(
       onResult: onSpeechResult,
@@ -227,7 +175,9 @@ class RecordingController extends BaseController {
     recordDuration = 0;
     final path = await audioRecorder.stop();
     if (path != null) {
-      view.showPopupWithAction('Recording finished! Kindly wait as audio is now being processed', 'okay');
+      view.showPopupWithAction(
+          'Recording finished! Kindly wait as audio is now being processed',
+          'okay');
       audioPath = path;
       pathForDelete = path;
     } else {
@@ -235,6 +185,8 @@ class RecordingController extends BaseController {
     }
     await speech!.stop();
     onSaveRecordingToList(tempName, duration, audioPath);
+    dataRequest = PostTranscriptRequest(
+        '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
     recordingName.clear();
     refreshUI();
   }
@@ -266,13 +218,7 @@ class RecordingController extends BaseController {
     _presenter.executeUploadRecording(data);
   }
 
-  void onUploadAudioInfo() {
-    showLoadingProgress();
-    _presenter.executeUploadAudioInfo(uploadRecordingRequest!);
-  }
-
-  void onUploadLibraryTranscript(AudioTranscriptInfo data) {
-    dataRequest = PostTranscriptRequest(data.mFileId, [guideText]);
+  void onUploadLibraryTranscript() {
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 

@@ -14,7 +14,7 @@ import '../../../../utils/global.dart';
 import '../../../../widgets/theme_provider.dart';
 
 class RecordingAndroidView extends clean.View {
-  RecordingAndroidView({Key? key}) : super(key: key);
+  const RecordingAndroidView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -68,11 +68,6 @@ class _RecordingAndroidView
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text(
-                "Confidence level: ${recordingAndroidController!.confidenceLevel * 100}%",
-                style: TextStyle(
-                  color: theme.colorScheme.onBackground,
-                )),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
@@ -88,13 +83,9 @@ class _RecordingAndroidView
                     padding: EdgeInsets.symmetric(
                         horizontal: toSize(15), vertical: toSize(15)),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Text(recordingAndroidController!.guideText,
-                        //     style: TextStyle(
-                        //         color: theme.colorScheme.onSurface,
-                        //         fontFamily: 'NunitoSans',
-                        //         fontWeight: FontWeight.w500,
-                        //         fontSize: toSize(18))),
                         (recordingAndroidController!.speechServiceController !=
                                 null)
                             ? StreamBuilder(
@@ -105,10 +96,11 @@ class _RecordingAndroidView
                                                 .data !=
                                             null &&
                                         snapshot.data!.isNotEmpty)
-                                    ? "Prediction: ${snapshot.data.toString()}"
-                                    : recordingAndroidController!.guideText))
+                                    ? "Predictions: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
+                                    : "Predictions: ${recordingAndroidController!.guideText}."))
                             : const SizedBox(),
-                        SizedBox(height: toSize(20)),
+                        const Spacer(),
+                        Divider(color: Colors.black.withOpacity(0.2)),
                         (recordingAndroidController!.speechServiceController !=
                                 null)
                             ? StreamBuilder(
@@ -116,8 +108,9 @@ class _RecordingAndroidView
                                     .speechServiceController!
                                     .onResult(),
                                 builder: (context, snapshot) => Text(
-                                    "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? snapshot.data.toString() : "N/A"}"))
+                                    "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : "Will be filtered from prediction texts."}"))
                             : const SizedBox(),
+                        const Spacer(),
                       ],
                     )),
               ),

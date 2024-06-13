@@ -108,11 +108,10 @@ class AudioRepositoryImpl implements AudioRepository {
     try {
       body = await HttpHelper.invokeHttp(
         Uri.parse(Constants.uploadAudioInfo
-            .replaceAll("{user_id}", request.userId ?? "")
-            .replaceAll("{file_name}", request.fileName ?? "")),
+            .replaceAll("{file_id}", request.fileId ?? "")),
         RequestType.post,
         headers: null,
-        body: const JsonEncoder().convert(request.toJson()),
+        body: null,
       );
     } catch (error) {
       debugPrint("Invoke HTTP failed: $error");
@@ -122,17 +121,8 @@ class AudioRepositoryImpl implements AudioRepository {
 
     arrAudioTranscriptResponse = AudioTranscriptResponse.fromJson(body);
 
-    List<SentencesInfo> listSentences = [];
-
-    if (arrAudioTranscriptResponse.sentences != null) {
-      for (int i = 0; i < arrAudioTranscriptResponse.sentences!.length; i++) {
-        SentencesResponse item = arrAudioTranscriptResponse.sentences![i];
-        listSentences.add(SentencesInfo(item.speakerTag, item.sentence));
-      }
-    }
-
     arrAudioTranscriptInfo = AudioTranscriptInfo(
-        arrAudioTranscriptResponse.fileId ??= "", listSentences);
+        arrAudioTranscriptResponse.fileId ??= "");
 
     return arrAudioTranscriptInfo;
   }
@@ -147,7 +137,8 @@ class AudioRepositoryImpl implements AudioRepository {
     try {
       body = await HttpHelper.invokeHttp(
           Uri.parse(Constants.uploadLibraryTranscript
-              .replaceAll('{file_id}', request.fileId ?? "")),
+              .replaceAll('{user_id}', '1')
+              .replaceAll("{file_name}", request.fileName ?? "")),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(request.toJson()));
@@ -159,7 +150,7 @@ class AudioRepositoryImpl implements AudioRepository {
     libraryTranscriptResponse = LibraryTranscriptResponse.fromJson(body);
     libraryTranscriptInfo = LibraryTranscriptInfo(
         libraryTranscriptResponse.fileId ?? "",
-        libraryTranscriptResponse.transcriptUrl ?? "");
+        libraryTranscriptResponse.transcript ?? "");
 
     return libraryTranscriptInfo;
   }
@@ -187,7 +178,8 @@ class AudioRepositoryImpl implements AudioRepository {
     if (body == null) return GetLibraryTranscriptTextInfo.buildDefault();
 
     response = GetLibraryTranscriptTextResponse.fromJson(body);
-    info = GetLibraryTranscriptTextInfo(response.transcript ?? "", response.message ?? "");
+    info = GetLibraryTranscriptTextInfo(
+        response.transcript ?? "", response.message ?? "");
 
     return info;
   }
@@ -219,7 +211,8 @@ class AudioRepositoryImpl implements AudioRepository {
     List<MedicalDiagnosisInfo> medicalDiagnosisInfoList = [];
     if (response.medicalDiagnosis != null) {
       for (int i = 0; i < response.medicalDiagnosis!.length; i++) {
-        MedicalDiagnosisResponse? medicalDiagnosisResponse = response.medicalDiagnosis![i];
+        MedicalDiagnosisResponse? medicalDiagnosisResponse =
+            response.medicalDiagnosis![i];
         medicalDiagnosisInfoList.add(MedicalDiagnosisInfo(
           medicalDiagnosisResponse.name ??= "",
         ));
@@ -228,7 +221,8 @@ class AudioRepositoryImpl implements AudioRepository {
     List<MedicalTreatmentInfo> medicalTreatmentInfoList = [];
     if (response.medicalTreatment != null) {
       for (int i = 0; i < response.medicalTreatment!.length; i++) {
-        MedicalTreatmentResponse? medicalTreatmentResponse = response.medicalTreatment![i];
+        MedicalTreatmentResponse? medicalTreatmentResponse =
+            response.medicalTreatment![i];
         medicalTreatmentInfoList.add(MedicalTreatmentInfo(
           medicalTreatmentResponse.name ??= "",
           medicalTreatmentResponse.prescription ??= "",
