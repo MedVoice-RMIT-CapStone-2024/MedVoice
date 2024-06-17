@@ -153,15 +153,19 @@ class _EnhanceNoteViewState
                                   color: theme.colorScheme.onPrimary)),
                         ),
                         const Spacer(),
-                        InkWell(
-                          onTap: () async {
-                            await PdfGeneratedView.generate(_controller!.jsonData!, context, widget.enhancedGroupDateInfoParam.patientName, widget.enhancedGroupDateInfoParam);
-                          },
-                          child: Image.asset(IconAssets.icPdfFilled,
-                              color: theme.colorScheme.primary,
-                              height: toSize(34),
-                              width: toSize(34)),
-                        ),
+
+                        // Temporary disabling the PDF feature
+
+                        // InkWell(
+                        //   onTap: () async {
+                        //     await PdfGeneratedView.generate(_controller!.jsonData!, context, widget.enhancedGroupDateInfoParam.patientName, widget.enhancedGroupDateInfoParam);
+                        //   },
+                        //   child: Image.asset(IconAssets.icPdfFilled,
+                        //       color: theme.colorScheme.primary,
+                        //       height: toSize(34),
+                        //       width: toSize(34)),
+                        // ),
+
                       ],
                     ),
                     SizedBox(height: toSize(150)),
