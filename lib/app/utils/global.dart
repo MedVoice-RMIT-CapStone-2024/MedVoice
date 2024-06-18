@@ -121,7 +121,7 @@ class Global {
 
   static bool isDisableHttpLogging = false;
 
-  static String bucketName = "medvoice_audio_bucket";
+  static String bucketName = "medvoice_audio_bucket_phase_2";
 
   static bool isSpeechServiceInitialized = false;
 }
