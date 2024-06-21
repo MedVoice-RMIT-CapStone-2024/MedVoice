@@ -121,7 +121,7 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                     height: toSize(160),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: theme.colorScheme.surface,
+                        color: theme.colorScheme.primary,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black26,
