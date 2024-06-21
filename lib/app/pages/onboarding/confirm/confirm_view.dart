@@ -4,7 +4,6 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/image_assets.dart';
-import 'package:med_voice/app/widgets/background_set.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
 

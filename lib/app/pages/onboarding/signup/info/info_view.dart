@@ -7,7 +7,6 @@ import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/app/utils/pages.dart';
-import 'package:med_voice/app/widgets/custom_scaffold.dart';
 import 'package:med_voice/app/widgets/password_strength.dart';
 import 'package:med_voice/app/widgets/small_text_field.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
