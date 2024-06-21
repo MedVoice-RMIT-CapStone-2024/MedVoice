@@ -18,12 +18,19 @@ class PromptField extends StatefulWidget {
 
 class _PromptFieldState extends State<PromptField> {
   SendMode _sendMode = SendMode.notTyping;
+  final messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    messageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
 
-    final messageController = TextEditingController();
     return Container(
       margin: EdgeInsets.symmetric(vertical: toSize(size.height * 0.02)),
       padding: EdgeInsets.symmetric(horizontal: toSize(size.width * 0.05)),
