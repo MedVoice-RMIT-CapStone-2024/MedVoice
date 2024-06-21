@@ -45,14 +45,15 @@ class _PromptFieldState extends State<PromptField> {
                         ? setSendMode(SendMode.typing)
                         : setSendMode(SendMode.notTyping)
                   },
+                  controller: messageController,
                   style: const TextStyle(
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
                     hintText: "Type a message",
                     hintStyle: TextStyle(
-                      color: theme.colorScheme.onBackground,
-                      fontSize: 17,
+                      color: Colors.black,
+                      fontSize: toSize(17),
                     ),
                     contentPadding: EdgeInsets.symmetric(
                         vertical: toSize(10), horizontal: toSize(20)),

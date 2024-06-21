@@ -38,7 +38,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
             padding: const EdgeInsets.only(top: 10.0),
             child: Center(
               child: ListView.builder(
-                  itemCount: 5,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return const ChatItem(
                         isMe: false,

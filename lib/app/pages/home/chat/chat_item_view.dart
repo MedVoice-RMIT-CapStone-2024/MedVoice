@@ -52,8 +52,7 @@ class ChatItem extends StatelessWidget {
                   child: Text(
                     message,
                     style: TextStyle(
-                      color:
-                          isMe ? Colors.white : theme.colorScheme.onBackground,
+                      color: isMe ? Colors.white : Colors.black,
                       fontSize: toSize(16),
                     ),
                   ),
