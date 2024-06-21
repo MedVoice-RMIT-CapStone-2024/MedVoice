@@ -63,7 +63,8 @@ class _PromptFieldState extends State<PromptField> {
                     border: OutlineInputBorder(
                       borderRadius:
                           BorderRadius.circular(toSize(90)), // Adjusted size
-                      borderSide: const BorderSide(color: Colors.black),
+                      borderSide:
+                          const BorderSide(width: 3, color: Colors.black),
                     ),
                   ),
                 ),
@@ -71,7 +72,7 @@ class _PromptFieldState extends State<PromptField> {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   padding: EdgeInsets.all(toSize(size.width * 0.03)),
                   backgroundColor: _sendMode == SendMode.notTyping
                       ? theme.colorScheme.onSecondary.withOpacity(0.1)
@@ -79,7 +80,7 @@ class _PromptFieldState extends State<PromptField> {
                   foregroundColor:
                       theme.colorScheme.background, // <-- Splash color
                 ),
-                child: Icon(Icons.near_me, color: Colors.white),
+                child: const Icon(Icons.near_me, color: Colors.white),
               )
             ],
           ),

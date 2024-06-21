@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:med_voice/app/pages/home/chat_bot/chat_bot_controller.dart';
+import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_controller.dart';
 import 'package:med_voice/app/widgets/prompt_field.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
