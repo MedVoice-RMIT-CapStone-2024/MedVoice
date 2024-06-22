@@ -1,7 +1,8 @@
 class AskResponse {
-  final String answer;
+  String answer = "";
 
   AskResponse({required this.answer});
+  AskResponse.buildDefault();
 
   factory AskResponse.fromJson(Map<String, dynamic> json) {
     return AskResponse(

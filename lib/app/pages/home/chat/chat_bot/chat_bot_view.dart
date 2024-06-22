@@ -31,6 +31,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
   _ChatBotView() : super(ChatBotController());
   SendMode _sendMode = SendMode.notTyping;
   TextEditingController messageController = TextEditingController();
+
   @override
   bool isInitialAppbar() {
     return true;
@@ -55,18 +56,19 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
     return Column(
       children: [
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Center(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) => ChatItem(
-                isMe: false,
-                message: "Hello",
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Center(
+              child: ListView.builder(
+                itemCount: _controller.messages.length,
+                itemBuilder: (context, index) => ChatItem(
+                  isMe: _controller.messages[index].isMe,
+                  message: _controller.messages[index].message,
+                ),
               ),
             ),
           ),
-        )),
+        ),
         Container(
           margin: EdgeInsets.symmetric(vertical: toSize(size.height * 0.02)),
           padding: EdgeInsets.symmetric(horizontal: toSize(size.width * 0.05)),
@@ -114,7 +116,13 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_sendMode == SendMode.typing) {
+                        _controller.sendMessage(messageController.text);
+                        messageController.clear();
+                        setSendMode(SendMode.notTyping);
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: EdgeInsets.all(toSize(size.width * 0.03)),
