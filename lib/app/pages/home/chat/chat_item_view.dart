@@ -14,7 +14,7 @@ class ChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
-
+    ThemeData themeData = Theme.of(context);
     return Padding(
       padding:
           EdgeInsets.symmetric(vertical: toSize(10), horizontal: toSize(10)),
@@ -71,13 +71,15 @@ class ChatItem extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(toSize(90)),
                 ),
-                child: Icon(
-                  Icons.computer_rounded,
-                  color: theme.colorScheme.primary,
-                  size: toSize(20),
+                child: Image.asset(
+                  themeData.brightness == Brightness.dark
+                      ? "assets/images/bot_dark.png"
+                      : "assets/images/bot_light.png",
+                  width: toSize(20),
+                  height: toSize(20),
                 ),
               ),
-            ),
+            )
         ],
       ),
     );
