@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 class ChatItem extends StatelessWidget {
   final bool isMe;
   final String message;
+  // final DateTime time;
 
   const ChatItem({Key? key, required this.isMe, required this.message})
       : super(key: key);
