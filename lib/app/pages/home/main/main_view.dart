@@ -13,8 +13,8 @@ import '../../../../common/base_state_view.dart';
 import '../../../utils/global.dart';
 import '../../../widgets/theme_provider.dart';
 import '../medical_archive/medical_archive_view.dart';
-import '../recording_documentation/recording/recording_view.dart';
-import '../recording_documentation/recording_android/recording_android_view.dart';
+import '../recording/recording/recording_view.dart';
+import '../recording/recording_android/recording_android_view.dart';
 import 'main_controller.dart';
 
 class MainView extends clean.View {
