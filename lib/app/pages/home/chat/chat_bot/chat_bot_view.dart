@@ -55,10 +55,34 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
     return Column(
       children: [
+        ChatItem(
+          isMe: false,
+          message: "Hello, I'm MVBot. How can I help you?",
+        ),
+        // ChatItem(
+        //   isMe: true,
+        //   message: "How to document patient history?",
+        // ),
+        // ChatItem(
+        //   isMe: false,
+        //   message:
+        //       "You can use the following steps: \n 1. Open the patient's profile. \n 2. Click on the 'History' tab. \n 3. Click on the 'Add History' button.  \nIf you have any other questions, feel free to ask.",
+        // ),
+        // ChatItem(
+        //   isMe: false,
+        //   message: "Hello, I'm MVBot. How can I help you?",
+        // ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Center(
+            child:
+                //sample data
+                // Column(
+                //   children: [
+
+                //   ],
+                // ),
+                Center(
               child: ListView.builder(
                 itemCount: _controller.messages.length,
                 itemBuilder: (context, index) => ChatItem(
