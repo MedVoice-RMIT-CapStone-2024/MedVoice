@@ -69,3 +69,4 @@ class EnhancedNoteController extends BaseController {
     return formattedDate;
   }
 }
+
