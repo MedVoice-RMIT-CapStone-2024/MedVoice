@@ -11,4 +11,6 @@ class IconAssets {
   static const String icCheckBoxEmpty = 'assets/icons/ic_checkbox_empty.png';
   static const String icCheckBoxFilled = 'assets/icons/ic_checkbox_filled.png';
   static const String icVoiceRecording = 'assets/icons/ic_voice_recording.png';
+  static const String icPdf = 'assets/icons/ic_pdf.png';
+  static const String icPdfFilled = 'assets/icons/ic_pdf_filled.png';
 }

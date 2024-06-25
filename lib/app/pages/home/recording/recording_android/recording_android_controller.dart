@@ -4,7 +4,7 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:med_voice/app/pages/home/recording_documentation/recording_android/recording_android_presenter.dart';
+import 'package:med_voice/app/pages/home/recording/recording_android/recording_android_presenter.dart';
 import 'package:med_voice/domain/entities/recording/library_transcript/library_transcript_info.dart';
 import 'package:med_voice/domain/entities/recording_archive/recording_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -45,6 +45,8 @@ class RecordingAndroidController extends BaseController {
   String? error;
   List<String> resultTranscript = [];
   List<String> resultTranscriptFiltered = [];
+  String enModelName = 'assets/vosk_model/vosk-model-small-en-us-0.15.zip';
+  String vnModelName = 'vosk-model-vn-0.4.zip';
 
   RecordingAndroidController(audioRepository)
       : _presenter = RecordingAndroidPresenter(audioRepository) {
@@ -71,8 +73,7 @@ class RecordingAndroidController extends BaseController {
     showLoadingProgress();
     if (modelLoader != null) {
       try {
-        String modelPath = await modelLoader!.loadFromAssets(
-            "assets/vosk_model/vosk-model-small-en-us-0.15.zip");
+        String modelPath = await modelLoader!.loadFromAssets(enModelName);
         debugPrint("Model path: $modelPath");
 
         var model = await vosk.createModel(modelPath);

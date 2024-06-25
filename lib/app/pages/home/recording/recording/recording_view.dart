@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:hexcolor/hexcolor.dart';
-import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_controller.dart';
+import 'package:med_voice/app/pages/home/recording/recording/recording_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 import 'package:provider/provider.dart';
