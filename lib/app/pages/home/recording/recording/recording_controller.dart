@@ -3,7 +3,7 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:med_voice/app/pages/home/recording_documentation/recording/recording_presenter.dart';
+import 'package:med_voice/app/pages/home/recording/recording/recording_presenter.dart';
 import 'package:med_voice/domain/entities/recording/library_transcript/library_transcript_info.dart';
 import 'package:med_voice/domain/entities/recording_archive/recording_info.dart';
 import 'package:path_provider/path_provider.dart';
