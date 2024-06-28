@@ -1,32 +1,45 @@
-import 'package:med_voice/domain/entities/ask/ask_request.dart';
-import 'package:med_voice/domain/entities/ask/ask_response.dart';
-import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
-import 'package:med_voice/domain/usecase/bot_answer/getAnswerUseCase.dart';
+import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:med_voice/domain/entities/ask/ask_info.dart';
+import 'package:med_voice/domain/usecase/bot_answer/GetAnswerUseCase.dart';
 
-class ChatBotPresenter {
-  final AskRepository _askRepository;
-  late GetAnswerUseCase _getAnswerUseCase;
+class ChatBotPresenter extends Presenter {
+  late Function getAnswerOnNext;
+  late Function getAnswerOnComplete;
+  late Function getAnswerOnError;
 
-  Function(AskResponse)? onGetAnswerSuccess;
-  Function(dynamic)? onGetAnswerError;
-  Function? onCompleted;
+  final GetAnswerUseCase getAnswerUseCase;
 
-  ChatBotPresenter(this._askRepository) {
-    _getAnswerUseCase = GetAnswerUseCase(_askRepository);
+  ChatBotPresenter(askRepository)
+      : getAnswerUseCase = GetAnswerUseCase(askRepository);
+
+  void getAnswer(String question, String sourceType) {
+    getAnswerUseCase.execute(
+        _GetAnswerObserver(this), GetAnswerParams(question, sourceType));
   }
 
+  @override
   void dispose() {
-    // Cleanup if needed
+    getAnswerUseCase.dispose();
+  }
+}
+
+class _GetAnswerObserver extends Observer<AskInfo> {
+  final ChatBotPresenter presenter;
+
+  _GetAnswerObserver(this.presenter);
+
+  @override
+  void onNext(AskInfo? response) {
+    presenter.getAnswerOnNext(response);
   }
 
-  Future<void> executeGetAnswer(String question) async {
-    final request = AskRequest(question: question);
-    try {
-      final response = await _getAnswerUseCase.execute(request, null);
-      onGetAnswerSuccess?.call(response);
-      onCompleted?.call();
-    } catch (e) {
-      onGetAnswerError?.call(e);
-    }
+  @override
+  void onComplete() {
+    presenter.getAnswerOnComplete();
+  }
+
+  @override
+  void onError(e) {
+    presenter.getAnswerOnError(e);
   }
 }

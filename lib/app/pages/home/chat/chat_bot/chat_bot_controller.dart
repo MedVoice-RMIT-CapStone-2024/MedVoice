@@ -1,42 +1,66 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_presenter.dart';
 import 'package:med_voice/app/pages/home/chat/chat_model.dart';
 import 'package:med_voice/common/base_controller.dart';
-import 'package:med_voice/domain/entities/ask/ask_response.dart';
-import 'package:med_voice/data/repository_impl/ask_repository_impl.dart';
-import 'chat_bot_presenter.dart';
+import 'package:med_voice/domain/entities/ask/ask_info.dart';
+
+enum SendMode {
+  typing,
+  notTyping,
+}
 
 class ChatBotController extends BaseController {
-  final ChatBotPresenter _presenter;
+  final ChatBotPresenter presenter;
   List<ChatModel> messages = [];
+  SendMode _sendMode = SendMode.notTyping;
 
-  ChatBotController() : _presenter = ChatBotPresenter(AskRepositoryImpl()) {
-    _initializePresenter();
+  ChatBotController(askRepository)
+      : presenter = ChatBotPresenter(askRepository);
+
+  SendMode get sendMode => _sendMode;
+
+  void setSendMode(SendMode mode) {
+    _sendMode = mode;
+    refreshUI();
   }
 
-  void _initializePresenter() {
-    _presenter.onGetAnswerSuccess = (AskResponse response) {
+  @override
+  void onInitState() {
+    super.onInitState();
+    presenter.getAnswerOnNext = (AskInfo response) {
       messages.add(ChatModel(
-          message: response.answer, isMe: false, time: DateTime.now()));
+          message: response.mAnswer, isMe: false, time: DateTime.now()));
       refreshUI();
     };
 
-    _presenter.onGetAnswerError = (dynamic error) {
+    presenter.getAnswerOnError = (dynamic error) {
       debugPrint("Error getting answer: $error");
       view.showErrorFromServer("Failed to get answer: $error");
     };
 
-    _presenter.onCompleted = () {
+    presenter.getAnswerOnComplete = () {
       debugPrint("Get answer completed");
     };
   }
 
   void sendMessage(String message) {
-    if (message.isNotEmpty) {
+    if (_sendMode == SendMode.typing && message.isNotEmpty) {
       messages
           .add(ChatModel(message: message, isMe: true, time: DateTime.now()));
       refreshUI();
-      _presenter.executeGetAnswer(message);
+      presenter.getAnswer(message, "json");
+      setSendMode(SendMode.notTyping);
     }
+  }
+
+  void onMessageChanged(String value) {
+    setSendMode(value.isNotEmpty ? SendMode.typing : SendMode.notTyping);
+  }
+
+  @override
+  void onDisposed() {
+    presenter.dispose();
+    super.onDisposed();
   }
 
   @override
