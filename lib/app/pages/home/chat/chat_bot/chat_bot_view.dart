@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
+import 'package:googleapis/driveactivity/v2.dart';
 import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
@@ -38,13 +39,15 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
   Widget body(BuildContext context, BaseController controller) {
     final ChatBotController _controller = controller as ChatBotController;
     final size = MediaQuery.of(context).size;
+
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
 
     return Column(
       children: [
-        const ChatItem(
+        ChatItem(
           isMe: false,
           message: "Hello, I'm MVBot. How can I help you?",
+          time: DateTime.now(),
         ),
         Expanded(
           child: Padding(
@@ -53,6 +56,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
               child: ListView.builder(
                 itemCount: _controller.messages.length,
                 itemBuilder: (context, index) => ChatItem(
+                  time: _controller.messages[index].time,
                   isMe: _controller.messages[index].isMe,
                   message: _controller.messages[index].message,
                 ),
@@ -77,9 +81,9 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
                       decoration: InputDecoration(
                         hintText: "Type a message",
                         hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: toSize(17),
-                        ),
+                            color: Colors.grey[600],
+                            fontSize: toSize(17),
+                            fontStyle: FontStyle.italic),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: toSize(10), horizontal: toSize(20)),
                         suffixIcon: Padding(
