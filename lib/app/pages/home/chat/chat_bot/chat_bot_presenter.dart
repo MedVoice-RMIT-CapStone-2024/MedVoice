@@ -1,45 +1,53 @@
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
+import 'package:med_voice/domain/entities/ask/get_answer_params.dart';
+import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
 import 'package:med_voice/domain/usecase/bot_answer/GetAnswerUseCase.dart';
 
 class ChatBotPresenter extends Presenter {
-  late Function getAnswerOnNext;
-  late Function getAnswerOnComplete;
-  late Function getAnswerOnError;
+  Function? onGetAnswerSuccess;
+  Function? onGetAnswerFailed;
+  Function? onCompleted;
+  final AskRepository _askRepository;
+  GetAnswerUseCase? _getAnswerUseCase;
 
-  final GetAnswerUseCase getAnswerUseCase;
+  GetAnswerUseCase? getAnswerUseCase;
 
-  ChatBotPresenter(askRepository)
-      : getAnswerUseCase = GetAnswerUseCase(askRepository);
-
-  void getAnswer(String question, String sourceType) {
-    getAnswerUseCase.execute(
-        _GetAnswerObserver(this), GetAnswerParams(question, sourceType));
+  ChatBotPresenter(this._askRepository) {
+    _getAnswerUseCase = GetAnswerUseCase(_askRepository);
   }
 
   @override
   void dispose() {
-    getAnswerUseCase.dispose();
+    _getAnswerUseCase?.dispose();
+  }
+
+  void executeGetAnswer(String question, String sourceType) {
+    _getAnswerUseCase?.execute(
+        _GetAnswerObserver(this), GetAnswerParams(question, sourceType));
   }
 }
 
-class _GetAnswerObserver extends Observer<AskInfo> {
-  final ChatBotPresenter presenter;
+class _GetAnswerObserver implements Observer<AskInfo> {
+  final ChatBotPresenter _presenter;
 
-  _GetAnswerObserver(this.presenter);
-
-  @override
-  void onNext(AskInfo? response) {
-    presenter.getAnswerOnNext(response);
-  }
+  _GetAnswerObserver(this._presenter);
 
   @override
   void onComplete() {
-    presenter.getAnswerOnComplete();
+    assert(_presenter.onCompleted != null);
+    _presenter.onCompleted!();
   }
 
   @override
   void onError(e) {
-    presenter.getAnswerOnError(e);
+    assert(_presenter.onGetAnswerFailed != null);
+    _presenter.onGetAnswerFailed!(e);
+  }
+
+  @override
+  void onNext(AskInfo? response) {
+    assert(response is AskInfo);
+    _presenter.onGetAnswerSuccess!(response);
   }
 }

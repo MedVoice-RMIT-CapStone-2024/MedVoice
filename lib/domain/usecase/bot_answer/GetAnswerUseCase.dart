@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
+import 'package:med_voice/domain/entities/ask/get_answer_params.dart';
 import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
 
 import '../../entities/ask/ask_request.dart';
@@ -27,11 +28,4 @@ class GetAnswerUseCase extends UseCase<AskInfo, GetAnswerParams> {
 
     return controller.stream;
   }
-}
-
-class GetAnswerParams {
-  final String question;
-  final String sourceType;
-
-  GetAnswerParams(this.question, this.sourceType);
 }
