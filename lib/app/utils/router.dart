@@ -1,6 +1,7 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
@@ -91,13 +92,17 @@ class AppRouter {
 
       case Pages.noteArchiveEnhancedDetails:
         Map<String, dynamic> arguments =
-        settings.arguments as Map<String, dynamic>;
+            settings.arguments as Map<String, dynamic>;
         return _buildRoute(
             settings,
             EnhancedNoteView(
-              enhancedGroupDateInfoParam: arguments[enhancedGroupDateInfo] as DisplayArchive,
+              enhancedGroupDateInfoParam:
+                  arguments[enhancedGroupDateInfo] as DisplayArchive,
               enhancedAudioLink: arguments[enhancedAudioLink] as String,
             ));
+
+      case Pages.chatBot:
+        return _buildRoute(settings, ChatBotView());
 
       default:
         return null;
