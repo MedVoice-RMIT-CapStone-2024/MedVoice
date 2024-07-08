@@ -37,7 +37,7 @@ class NoteController extends BaseController {
     showLoadingProgress();
     libraryTranscriptRequest =
         GetLibraryTranscriptRequest(groupDateInfo.audioId);
-    _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
+    onGetLibraryTranscriptJson();
   }
 
   @override
@@ -47,9 +47,6 @@ class NoteController extends BaseController {
       textData = response;
       debugPrint(
           "Get library transcript text success!: ${textData!.mTranscript}");
-
-      //TODO: CALL API FOR JSON FILE
-      onGetLibraryTranscriptJson();
     };
     _presenter.onGetLibraryTranscriptTextFailed = (e) {
       view.showErrorFromServer(e);
@@ -63,6 +60,8 @@ class NoteController extends BaseController {
       if (jsonData != null) {
         if (jsonData?.mMessage == null || jsonData!.mMessage!.isEmpty) {
           doesHaveJsonFile = true;
+        } else {
+          _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
         }
       }
       hideLoadingProgress();
@@ -115,8 +114,6 @@ class NoteController extends BaseController {
     request = UploadRecordingRequest(groupDateInfo.audioId);
     _presenter.executeUploadAudioInfo(request!);
   }
-
-  //TODO: ALSO CALLING API FOR JSON FILE, IF RETURN MESSAGE, CHANGE BUTTON FUNCTION TO CALL V2 PROCESS, AFTER FINISH CALL API GET JSON AGAIN AND THEN CHANGE PAGE
 
   void onGetLibraryTranscriptJson() {
     showLoadingProgress();
