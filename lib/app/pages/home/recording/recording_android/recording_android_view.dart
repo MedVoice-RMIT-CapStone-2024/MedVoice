@@ -116,12 +116,12 @@ class _RecordingAndroidView
               ),
             ),
             recordingAndroidController!.speechEnabled
-                ? _buildTimer()
+                ? _buildTimer(theme)
                 : SizedBox(height: toSize(25)),
             Padding(
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
-                animate: true,
+                animate: recordingAndroidController!.speechEnabled ? true : false,
                 glowColor: theme.colorScheme.primary,
                 glowRadiusFactor: 0.3,
                 duration: const Duration(milliseconds: 1700),
@@ -142,8 +142,8 @@ class _RecordingAndroidView
                             borderRadius: BorderRadius.circular(50)),
                         child: Icon(
                             recordingAndroidController!.speechEnabled
-                                ? Icons.mic_off
-                                : Icons.mic,
+                                ? Icons.mic
+                                : Icons.mic_off,
                             size: toSize(35),
                             color: HexColor(
                                 Global.mColors['white_2'].toString())))),
@@ -156,7 +156,7 @@ class _RecordingAndroidView
     );
   }
 
-  Widget _buildTimer() {
+  Widget _buildTimer(ThemeData theme) {
     if (recordingAndroidController == null) return Container();
 
     final String minutes = recordingAndroidController!
@@ -167,7 +167,7 @@ class _RecordingAndroidView
     return Text(
       '$minutes : $seconds',
       style: TextStyle(
-          color: HexColor(Global.mColors["pink_1"].toString()),
+          color: theme.colorScheme.primary,
           fontFamily: 'NunitoSans',
           fontWeight: FontWeight.w700,
           fontSize: toSize(18)),
