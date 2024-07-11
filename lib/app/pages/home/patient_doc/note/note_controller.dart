@@ -23,7 +23,7 @@ class NoteController extends BaseController {
   List<Map<String, dynamic>> extractedData = [];
   AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
-  bool doesHaveJsonFile = false;
+  bool doesHaveJsonFile = true;
   UploadRecordingRequest? request;
   AudioTranscriptInfo? processedData;
 
@@ -61,6 +61,7 @@ class NoteController extends BaseController {
         if (jsonData?.mMessage == null || jsonData!.mMessage!.isEmpty) {
           doesHaveJsonFile = true;
         } else {
+          doesHaveJsonFile = false;
           _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
         }
       }

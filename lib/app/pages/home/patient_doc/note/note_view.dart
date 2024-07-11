@@ -77,14 +77,10 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     ThemeData theme =
         Provider.of<ThemeProvider>(context, listen: false).themeData;
     _controller = controller as NoteController;
-    return (_controller!.jsonData != null)
-        ? (_controller!.jsonData!.mMessage != null &&
-                _controller!.jsonData!.mMessage!.isEmpty)
+    return (_controller!.doesHaveJsonFile)
             ? _jsonTranscriptContent(theme)
-            : (_controller!.textData != null) ? _textTranscriptContent(
-                _controller!.textData!, widget.groupDateInfo, theme)
-        : const SizedBox()
-    : const SizedBox();
+            : _textTranscriptContent(
+                _controller!.textData!, widget.groupDateInfo, theme);
   }
 
   Widget _textTranscriptContent(GetLibraryTranscriptTextInfo textData,
@@ -402,11 +398,11 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                 _contentLabel("Patient Information", theme),
                 SizedBox(height: toSize(5)),
                 _basicContentRow(
-                    'Name', _controller!.jsonData!.mPatientName, false, theme),
+                    'Name', _controller!.jsonData?.mPatientName, false, theme),
                 _basicContentRow(
-                    'Age', _controller!.jsonData!.mPatientAge, false, theme),
+                    'Age', _controller!.jsonData?.mPatientAge, false, theme),
                 _basicContentRow('Gender',
-                    _controller!.jsonData!.mPatientGender, true, theme),
+                    _controller!.jsonData?.mPatientGender, true, theme),
                 SizedBox(height: toSize(10)),
                 _contentLabel("Diagnosis", theme),
                 _expansionTileDiagnosis(theme),
@@ -425,7 +421,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
   Widget _expansionTileVitals(ThemeData theme) {
     return ExpansionTile(
       title: Text(
-          'Vital count: ${_controller!.jsonData!.mHealthVitals?.length ?? 0}',
+          'Vital count: ${_controller!.jsonData?.mHealthVitals?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
       textColor: theme.colorScheme.primary,
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -437,7 +433,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
           child: ListView.separated(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData!.mHealthVitals?.length ?? 0,
+            itemCount: _controller!.jsonData?.mHealthVitals?.length ?? 0,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -446,21 +442,21 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Status: ${_controller!.jsonData!.mHealthVitals?[index].mStatus}",
+                        "Status: ${_controller!.jsonData?.mHealthVitals?[index].mStatus}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontSize: toSize(15)),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
-                        "Value: ${_controller!.jsonData!.mHealthVitals?[index].mValue}",
+                        "Value: ${_controller!.jsonData?.mHealthVitals?[index].mValue}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontSize: toSize(15)),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
-                        "Units: ${_controller!.jsonData!.mHealthVitals?[index].mUnits}",
+                        "Units: ${_controller!.jsonData?.mHealthVitals?[index].mUnits}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontSize: toSize(15)),
@@ -487,7 +483,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     return ExpansionTile(
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
-          'Treatment count: ${_controller!.jsonData!.mMedicalTreatment?.length ?? 0}',
+          'Treatment count: ${_controller!.jsonData?.mMedicalTreatment?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
       textColor: theme.colorScheme.primary,
       children: [
@@ -498,7 +494,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
           child: ListView.separated(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData!.mMedicalTreatment?.length ?? 0,
+            itemCount: _controller!.jsonData?.mMedicalTreatment?.length ?? 0,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: toSize(20)),
@@ -507,14 +503,14 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Name: ${_controller!.jsonData!.mMedicalTreatment?[index].mName}",
+                        "Name: ${_controller!.jsonData?.mMedicalTreatment?[index].mName}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontSize: toSize(15)),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
-                        "Prescription: ${_controller!.jsonData!.mMedicalTreatment?[index].mPrescription}",
+                        "Prescription: ${_controller!.jsonData?.mMedicalTreatment?[index].mPrescription}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontSize: toSize(15)),
@@ -541,7 +537,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     return ExpansionTile(
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
-          'Diagnosis count: ${_controller!.jsonData!.mMedicalDiagnosis?.length ?? 0}',
+          'Diagnosis count: ${_controller!.jsonData?.mMedicalDiagnosis?.length ?? 0}',
           style: TextStyle(fontSize: toSize(15))),
       textColor: theme.colorScheme.primary,
       children: [
@@ -552,13 +548,13 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
           child: ListView.separated(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData!.mMedicalDiagnosis?.length ?? 0,
+            itemCount: _controller!.jsonData?.mMedicalDiagnosis?.length ?? 0,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: toSize(20)),
                 child: ListTile(
                   title: Text(
-                    "Name: ${_controller!.jsonData!.mMedicalDiagnosis?[index].mName}",
+                    "Name: ${_controller!.jsonData?.mMedicalDiagnosis?[index].mName}",
                     style: TextStyle(
                         fontSize: toSize(15),
                         color: theme.colorScheme.onSurface),
