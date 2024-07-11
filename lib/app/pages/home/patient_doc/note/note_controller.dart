@@ -24,6 +24,7 @@ class NoteController extends BaseController {
   AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
   bool doesHaveJsonFile = true;
+  bool finishedLoading = false;
   UploadRecordingRequest? request;
   AudioTranscriptInfo? processedData;
 
@@ -45,8 +46,11 @@ class NoteController extends BaseController {
     _presenter.onGetLibraryTranscriptTextSuccess =
         (GetLibraryTranscriptTextInfo response) {
       textData = response;
+      finishedLoading = true;
+      doesHaveJsonFile = false;
       debugPrint(
           "Get library transcript text success!: ${textData!.mTranscript}");
+      hideLoadingProgress();
     };
     _presenter.onGetLibraryTranscriptTextFailed = (e) {
       view.showErrorFromServer(e);
@@ -59,13 +63,13 @@ class NoteController extends BaseController {
       debugPrint("Get library transcript json success!");
       if (jsonData != null) {
         if (jsonData?.mMessage == null || jsonData!.mMessage!.isEmpty) {
+          finishedLoading = true;
           doesHaveJsonFile = true;
+          hideLoadingProgress();
         } else {
-          doesHaveJsonFile = false;
           _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
         }
       }
-      hideLoadingProgress();
     };
     _presenter.onGetLibraryTranscriptJsonFailed = (e) {
       view.showErrorFromServer(e);

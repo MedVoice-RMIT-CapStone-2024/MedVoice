@@ -77,10 +77,12 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     ThemeData theme =
         Provider.of<ThemeProvider>(context, listen: false).themeData;
     _controller = controller as NoteController;
-    return (_controller!.doesHaveJsonFile)
+    return (_controller!.finishedLoading)
+        ? (_controller!.doesHaveJsonFile)
             ? _jsonTranscriptContent(theme)
             : _textTranscriptContent(
-                _controller!.textData!, widget.groupDateInfo, theme);
+                _controller!.textData!, widget.groupDateInfo, theme)
+        : const SizedBox();
   }
 
   Widget _textTranscriptContent(GetLibraryTranscriptTextInfo textData,
