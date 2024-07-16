@@ -13,8 +13,10 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../common/base_controller.dart';
+import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
+import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingController extends BaseController {
@@ -40,6 +42,7 @@ class RecordingController extends BaseController {
   bool isStartingRecording = false;
   String pathForDelete = '';
   PostTranscriptRequest? dataRequest;
+  UploadRecordingRequest? audioInfoRequest;
 
   RecordingController(audioRepository)
       : _presenter = RecordingPresenter(audioRepository) {
@@ -97,12 +100,24 @@ class RecordingController extends BaseController {
     };
     _presenter.onUploadLibraryTranscriptSuccess =
         (LibraryTranscriptInfo response) {
+      audioInfoRequest = UploadRecordingRequest(response.mFileId);
+      if (audioInfoRequest != null) {
+        onUploadAudioForProcessing(audioInfoRequest!);
+      }
       debugPrint(
           "Upload library transcript success \nData: ${response.mFileId} and link: ${response.mTranscript}");
       hideLoadingProgress();
     };
     _presenter.onUploadLibraryTranscriptFailed = (e) {
       view.showErrorFromServer("Upload library transcript failed: $e");
+      hideLoadingProgress();
+    };
+    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
+      debugPrint("Upload audio for processing v2 success");
+      hideLoadingProgress();
+    };
+    _presenter.onUploadAudioInfoFailed = (e) {
+      view.showErrorFromServer("Upload audio for processing v2 failed: $e");
       hideLoadingProgress();
     };
     _presenter.onCompleted = () {};
@@ -164,6 +179,10 @@ class RecordingController extends BaseController {
     );
     speechEnabled = true;
     refreshUI();
+  }
+
+  void onUploadAudioForProcessing(UploadRecordingRequest request) {
+    _presenter.executeUploadAudioInfo(request);
   }
 
   Future<void> stopListening() async {

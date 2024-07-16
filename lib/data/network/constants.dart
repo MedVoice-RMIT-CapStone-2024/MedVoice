@@ -1,7 +1,7 @@
 class Constants {
   static String baseUrl = "http://localhost:8000/";
 
-  static String firstBitUrl = "https://medvoice-be-v5-2-rag.onrender.com/";
+  static String firstBitUrl = "https://medvoice-fastapi.ngrok.dev/";
 
   // sample fetch baseball data
   static String baseballList =

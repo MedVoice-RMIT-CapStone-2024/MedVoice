@@ -23,7 +23,8 @@ class NoteController extends BaseController {
   List<Map<String, dynamic>> extractedData = [];
   AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
-  bool doesHaveJsonFile = false;
+  bool doesHaveJsonFile = true;
+  bool finishedLoading = false;
   UploadRecordingRequest? request;
   AudioTranscriptInfo? processedData;
 
@@ -37,7 +38,7 @@ class NoteController extends BaseController {
     showLoadingProgress();
     libraryTranscriptRequest =
         GetLibraryTranscriptRequest(groupDateInfo.audioId);
-    _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
+    onGetLibraryTranscriptJson();
   }
 
   @override
@@ -45,11 +46,11 @@ class NoteController extends BaseController {
     _presenter.onGetLibraryTranscriptTextSuccess =
         (GetLibraryTranscriptTextInfo response) {
       textData = response;
+      finishedLoading = true;
+      doesHaveJsonFile = false;
       debugPrint(
           "Get library transcript text success!: ${textData!.mTranscript}");
-
-      //TODO: CALL API FOR JSON FILE
-      onGetLibraryTranscriptJson();
+      hideLoadingProgress();
     };
     _presenter.onGetLibraryTranscriptTextFailed = (e) {
       view.showErrorFromServer(e);
@@ -62,10 +63,13 @@ class NoteController extends BaseController {
       debugPrint("Get library transcript json success!");
       if (jsonData != null) {
         if (jsonData?.mMessage == null || jsonData!.mMessage!.isEmpty) {
+          finishedLoading = true;
           doesHaveJsonFile = true;
+          hideLoadingProgress();
+        } else {
+          _presenter.executeGetLibraryTranscriptText(libraryTranscriptRequest!);
         }
       }
-      hideLoadingProgress();
     };
     _presenter.onGetLibraryTranscriptJsonFailed = (e) {
       view.showErrorFromServer(e);
@@ -115,8 +119,6 @@ class NoteController extends BaseController {
     request = UploadRecordingRequest(groupDateInfo.audioId);
     _presenter.executeUploadAudioInfo(request!);
   }
-
-  //TODO: ALSO CALLING API FOR JSON FILE, IF RETURN MESSAGE, CHANGE BUTTON FUNCTION TO CALL V2 PROCESS, AFTER FINISH CALL API GET JSON AGAIN AND THEN CHANGE PAGE
 
   void onGetLibraryTranscriptJson() {
     showLoadingProgress();

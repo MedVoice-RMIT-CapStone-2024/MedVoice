@@ -3,17 +3,24 @@ import 'package:med_voice/domain/entities/recording/library_transcript/post_tran
 import 'package:med_voice/domain/usecase/recording/uploadLibraryTranscriptUseCase.dart';
 import 'package:med_voice/domain/usecase/recording/uploadRecordingUseCase.dart';
 
+import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/library_transcript_info.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
+import '../../../../../domain/entities/recording/upload_recording_request.dart';
+import '../../../../../domain/usecase/recording/uploadAudioInfoUseCase.dart';
 
 
 class RecordingPresenter extends Presenter{
   final AudioRepository _audioRepository;
   UploadRecordingUseCase? _uploadRecordingUseCase;
+  UploadAudioInfoUseCase? _uploadAudioInfoUseCase;
   UploadLibraryTranscriptUseCase?  _uploadLibraryTranscriptUseCase;
 
   Function? onUploadRecordingSuccess;
   Function? onUploadRecordingFailed;
+
+  Function? onUploadAudioInfoSuccess;
+  Function? onUploadAudioInfoFailed;
 
   Function? onUploadLibraryTranscriptSuccess;
   Function? onUploadLibraryTranscriptFailed;
@@ -22,16 +29,19 @@ class RecordingPresenter extends Presenter{
 
   RecordingPresenter(this._audioRepository) {
     _uploadRecordingUseCase = UploadRecordingUseCase(_audioRepository);
+    _uploadAudioInfoUseCase = UploadAudioInfoUseCase(_audioRepository);
     _uploadLibraryTranscriptUseCase = UploadLibraryTranscriptUseCase(_audioRepository);
   }
 
   @override
   void dispose() {
     _uploadRecordingUseCase?.dispose();
+    _uploadAudioInfoUseCase?.dispose();
     _uploadLibraryTranscriptUseCase?.dispose();
   }
 
   void executeUploadRecording(RecordingUploadInfo info) => _uploadRecordingUseCase?.execute(_UploadRecordingUseCaseObserver(this), info);
+  void executeUploadAudioInfo(UploadRecordingRequest request) => _uploadAudioInfoUseCase?.execute(_UploadAudioInfoUseCaseObserver(this), request);
   void executeUploadLibraryTranscript(PostTranscriptRequest request) => _uploadLibraryTranscriptUseCase?.execute(_UploadLibraryTranscriptUseCaseObserver(this), request);
 }
 
@@ -80,5 +90,29 @@ class _UploadLibraryTranscriptUseCaseObserver implements Observer<LibraryTranscr
   void onNext(LibraryTranscriptInfo? response) {
     assert(response is LibraryTranscriptInfo);
     _presenter.onUploadLibraryTranscriptSuccess!(response);
+  }
+}
+
+class _UploadAudioInfoUseCaseObserver implements Observer<AudioTranscriptInfo> {
+  final RecordingPresenter _presenter;
+
+  _UploadAudioInfoUseCaseObserver(this._presenter);
+
+  @override
+  void onComplete() {
+    assert(_presenter.onCompleted != null);
+    _presenter.onCompleted!();
+  }
+
+  @override
+  void onError(e) {
+    assert(_presenter.onUploadAudioInfoFailed != null);
+    _presenter.onUploadAudioInfoFailed!(e);
+  }
+
+  @override
+  void onNext(AudioTranscriptInfo? response) {
+    assert(response is AudioTranscriptInfo);
+    _presenter.onUploadAudioInfoSuccess!(response);
   }
 }

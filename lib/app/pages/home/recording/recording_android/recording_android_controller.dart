@@ -13,8 +13,10 @@ import 'package:record/record.dart';
 import 'package:vosk_flutter_2/vosk_flutter_2.dart';
 
 import '../../../../../common/base_controller.dart';
+import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
+import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingAndroidController extends BaseController {
@@ -36,6 +38,7 @@ class RecordingAndroidController extends BaseController {
   bool isStartingRecording = false;
   String pathForDelete = '';
   PostTranscriptRequest? dataRequest;
+  UploadRecordingRequest? audioInfoRequest;
   ModelLoader? modelLoader;
   VoskFlutterPlugin vosk = VoskFlutterPlugin.instance();
   Model? modelController;
@@ -113,7 +116,7 @@ class RecordingAndroidController extends BaseController {
     _presenter.onUploadRecordingSuccess = (bool responses) {
       onUploadLibraryTranscript();
       onDelete(pathForDelete);
-      debugPrint("Upload audio succeed");
+      debugPrint("Upload audio success");
     };
     _presenter.onUploadRecordingFailed = (e) {
       view.showErrorFromServer("Upload audio failed: $e");
@@ -122,10 +125,23 @@ class RecordingAndroidController extends BaseController {
     };
     _presenter.onUploadLibraryTranscriptSuccess =
         (LibraryTranscriptInfo response) {
+      audioInfoRequest = UploadRecordingRequest(response.mFileId);
+      if (audioInfoRequest != null) {
+        onUploadAudioForProcessing(audioInfoRequest!);
+      }
+      debugPrint("Upload library transcript success");
       hideLoadingProgress();
     };
     _presenter.onUploadLibraryTranscriptFailed = (e) {
       view.showErrorFromServer("Upload library transcript failed: $e");
+      hideLoadingProgress();
+    };
+    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
+      debugPrint("Upload audio for processing v2 success");
+      hideLoadingProgress();
+    };
+    _presenter.onUploadAudioInfoFailed = (e) {
+      view.showErrorFromServer("Upload audio for processing v2 failed: $e");
       hideLoadingProgress();
     };
     _presenter.onCompleted = () {};
@@ -235,6 +251,10 @@ class RecordingAndroidController extends BaseController {
 
   void onUploadLibraryTranscript() {
     _presenter.executeUploadLibraryTranscript(dataRequest!);
+  }
+
+  void onUploadAudioForProcessing(UploadRecordingRequest request) {
+    _presenter.executeUploadAudioInfo(request);
   }
 
   Future<void> onDelete(String path) async {
