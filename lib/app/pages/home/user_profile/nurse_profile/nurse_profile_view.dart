@@ -171,23 +171,28 @@ class _NurseProfileView
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Text("What's New",
-                              style: TextStyle(
-                                  color: theme.colorScheme.onSurface,
-                                  fontSize: toSize(17))),
-                          const Spacer(),
-                          RotatedBox(
-                            quarterTurns: 2,
-                            child: SizedBox(
-                              height: toSize(20),
-                              width: toSize(20),
-                              child: Image.asset(IconAssets.icBack,
-                                  color: theme.colorScheme.onSurface),
-                            ),
-                          )
-                        ],
+                      InkWell(
+                        onTap: () {
+                          pushScreen(Pages.chatBot);
+                        },
+                        child: Row(
+                          children: [
+                            Text("What's New",
+                                style: TextStyle(
+                                    color: theme.colorScheme.onSurface,
+                                    fontSize: toSize(17))),
+                            const Spacer(),
+                            RotatedBox(
+                              quarterTurns: 2,
+                              child: SizedBox(
+                                height: toSize(20),
+                                width: toSize(20),
+                                child: Image.asset(IconAssets.icBack,
+                                    color: theme.colorScheme.onSurface),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(height: toSize(5)),
                       Padding(

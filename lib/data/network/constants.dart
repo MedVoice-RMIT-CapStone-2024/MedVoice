@@ -1,5 +1,5 @@
 class Constants {
-  static String baseUrl = "";
+  static String baseUrl = "http://localhost:8000/";
 
   static String firstBitUrl = "https://medvoice-fastapi.ngrok.dev/";
 
@@ -21,6 +21,8 @@ class Constants {
   // get library transcript
   static String getLibraryTranscript =
       "${firstBitUrl}get_transcript/{file_id}/{file_extension}";
+
+  static String askEndpoint = "${firstBitUrl}ask";
 }
 
 const successStatusCodeList = [200, 201, 204];
