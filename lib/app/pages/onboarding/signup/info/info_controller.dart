@@ -9,6 +9,13 @@ class InfoController extends BaseController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
+  ValueNotifier<PasswordStrength> passwordStrengthNotifier =
+      ValueNotifier<PasswordStrength>(
+    PasswordStrength(strength: 0, strengthLabel: 'Weak'),
+  );
+
   @override
   void onResumed() {}
 
@@ -16,8 +23,32 @@ class InfoController extends BaseController {
   void onListener() {}
 
   @override
-  void firstLoad() {
-    // startTimer();
+  void firstLoad() {}
+
+  void togglePasswordVisibility() {
+    obscureText.value = !obscureText.value;
+  }
+
+  void updatePasswordStrength(String password) {
+    double strength = 0;
+    String strengthLabel = 'Weak';
+
+    if (RegExp(r'[A-Z]').hasMatch(password)) strength += 0.2;
+    if (RegExp(r'[a-z]').hasMatch(password)) strength += 0.2;
+    if (RegExp(r'\d').hasMatch(password)) strength += 0.2;
+    if (RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) strength += 0.2;
+    if (password.length >= 8) strength += 0.2;
+
+    if (strength < 0.3) {
+      strengthLabel = 'Weak';
+    } else if (strength < 0.7) {
+      strengthLabel = 'Good';
+    } else {
+      strengthLabel = 'Strong';
+    }
+
+    passwordStrengthNotifier.value =
+        PasswordStrength(strength: strength, strengthLabel: strengthLabel);
   }
 
   // Custom validation functions
@@ -25,39 +56,17 @@ class InfoController extends BaseController {
     if (value == null || value.isEmpty) {
       return 'Email address is required';
     }
-    // Validate email format using regex
-    if (!value.contains('@') &&
-        !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
       return 'Enter a valid email address';
     }
-    return null; // Return null if validation passes
-  }
-
-  bool isStrongPassword(String value) {
-    // Define regex patterns for each requirement
-    final hasUppercase = RegExp(r'[A-Z]');
-    final hasLowercase = RegExp(r'[a-z]');
-    final hasDigits = RegExp(r'\d');
-    final hasSpecialCharacters = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-
-    // Check if the input string meets each requirement
-    return hasUppercase.hasMatch(value) &&
-        hasLowercase.hasMatch(value) &&
-        hasDigits.hasMatch(value) &&
-        hasSpecialCharacters.hasMatch(value);
+    return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    if (!isStrongPassword(value)) {
-      return 'Password must contain uppercase, lowercase, digits, and special characters';
-    }
-    return null; // Return null if validation passes
+    return null;
   }
 
   String? validateConfirmPassword(String? value) {
@@ -67,24 +76,15 @@ class InfoController extends BaseController {
     if (value != passwordController.text) {
       return 'Passwords do not match';
     }
-    return null; // Return null if validation passes
-  }
-
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    return null;
   }
 
   bool submitForm() {
     if (formKey.currentState!.validate()) {
-      // Extract values from controllers and handle submission logic here
       String email = emailController.text;
       String password = passwordController.text;
       String confirmPassword = confirmPasswordController.text;
 
-      // Perform form submission logic (e.g., API call, navigation, etc.)
-      // This is where you handle the submitted data
       print('Email: $email');
       print('Password: $password');
       print('Confirm Password: $confirmPassword');
@@ -92,4 +92,19 @@ class InfoController extends BaseController {
     }
     return false;
   }
+
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    obscureText.dispose();
+    passwordStrengthNotifier.dispose();
+  }
+}
+
+class PasswordStrength {
+  final double strength;
+  final String strengthLabel;
+
+  PasswordStrength({required this.strength, required this.strengthLabel});
 }

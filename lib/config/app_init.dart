@@ -1,9 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:med_voice/app/widgets/theme.dart';
+import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
+import 'package:provider/provider.dart';
 import '../app/pages/onboarding/startup/startup_view.dart';
 import '../app/utils/global.dart';
 import 'dart:async';
@@ -69,17 +70,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MedCare',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.transparent,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        colorScheme: ColorScheme.light(
-          primary: HexColor(Global.mColors["blue_1"].toString()),
-          onPrimary: Colors.white,
-        ),
-      ),
+      theme: Provider.of<ThemeProvider>(context).themeData,
       home: StartupView(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(

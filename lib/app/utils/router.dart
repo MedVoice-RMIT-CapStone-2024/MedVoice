@@ -1,13 +1,19 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
+import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
+import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
+import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
+import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
-import '../../domain/entities/recording_archive/recording_info.dart';
+import '../pages/home/patient_doc/enhanced_note/enhanced_note_view.dart';
+import '../pages/home/patient_doc/note/note_view.dart';
 import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';
@@ -22,9 +28,7 @@ class AppRouter {
 
   CupertinoPageRoute? getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       // case Pages.startup:
-      //   return _buildRoute(settings, StartupView());
 
       // case Pages.foodDetails:
       //   Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
@@ -62,10 +66,43 @@ class AppRouter {
         return _buildRoute(settings, InfoView());
 
       case Pages.audioPlayback:
-        Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
-        return _buildRoute(settings, AudioPlaybackView(
-          recordingInfo: arguments[recordingInfo] as RecordingInfo,
-        ));
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            AudioPlaybackView(
+              recordingInfo: arguments[recordingInfo] as String,
+            ));
+
+      case Pages.terms:
+        return _buildRoute(settings, TermsAndConditionsView());
+
+      case Pages.privacy:
+        return _buildRoute(settings, PrivacyPolicyView());
+
+      case Pages.noteArchiveDetails:
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            NoteView(
+              groupDateInfo: arguments[groupDateInfo] as DisplayArchive,
+              audioLink: arguments[audioLink] as String,
+            ));
+
+      case Pages.noteArchiveEnhancedDetails:
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            EnhancedNoteView(
+              enhancedGroupDateInfoParam:
+                  arguments[enhancedGroupDateInfo] as DisplayArchive,
+              enhancedAudioLink: arguments[enhancedAudioLink] as String,
+            ));
+
+      case Pages.chatBot:
+        return _buildRoute(settings, ChatBotView());
 
       default:
         return null;

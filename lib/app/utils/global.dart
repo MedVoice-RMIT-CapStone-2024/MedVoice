@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 
+import '../../domain/entities/recording/recording_archive_info.dart';
 import '../../domain/entities/recording_archive/recording_info.dart';
 
 class Global {
@@ -39,6 +40,10 @@ class Global {
     "blue_15": "#030E1E",
     "blue_16": "#030E1E",
     "blue_17": "#023179",
+    "blue_18": "#C3E6FF",
+    "blue_19": "#3E8BFF",
+    "blue_20": "#0095FF",
+    "blue_21": "#E7F5FF",
     "green": "#4CAF50",
     "green_2": "#125C66",
     "green_3": "#134E54",
@@ -46,6 +51,8 @@ class Global {
     "green_5": "#4A7D21",
     "green_6": "#1C9B66",
     "green_7": "#3ACE64",
+    "green_8": "#A5E6BA",
+    "green_9": "#81F499",
     "yellow_1": "#FFBA9100",
     "yellow_2": "#EA8338",
     "yellow_3": "#856D18",
@@ -76,13 +83,19 @@ class Global {
     "gray_14": "#D9D9D9",
     "gray_15": "#F8F8F8",
     "gray_16": "#C1C4C9",
+    "gray_17": "#2B2D42",
+    "gray_18": "#3A3D59",
+    "gray_19": "#C6CCD7",
     "brown_1": "#B8601F",
     "orange_1": "#FE724C",
     "white_1": "#D3D1D8",
     "white_2": "#FCFCFD",
     "white_3": "#F2EAEA",
+    "white_4": "#EDF2F4",
+    "white_5": "#8D99AE",
     "pink_1": "#EC4B8B",
     "pink_2": "#FBE8F2",
+    "pink_3": "#E71569",
   };
 
   static int mTimeClick = 0;
@@ -105,4 +118,10 @@ class Global {
         duration: 180,
         path: 'local_path'),
   ];
+
+  static bool isDisableHttpLogging = false;
+
+  static String bucketName = "medvoice_audio_bucket_phase_2";
+
+  static bool isSpeechServiceInitialized = false;
 }
