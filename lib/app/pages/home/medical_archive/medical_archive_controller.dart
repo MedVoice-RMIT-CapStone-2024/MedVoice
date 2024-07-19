@@ -51,7 +51,7 @@ class MedicalArchiveController extends BaseController {
   }
 
   void onLoadRecordingArchive() {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Fetching medical archive...');
     _presenter.executeGetRecordingArchive();
   }
 

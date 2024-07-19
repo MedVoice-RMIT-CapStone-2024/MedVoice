@@ -100,7 +100,7 @@ class _NurseNoteViewState
                               color: Theme.of(context).colorScheme.onSecondary,
                               fontWeight: FontWeight.w300,
                               fontSize: toSize(16),
-                              fontFamily: 'Poppins',
+                              fontFamily: 'Rubik',
                             ),
                           ),
                           onTap: () {
@@ -121,7 +121,7 @@ class _NurseNoteViewState
                       );
                     },
                   ),
-            ElevatedButton(onPressed: loadNurseNote, child: Text('Load Data')),
+            ElevatedButton(onPressed: loadNurseNote, child: Text('Load Data', style: TextStyle(fontFamily: 'Rubik'))),
           ],
         ),
       ),

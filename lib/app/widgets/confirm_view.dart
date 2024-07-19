@@ -56,7 +56,7 @@ class ConfirmView extends StatelessWidget {
                           style: TextStyle(
                               color: HexColor(
                                   Global.mColors["pink_1"].toString()),
-                              fontFamily: 'NunitoSans',
+                              fontFamily: 'Rubik',
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
                         ))
@@ -69,7 +69,7 @@ class ConfirmView extends StatelessWidget {
                           style: TextStyle(
                               color:
                               HexColor(Global.mColors["black_5"].toString()),
-                              fontFamily: 'NunitoSans',
+                              fontFamily: 'Rubik',
                               fontSize: 12,
                               fontWeight: FontWeight.normal),
                         )),
@@ -110,7 +110,7 @@ class ConfirmView extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: HexColor(Global.mColors["pink_1"].toString()),
-                                              fontFamily: 'NunitoSans',
+                                              fontFamily: 'Rubik',
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal),
                                         )),
@@ -149,7 +149,7 @@ class ConfirmView extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: Colors.white,
-                                              fontFamily: 'NunitoSans',
+                                              fontFamily: 'Rubik',
                                               fontSize: 11,
                                               fontWeight: FontWeight.normal),
                                         )),

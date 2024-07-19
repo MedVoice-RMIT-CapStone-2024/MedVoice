@@ -63,7 +63,7 @@ class _AudioPlaybackView
                   width: toSize(300),
                   child: Image.asset(ImageAssets.imgMedVoiceLogo)),
               SizedBox(height: toSize(10)),
-              Text(widget.recordingInfo, textAlign: TextAlign.center),
+              Text(widget.recordingInfo, textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Rubik')),
               SizedBox(height: toSize(58)),
               InkWell(
                 onTap: () {

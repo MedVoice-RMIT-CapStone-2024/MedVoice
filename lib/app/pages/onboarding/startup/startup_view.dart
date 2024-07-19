@@ -119,7 +119,7 @@ class _StartupView extends BaseStateView<StartupView, StartupController>
                     TypewriterAnimatedText('MedVoice',
                         speed: const Duration(milliseconds: 100),
                         textStyle: TextStyle(
-                            fontSize: toSize(45), fontWeight: FontWeight.w600),
+                            fontSize: toSize(45), fontWeight: FontWeight.w600, fontFamily: 'Rubik'),
                         textAlign: TextAlign.end)
                   ], isRepeatingAnimation: false),
                 ),

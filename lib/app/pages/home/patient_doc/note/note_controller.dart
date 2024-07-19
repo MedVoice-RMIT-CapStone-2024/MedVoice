@@ -35,7 +35,7 @@ class NoteController extends BaseController {
 
   @override
   void firstLoad() {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Fetching transcript...');
     libraryTranscriptRequest =
         GetLibraryTranscriptRequest(groupDateInfo.audioId);
     onGetLibraryTranscriptJson();
@@ -115,13 +115,12 @@ class NoteController extends BaseController {
   }
 
   void onProcessAudioV2() {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Enhancing transcript...');
     request = UploadRecordingRequest(groupDateInfo.audioId);
     _presenter.executeUploadAudioInfo(request!);
   }
 
   void onGetLibraryTranscriptJson() {
-    showLoadingProgress();
     _presenter.executeGetLibraryTranscriptJson(libraryTranscriptRequest!);
   }
 

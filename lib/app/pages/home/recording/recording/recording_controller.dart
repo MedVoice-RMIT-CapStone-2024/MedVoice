@@ -51,6 +51,7 @@ class RecordingController extends BaseController {
 
   @override
   void firstLoad() {
+    showLoadingProgress(loadingContent: 'Initiating library...');
     recordSub = audioRecorder.onStateChanged().listen((newRecordState) {
       recordState = newRecordState;
       refreshUI();
@@ -72,6 +73,7 @@ class RecordingController extends BaseController {
       onStatus: statusListener,
       options: [SpeechToText.webDoNotAggregate],
     );
+    hideLoadingProgress();
     refreshUI();
   }
 
@@ -233,7 +235,7 @@ class RecordingController extends BaseController {
   }
 
   void onUploadAudioFile(RecordingUploadInfo data) {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Uploading audio file...');
     _presenter.executeUploadRecording(data);
   }
 

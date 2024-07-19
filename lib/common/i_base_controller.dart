@@ -1,5 +1,5 @@
 class IBaseController {
-  void showLoadingProgress() {}
+  void showLoadingProgress({String? loadingContent}) {}
   void hideLoadingProgress() {}
   void onListener() {}
   bool loadingState() {

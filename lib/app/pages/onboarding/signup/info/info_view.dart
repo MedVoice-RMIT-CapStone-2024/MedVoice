@@ -134,6 +134,7 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                   color: theme.colorScheme.surface,
                   fontSize: toSize(18),
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Rubik'
                 ),
               ),
             ),

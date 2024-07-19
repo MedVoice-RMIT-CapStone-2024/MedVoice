@@ -82,13 +82,15 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: toSize(25),
-                                    color: theme.colorScheme.onBackground),
+                                    color: theme.colorScheme.onBackground,
+                                    fontFamily: 'Rubik'),
                               ),
                               Text("04 - 04 - 2001",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: toSize(15),
                                     color: theme.colorScheme.onBackground,
+                                    fontFamily: 'Rubik'
                                   )),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -162,6 +164,7 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
               style: TextStyle(
                 color: theme.colorScheme.background,
                 fontSize: toSize(18),
+                fontFamily: 'Rubik'
               ),
             ),
           ),

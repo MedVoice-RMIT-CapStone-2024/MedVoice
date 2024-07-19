@@ -69,6 +69,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                       color: theme.colorScheme.onBackground,
                       fontSize: toSize(50),
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Rubik'
                     ),
                   ),
                   Text(
@@ -76,6 +77,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                     style: TextStyle(
                       color: theme.colorScheme.onBackground,
                       fontSize: toSize(15),
+                      fontFamily: 'Rubik'
                       // fontWeight: FontWeight.w300,
                     ),
                   ),
@@ -135,6 +137,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                               color: theme.colorScheme.surface,
                               fontSize: toSize(18),
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Rubik'
                             ),
                           ),
 
@@ -158,6 +161,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           color: theme.colorScheme.onBackground,
                           fontSize: toSize(15),
                           // fontWeight: FontWeight.w300,
+                          fontFamily: 'Rubik'
                         )),
                   ),
                   SizedBox(height: toSize(15)),
@@ -171,6 +175,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           color: theme.colorScheme.onBackground,
                           fontSize: toSize(14),
                           // fontWeight: FontWeight.w300,
+                          fontFamily: 'Rubik'
                         )),
                   ),
                   Spacer(),

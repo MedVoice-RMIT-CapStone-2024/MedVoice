@@ -52,6 +52,7 @@ class SmallTextField extends StatelessWidget {
                   fontSize: toSize(11),
                   // fontWeight: FontWeight.w400,
                   letterSpacing: toSize(1.5),
+                  fontFamily: 'Rubik'
                 )),
           ),
           TextFormField(

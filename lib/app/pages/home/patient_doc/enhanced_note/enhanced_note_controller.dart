@@ -24,7 +24,7 @@ class EnhancedNoteController extends BaseController {
 
   @override
   void firstLoad() {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Fetching transcript...');
     libraryTranscriptRequest =
         GetLibraryTranscriptRequest(enhancedGroupDateInfoParam.audioId);
     if (libraryTranscriptRequest != null) {

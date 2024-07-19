@@ -101,11 +101,11 @@ class _NurseProfileView
                       children: [
                         Text("Nurse name",
                             style: TextStyle(
-                                color: theme.colorScheme.onSurface)),
+                                color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
                         const Spacer(),
                         Text("nurse_email@email.com",
                             style: TextStyle(
-                                color: theme.colorScheme.onSurface)),
+                                color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
                       ],
                     ),
                     const Spacer(),
@@ -139,7 +139,8 @@ class _NurseProfileView
                       Text("QR Code",
                           style: TextStyle(
                               color: theme.colorScheme.onSurface,
-                              fontSize: toSize(17))),
+                              fontSize: toSize(17),
+                              fontFamily: 'Rubik')),
                       const Spacer(),
                       RotatedBox(
                         quarterTurns: 2,
@@ -171,7 +172,8 @@ class _NurseProfileView
                         Text("Dark Mode",
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
-                                fontSize: toSize(17))),
+                                fontSize: toSize(17),
+                                fontFamily: 'Rubik')),
                         const Spacer(),
                         Consumer<ThemeProvider>(
                           builder: (context, themeProvider, child) {
@@ -201,7 +203,8 @@ class _NurseProfileView
                         Text("Biometric Auth",
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
-                                fontSize: toSize(17))),
+                                fontSize: toSize(17),
+                                fontFamily: 'Rubik')),
                         const Spacer(),
                         SizedBox(
                           height: toSize(10),
@@ -242,7 +245,8 @@ class _NurseProfileView
                           Text("What's New",
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
-                                  fontSize: toSize(17))),
+                                  fontSize: toSize(17),
+                                  fontFamily: 'Rubik')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
@@ -269,11 +273,12 @@ class _NurseProfileView
                         Text("Version",
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
-                                fontSize: toSize(17))),
+                                fontSize: toSize(17),
+                                fontFamily: 'Rubik')),
                         const Spacer(),
                         Text(
                           "1.0.0",
-                          style: TextStyle(fontSize: toSize(17)),
+                          style: TextStyle(fontSize: toSize(17), fontFamily: 'Rubik'),
                         )
                       ],
                     ),
@@ -294,7 +299,8 @@ class _NurseProfileView
                           Text("Terms of Service",
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
-                                  fontSize: toSize(17))),
+                                  fontSize: toSize(17),
+                                  fontFamily: 'Rubik')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
@@ -325,7 +331,8 @@ class _NurseProfileView
                           Text("Privacy Policy",
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
-                                  fontSize: toSize(17))),
+                                  fontSize: toSize(17),
+                                  fontFamily: 'Rubik')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
@@ -357,7 +364,8 @@ class _NurseProfileView
                               style: TextStyle(
                                   color: theme.colorScheme.primary,
                                   fontSize: toSize(17),
-                                  fontWeight: FontWeight.w700)),
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Rubik')),
                         ],
                       ),
                     ),
