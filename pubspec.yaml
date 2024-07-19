@@ -85,6 +85,10 @@ dependencies:
   pdf: ^3.10.8
   flutter_pdfview: ^1.3.2
   permission_handler: ^11.3.1
+  lottie: ^3.0.0
+  animated_text_kit: ^4.2.2
+  icon_decoration: ^2.0.2
+  local_auth: ^2.2.0
 
 
 dependency_overrides:
@@ -119,6 +123,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lottie_images/
     - assets/main_assets/
     - assets/google_api_auth_key/
     - assets/json/nurse_note.json
