@@ -208,6 +208,7 @@ abstract class BaseStateView<Page extends clean.View,
                               fontSize: 14,
                               color: Colors.white,
                               decoration: TextDecoration.none,
+                              fontWeight: FontWeight.w400,
                               fontFamily: 'Rubik'
                             ),
                           ),
