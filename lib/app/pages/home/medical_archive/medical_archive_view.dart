@@ -88,12 +88,13 @@ class _MedicalArchiveView
           style: TextStyle(
               fontSize: toSize(40),
               color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w700),
+              fontWeight: FontWeight.w700,
+          fontFamily: 'Rubik'),
         ),
         SizedBox(height: toSize(15)),
         Text("Your recordings and transcripts will appear here.",
             style: TextStyle(
-                fontSize: toSize(17), color: theme.colorScheme.onBackground)),
+                fontSize: toSize(17), color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
         SizedBox(height: toSize(20)),
         SizedBox(
             height: MediaQuery.of(context).size.height * 0.65,
@@ -142,7 +143,7 @@ class _MedicalArchiveView
       (_controller != null)
           ? _controller!.reformatDateString(item, true, false)
           : item,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: toSize(18)),
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: toSize(18), fontFamily: 'Rubik'),
     );
   }
 
@@ -173,14 +174,16 @@ class _MedicalArchiveView
                     style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: toSize(16),
-                        color: theme.colorScheme.onBackground)),
+                        color: theme.colorScheme.onBackground,
+                        fontFamily: 'Rubik')),
                 const Spacer(),
                 Text(
                     _controller!
                         .reformatDateString(item.dateCreated, true, true),
                     style: TextStyle(
                         fontSize: toSize(14),
-                        color: theme.colorScheme.onBackground)),
+                        color: theme.colorScheme.onBackground,
+                        fontFamily: 'Rubik')),
               ],
             ),
             const Spacer(),
@@ -217,11 +220,11 @@ class _MedicalArchiveView
             SizedBox(height: toSize(16)),
             Text("Voices Library",
                 style:
-                    TextStyle(fontSize: 28, color: theme.colorScheme.primary)),
+                    TextStyle(fontSize: 28, color: theme.colorScheme.primary, fontFamily: 'Rubik')),
             SizedBox(height: toSize(8)),
             Text("Your recordings and transcripts will appear here.",
                 style: TextStyle(
-                    fontSize: 17, color: theme.colorScheme.onBackground))
+                    fontSize: 17, color: theme.colorScheme.onBackground, fontFamily: 'Rubik'))
           ],
         ),
       ),

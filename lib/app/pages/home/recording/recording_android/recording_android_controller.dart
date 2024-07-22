@@ -73,7 +73,7 @@ class RecordingAndroidController extends BaseController {
   }
 
   _initSpeech() async {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Initiating speech library...');
     if (modelLoader != null) {
       try {
         String modelPath = await modelLoader!.loadFromAssets(enModelName);
@@ -245,7 +245,7 @@ class RecordingAndroidController extends BaseController {
   }
 
   void onUploadAudioFile(RecordingUploadInfo data) {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Uploading audio file...');
     _presenter.executeUploadRecording(data);
   }
 

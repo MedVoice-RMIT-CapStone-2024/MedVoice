@@ -97,7 +97,7 @@ class _RecordingAndroidView
                                             null &&
                                         snapshot.data!.isNotEmpty)
                                     ? "Predictions: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
-                                    : "Predictions: ${recordingAndroidController!.guideText}."))
+                                    : "Predictions: ${recordingAndroidController!.guideText}.", style: TextStyle(fontFamily: 'Rubik'),))
                             : const SizedBox(),
                         const Spacer(),
                         Divider(color: Colors.black.withOpacity(0.2)),
@@ -108,7 +108,7 @@ class _RecordingAndroidView
                                     .speechServiceController!
                                     .onResult(),
                                 builder: (context, snapshot) => Text(
-                                    "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : "Will be filtered from prediction texts."}"))
+                                    "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : "Will be filtered from prediction texts."}", style: TextStyle(fontFamily: 'Rubik'),))
                             : const SizedBox(),
                         const Spacer(),
                       ],

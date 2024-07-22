@@ -4,6 +4,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 abstract class BaseController extends Controller implements IBaseController {
   bool isLoading = false;
+  String baseLoadingContent = 'Loading, please wait...';
   late BaseStateView view;
 
   void initView(BaseStateView pageView) {
@@ -32,8 +33,9 @@ abstract class BaseController extends Controller implements IBaseController {
   }
 
   @override
-  void showLoadingProgress() {
+  void showLoadingProgress({String? loadingContent}) {
     isLoading = true;
+    baseLoadingContent = loadingContent ?? 'Loading, please wait...';
     refreshUI();
   }
 

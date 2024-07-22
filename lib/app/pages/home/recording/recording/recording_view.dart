@@ -65,7 +65,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
             Text(
                 "Confidence level: ${recordingController!.confidenceLevel * 100}%",
                 style: TextStyle(
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onBackground, fontFamily: 'Rubik'
                 )),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -84,7 +84,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                     child: Text(recordingController!.guideText,
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontFamily: 'NunitoSans',
+                            fontFamily: 'Rubik',
                             fontWeight: FontWeight.w500,
                             fontSize: toSize(18)))),
               ),
@@ -142,7 +142,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
       '$minutes : $seconds',
       style: TextStyle(
           color: theme.colorScheme.primary,
-          fontFamily: 'NunitoSans',
+          fontFamily: 'Rubik',
           fontWeight: FontWeight.w700,
           fontSize: toSize(18)),
     );

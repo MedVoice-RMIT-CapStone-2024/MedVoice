@@ -29,7 +29,8 @@ class ChatItem extends StatelessWidget {
               style: TextStyle(
                   color: Colors.grey,
                   fontSize: toSize(12),
-                  fontStyle: FontStyle.italic),
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'Rubik'),
             )
           ]),
           SizedBox(height: toSize(5)),
@@ -71,6 +72,7 @@ class ChatItem extends StatelessWidget {
                         style: TextStyle(
                           color: isMe ? Colors.white : Colors.black,
                           fontSize: toSize(16),
+                          fontFamily: 'Rubik'
                         ),
                       ),
                     ),

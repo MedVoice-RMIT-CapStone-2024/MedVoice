@@ -56,6 +56,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                         color: theme.colorScheme.onBackground,
                         fontSize: toSize(35),
                         fontWeight: FontWeight.w900,
+                        fontFamily: 'Rubik'
                       )),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -67,6 +68,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                         color: theme.colorScheme.onBackground,
                         fontSize: toSize(13),
                         fontWeight: FontWeight.w300,
+                        fontFamily: 'Rubik'
                       ),
                     ),
                   ),
@@ -121,6 +123,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                               color: theme.colorScheme.onSurface,
                               fontSize: toSize(14),
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Rubik'
                             )),
                       ),
                       ElevatedButton(
@@ -140,6 +143,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                             color: theme.colorScheme.surface,
                             fontSize: toSize(14),
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Rubik'
                           ),
                         ),
                       ),

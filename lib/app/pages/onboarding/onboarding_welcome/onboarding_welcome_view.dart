@@ -76,7 +76,8 @@ class _OnBoardingWelcomeView
                 "MedVoice",
                 style: TextStyle(
                     fontSize: toSize(34),
-                    color: theme.colorScheme.primary),
+                    color: theme.colorScheme.primary,
+                    fontFamily: 'Rubik'),
               ),
               SizedBox(height: toSize(16)),
               AnimatedSwitcher(
@@ -84,7 +85,7 @@ class _OnBoardingWelcomeView
                 child: Text(
                   _controller.onBoardingWelcomeMessage[_controller.currentStep],
                   key: ValueKey<int>(_controller.currentStep),
-                  style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground),
+                  style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground, fontFamily: 'Rubik'),
                   textAlign: TextAlign.center,
                 ),
                 transitionBuilder: (child, animation) {
@@ -150,7 +151,8 @@ class _OnBoardingWelcomeView
                       child: Text("Get Started",
                           style: TextStyle(
                               fontSize: toSize(20),
-                              color: theme.colorScheme.onPrimary))),
+                              color: theme.colorScheme.onPrimary,
+                              fontFamily: 'Rubik'))),
                 ),
               ),
               SizedBox(height: toSize(20)),
@@ -166,7 +168,8 @@ class _OnBoardingWelcomeView
                         style: TextStyle(
                             fontSize: toSize(17),
                             color:
-                                theme.colorScheme.onBackground),
+                                theme.colorScheme.onBackground,
+                            fontFamily: 'Rubik'),
                       ),
                       TextSpan(
                         text: 'Login',

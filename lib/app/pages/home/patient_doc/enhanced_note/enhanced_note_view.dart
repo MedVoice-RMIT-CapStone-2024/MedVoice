@@ -94,7 +94,7 @@ class _EnhanceNoteViewState
                     SizedBox(height: toSize(60)),
                     Text("Replay audio",
                         style:
-                            TextStyle(color: theme.colorScheme.onBackground)),
+                            TextStyle(color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
                     SizedBox(height: toSize(20)),
                     InkWell(
                       onTap: () {
@@ -185,7 +185,8 @@ class _EnhanceNoteViewState
                               style: TextStyle(
                                   fontSize: toSize(12),
                                   color: theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w700))),
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Rubik'))),
                     )
                   ],
                 ),
@@ -226,7 +227,7 @@ class _EnhanceNoteViewState
     return ExpansionTile(
       title: Text(
           'Vital count: ${_controller!.jsonData!.mHealthVitals?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
+          style: TextStyle(fontSize: toSize(15), fontFamily: 'Rubik')),
       textColor: theme.colorScheme.primary,
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       children: [
@@ -249,21 +250,21 @@ class _EnhanceNoteViewState
                         "Status: ${_controller!.jsonData!.mHealthVitals?[index].mStatus}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
+                            fontSize: toSize(15), fontFamily: 'Rubik'),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
                         "Value: ${_controller!.jsonData!.mHealthVitals?[index].mValue}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
+                            fontSize: toSize(15), fontFamily: 'Rubik'),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
                         "Units: ${_controller!.jsonData!.mHealthVitals?[index].mUnits}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
+                            fontSize: toSize(15), fontFamily: 'Rubik'),
                       ),
                     ],
                   ),
@@ -288,7 +289,7 @@ class _EnhanceNoteViewState
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
           'Treatment count: ${_controller!.jsonData!.mMedicalTreatment?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
+          style: TextStyle(fontSize: toSize(15), fontFamily: 'Rubik')),
       textColor: theme.colorScheme.primary,
       children: [
         ConstrainedBox(
@@ -310,14 +311,14 @@ class _EnhanceNoteViewState
                         "Name: ${_controller!.jsonData!.mMedicalTreatment?[index].mName}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
+                            fontSize: toSize(15), fontFamily: 'Rubik'),
                       ),
                       SizedBox(height: toSize(12)),
                       Text(
                         "Prescription: ${_controller!.jsonData!.mMedicalTreatment?[index].mPrescription}",
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
+                            fontSize: toSize(15), fontFamily: 'Rubik'),
                       ),
                     ],
                   ),
@@ -342,7 +343,7 @@ class _EnhanceNoteViewState
       tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
       title: Text(
           'Diagnosis count: ${_controller!.jsonData!.mMedicalDiagnosis?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
+          style: TextStyle(fontSize: toSize(15), fontFamily: 'Rubik')),
       textColor: theme.colorScheme.primary,
       children: [
         ConstrainedBox(
@@ -361,7 +362,7 @@ class _EnhanceNoteViewState
                     "Name: ${_controller!.jsonData!.mMedicalDiagnosis?[index].mName}",
                     style: TextStyle(
                         fontSize: toSize(15),
-                        color: theme.colorScheme.onSurface),
+                        color: theme.colorScheme.onSurface, fontFamily: 'Rubik'),
                   ),
                 ),
               );
@@ -390,7 +391,8 @@ class _EnhanceNoteViewState
           Text(label,
               style: TextStyle(
                   color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w700))
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rubik'))
         ]));
   }
 
@@ -406,7 +408,8 @@ class _EnhanceNoteViewState
               Text("$label:",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: theme.colorScheme.onSurface)),
+                      color: theme.colorScheme.onSurface,
+                      fontFamily: 'Rubik')),
               const Spacer(),
               Text(
                   (value is String)
@@ -414,7 +417,7 @@ class _EnhanceNoteViewState
                       : (value is int)
                           ? value.toString()
                           : "N/A",
-                  style: TextStyle(color: theme.colorScheme.onSurface))
+                  style: TextStyle(color: theme.colorScheme.onSurface, fontFamily: 'Rubik'))
             ],
           ),
         ),

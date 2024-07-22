@@ -101,7 +101,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                       SizedBox(height: toSize(60)),
                       Text("Replay audio",
                           style:
-                              TextStyle(color: theme.colorScheme.onBackground)),
+                              TextStyle(color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
                       SizedBox(height: toSize(20)),
                       InkWell(
                         onTap: () {
@@ -175,7 +175,8 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                                     style: TextStyle(
                                         fontSize: toSize(12),
                                         color: theme.colorScheme.onPrimary,
-                                        fontWeight: FontWeight.w700))),
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Rubik'))),
                           )
                         ],
                       )),

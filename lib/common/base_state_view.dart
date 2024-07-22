@@ -190,6 +190,32 @@ abstract class BaseStateView<Page extends clean.View,
                 },
                 child: ModalProgressHUD(
                   inAsyncCall: controller.loadingState(),
+                  progressIndicator: Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const CircularProgressIndicator(color: Colors.white),
+                          const SizedBox(height: 20),
+                          Text(
+                            controller.baseLoadingContent,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              decoration: TextDecoration.none,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Rubik'
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   opacity: isShowLoadingOpacity()
                       ? 0.3 // default value
                       : 0,
@@ -211,7 +237,7 @@ abstract class BaseStateView<Page extends clean.View,
                               centerTitle: true,
                               title: Text(appBarTitle(),
                                   style: const TextStyle(
-                                      fontFamily: 'NunitoSans',
+                                      fontFamily: 'Rubik',
                                       fontSize: 18,
                                       fontWeight: FontWeight.w400)),
                               leading: !isHideBackButton()
@@ -297,7 +323,7 @@ abstract class BaseStateView<Page extends clean.View,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontFamily: 'NunitoSans',
+                                fontFamily: 'Rubik',
                                 fontSize: 11,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -323,7 +349,7 @@ abstract class BaseStateView<Page extends clean.View,
       () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(message),
+            content: Text(message, style: const TextStyle(fontFamily: 'Rubik')),
           ),
         );
       },
@@ -398,7 +424,7 @@ abstract class BaseStateView<Page extends clean.View,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(toSize(20))),
             backgroundColor: theme.colorScheme.background,
             elevation: 0,
-            title: Text(message, style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground)),
+            title: Text(message, style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
             content: TextField(
               autofocus: true,
               decoration: const InputDecoration(
@@ -421,7 +447,7 @@ abstract class BaseStateView<Page extends clean.View,
                             color: theme.colorScheme.surface
                               ),
                           child: Center(
-                            child: Text(cancelButton, style: TextStyle(color: theme.colorScheme.onSurface)),
+                            child: Text(cancelButton, style: TextStyle(color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
                           ),
                         ),
                       )),

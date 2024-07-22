@@ -146,7 +146,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                   Text(
                     namePage,
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Rubik',
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: theme.colorScheme.secondary.withOpacity(0.7),
@@ -173,6 +173,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'Rubik'
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -197,7 +198,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                   Text(
                     namePage,
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Rubik',
                       fontWeight: FontWeight.w900,
                       fontSize: 11,
                       color: theme.colorScheme.onSecondary,
@@ -224,6 +225,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontFamily: 'Rubik'
                     ),
                     textAlign: TextAlign.center,
                   ),

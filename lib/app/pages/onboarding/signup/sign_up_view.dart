@@ -65,6 +65,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             color: theme.colorScheme.onBackground,
                             fontSize: toSize(35),
                             fontWeight: FontWeight.w900,
+                            fontFamily: 'Rubik'
                           )),
                       SizedBox(height: toSize(10)),
                       InkWell(
@@ -81,6 +82,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             color: theme.colorScheme.onBackground,
                             fontSize: toSize(14),
                             // fontWeight: FontWeight.w300,
+                            fontFamily: 'Rubik'
                           ),
                         ),
                       ),
@@ -145,6 +147,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                               color: theme.colorScheme.surface,
                               fontSize: toSize(18),
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Rubik'
                             ),
                           ),
                         ),
