@@ -27,14 +27,22 @@ class ChatBotController extends BaseController {
     refreshUI();
   }
 
-  void sendMessage(String message) {
-    if (_sendMode == SendMode.typing && message.isNotEmpty) {
-      messages
-          .add(ChatInfo(message: message, isMe: true, time: DateTime.now()));
+  void sendMessage(String message, {bool isUserInput = true}) {
+    if (message.isNotEmpty) {
+      messages.add(ChatInfo(
+          message: message,
+          isMe: true, // Always true for both user input and bubble content
+          time: DateTime.now()));
       refreshUI();
       _presenter.executeGetAnswer(message, 'json');
-      setSendMode(SendMode.notTyping);
+      if (isUserInput) {
+        setSendMode(SendMode.notTyping);
+      }
     }
+  }
+
+  void sendBubbleContent(String content) {
+    sendMessage(content, isUserInput: false);
   }
 
   void onMessageChanged(String value) {
