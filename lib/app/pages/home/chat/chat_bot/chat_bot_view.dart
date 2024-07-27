@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
+import 'package:lottie/lottie.dart';
 import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
@@ -33,14 +34,10 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
     final ChatBotController _controller = controller as ChatBotController;
     final size = MediaQuery.of(context).size;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
+    bool isDarkMode = theme.brightness == Brightness.dark;
 
     return Column(
       children: [
-        ChatItem(
-          isMe: false,
-          message: "Hello, I'm MVBot. How can I assist you today?",
-          time: DateTime.now(),
-        ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -54,7 +51,14 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
             ),
           ),
         ),
-        _buildInteractiveBubbles(_controller),
+        if (controller.isLoading)
+          Lottie.asset(
+            controller.getLottieAnimationAsset(isDarkMode),
+            width: 100,
+            height: 50,
+          ),
+        if (_controller.areBubblesVisible)
+          _buildInteractiveBubbles(_controller),
         _buildInputArea(size, theme, _controller),
       ],
     );
