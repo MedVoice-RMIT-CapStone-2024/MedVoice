@@ -79,7 +79,7 @@ class ChatBotController extends BaseController {
   void _startLoading() {
     _isLoading = true;
     refreshUI();
-    _loadingTimer = Timer(Duration(seconds: 2), () {
+    _loadingTimer = Timer(const Duration(seconds: 2), () {
       if (_isLoading) {
         _isLoading = false;
         refreshUI();

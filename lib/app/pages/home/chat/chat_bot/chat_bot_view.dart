@@ -69,8 +69,8 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
       spacing: 8,
       runSpacing: 8,
       children: [
-        _buildBubble('Save transcript',
-            () => controller.sendBubbleContent('Save transcript')),
+        _buildBubble('Covid 19 symptoms',
+            () => controller.sendBubbleContent('Covid 19 symptoms')),
         _buildBubble('Update information',
             () => controller.sendBubbleContent('Update information')),
         _buildBubble(
@@ -91,7 +91,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(text,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary, fontFamily: 'Rubik')),
       ),
     );
   }
@@ -111,13 +111,15 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController> {
                   controller: messageController,
                   style: const TextStyle(
                     color: Colors.black,
+                    fontFamily: 'Rubik'
                   ),
                   decoration: InputDecoration(
                     hintText: "Type a message",
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
                         fontSize: toSize(17),
-                        fontStyle: FontStyle.italic),
+                        fontStyle: FontStyle.italic,
+                        fontFamily: 'Rubik'),
                     contentPadding: EdgeInsets.symmetric(
                         vertical: toSize(10), horizontal: toSize(20)),
                     suffixIcon: Padding(
