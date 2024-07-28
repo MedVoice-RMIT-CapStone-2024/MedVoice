@@ -22,7 +22,7 @@ class Constants {
   static String getLibraryTranscript =
       "${firstBitUrl}get_transcript/{file_id}/{file_extension}";
 
-  static String askEndpoint = "${firstBitUrl}ask";
+  static String askEndpoint = "${firstBitUrl}test/ollama";
 }
 
 const successStatusCodeList = [200, 201, 204];

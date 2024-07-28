@@ -58,4 +58,8 @@ class IBaseView {
         String? title,
         String? cancelButton,
         VoidCallback? cancelCallback]) {}
+
+  bool isShowFeedbackFeature() {
+    return false;
+  }
 }

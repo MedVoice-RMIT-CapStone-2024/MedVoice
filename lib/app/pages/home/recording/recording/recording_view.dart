@@ -43,6 +43,11 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
   }
 
   @override
+  bool isShowFeedbackFeature() {
+    return false;
+  }
+
+  @override
   void onStateDestroyed() {
     recordingController?.recordSub?.cancel();
     recordingController?.amplitudeSub?.cancel();
