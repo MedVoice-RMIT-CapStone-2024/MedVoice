@@ -144,6 +144,11 @@ abstract class BaseStateView<Page extends clean.View,
   }
 
   @override
+  bool isShowFeedbackFeature() {
+    return false;
+  }
+
+  @override
   Future<bool> onBackPressed() async {
     return true;
   }
@@ -205,12 +210,11 @@ abstract class BaseStateView<Page extends clean.View,
                           Text(
                             controller.baseLoadingContent,
                             style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Rubik'
-                            ),
+                                fontSize: 14,
+                                color: Colors.white,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Rubik'),
                           ),
                         ],
                       ),
@@ -232,8 +236,7 @@ abstract class BaseStateView<Page extends clean.View,
                               MediaQuery.of(context).orientation ==
                                   Orientation.portrait)
                           ? AppBar(
-                              backgroundColor:
-                                  theme.primaryColor,
+                              backgroundColor: theme.primaryColor,
                               centerTitle: true,
                               title: Text(appBarTitle(),
                                   style: const TextStyle(
@@ -250,21 +253,44 @@ abstract class BaseStateView<Page extends clean.View,
                                           }
                                         },
                                         icon: Image.asset(IconAssets.icBack,
-                                            width: 11, height: 16, color: theme.colorScheme.onSurface),
+                                            width: 11,
+                                            height: 16,
+                                            color: theme.colorScheme.onSurface),
                                         alignment: Alignment.center,
                                       ),
                                     )
                                   : Container(),
                               elevation: 0,
-                              actions: rightMenu(),
-                        bottom: PreferredSize(
-                          preferredSize: Size(MediaQuery.of(context).size.width, 1),
-                          child: Divider(
-                            color: Colors.black.withOpacity(0.1),
-                            height: 1,
-                            thickness: 1,
-                          ),
-                        ),
+                              actions: (isShowFeedbackFeature())
+                                  ? [
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(right: toSize(20)),
+                                        child: InkWell(
+                                            onTap: () {
+                                              controller
+                                                  .submittingFeedback(context);
+                                            },
+                                            child: Icon(
+                                                Icons.bug_report_outlined,
+                                                size: toSize(25))),
+                                      )
+                                    ]
+                                  : rightMenu(),
+                              bottom: PreferredSize(
+                                preferredSize:
+                                    Size(MediaQuery.of(context).size.width, 1),
+                                child: Divider(
+                                  color: Colors.black.withOpacity(0.1),
+                                  height: 1,
+                                  thickness: 1,
+                                ),
+                              ),
+                            )
+                          : null,
+                      drawer: (isShowFeedbackFeature())
+                          ? Drawer(
+                              child: Container(color: Colors.blue),
                             )
                           : null,
                       body: (_isDelayed)
@@ -405,14 +431,15 @@ abstract class BaseStateView<Page extends clean.View,
   }
 
   void showSaveRecordingPopup(
-      String message,
-      String okButton,
-      String cancelButton,
-      VoidCallback okCallback,
-      VoidCallback cancelCallback,
-      TextEditingController saveNameController,
-      ) {
-    ThemeData theme = Provider.of<ThemeProvider>(context, listen: false).themeData;
+    String message,
+    String okButton,
+    String cancelButton,
+    VoidCallback okCallback,
+    VoidCallback cancelCallback,
+    TextEditingController saveNameController,
+  ) {
+    ThemeData theme =
+        Provider.of<ThemeProvider>(context, listen: false).themeData;
     if (_isThereCurrentDialogShowing(context)) {
       return;
     }
@@ -421,10 +448,15 @@ abstract class BaseStateView<Page extends clean.View,
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(toSize(20))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(toSize(20))),
             backgroundColor: theme.colorScheme.background,
             elevation: 0,
-            title: Text(message, style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
+            title: Text(message,
+                style: TextStyle(
+                    fontSize: toSize(20),
+                    color: theme.colorScheme.onBackground,
+                    fontFamily: 'Rubik')),
             content: TextField(
               autofocus: true,
               decoration: const InputDecoration(
@@ -444,10 +476,12 @@ abstract class BaseStateView<Page extends clean.View,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                            color: theme.colorScheme.surface
-                              ),
+                              color: theme.colorScheme.surface),
                           child: Center(
-                            child: Text(cancelButton, style: TextStyle(color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
+                            child: Text(cancelButton,
+                                style: TextStyle(
+                                    color: theme.colorScheme.onSurface,
+                                    fontFamily: 'Rubik')),
                           ),
                         ),
                       )),
@@ -462,7 +496,10 @@ abstract class BaseStateView<Page extends clean.View,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
                               color: theme.colorScheme.primary),
-                          child: Center(child: Text(okButton, style: TextStyle(color: theme.colorScheme.onPrimary))),
+                          child: Center(
+                              child: Text(okButton,
+                                  style: TextStyle(
+                                      color: theme.colorScheme.onPrimary))),
                         ),
                       ))
                 ],
@@ -474,7 +511,8 @@ abstract class BaseStateView<Page extends clean.View,
 
   @override
   void showGenericPopup() {
-    showPopupWithAction("An error has occurred, please try again later.", "Okay");
+    showPopupWithAction(
+        "An error has occurred, please try again later.", "Okay");
   }
 
   void onGeneralError(e) {

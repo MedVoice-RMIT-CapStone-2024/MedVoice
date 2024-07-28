@@ -45,6 +45,11 @@ class _RecordingAndroidView
   }
 
   @override
+  bool isShowFeedbackFeature() {
+    return false;
+  }
+
+  @override
   void onStateDestroyed() {
     recordingAndroidController?.recordSub?.cancel();
     recordingAndroidController?.amplitudeSub?.cancel();

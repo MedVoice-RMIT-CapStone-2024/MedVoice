@@ -4,6 +4,6 @@ class AskResponse {
   AskResponse(this.answer);
 
   factory AskResponse.fromJson(Map<String, dynamic> json) {
-    return AskResponse(json['answer']);
+    return AskResponse(json['response']);
   }
 }
