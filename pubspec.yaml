@@ -89,6 +89,8 @@ dependencies:
   animated_text_kit: ^4.2.2
   icon_decoration: ^2.0.2
   local_auth: ^2.2.0
+  feedback: ^3.1.0
+  flutter_email_sender: ^6.0.3
 
 
 dependency_overrides:
