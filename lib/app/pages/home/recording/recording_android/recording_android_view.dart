@@ -97,12 +97,14 @@ class _RecordingAndroidView
                                 stream: recordingAndroidController!
                                     .speechServiceController!
                                     .onPartial(),
-                                builder: (context, snapshot) => Text((snapshot
-                                                .data !=
-                                            null &&
-                                        snapshot.data!.isNotEmpty)
-                                    ? "Predictions: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
-                                    : "Predictions: ${recordingAndroidController!.guideText}.", style: TextStyle(fontFamily: 'Rubik'),))
+                                builder: (context, snapshot) => Text(
+                                      (snapshot.data != null &&
+                                              snapshot.data!.isNotEmpty)
+                                          ? "Predictions: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
+                                          : "Predictions: ${recordingAndroidController!.guideText}.",
+                                      style:
+                                          const TextStyle(fontFamily: 'Rubik'),
+                                    ))
                             : const SizedBox(),
                         const Spacer(),
                         Divider(color: Colors.black.withOpacity(0.2)),
@@ -113,7 +115,10 @@ class _RecordingAndroidView
                                     .speechServiceController!
                                     .onResult(),
                                 builder: (context, snapshot) => Text(
-                                    "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : "Will be filtered from prediction texts."}", style: TextStyle(fontFamily: 'Rubik'),))
+                                      "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : recordingAndroidController!.resultGuideText}",
+                                      style:
+                                          const TextStyle(fontFamily: 'Rubik'),
+                                    ))
                             : const SizedBox(),
                         const Spacer(),
                       ],
@@ -126,7 +131,8 @@ class _RecordingAndroidView
             Padding(
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
-                animate: recordingAndroidController!.speechEnabled ? true : false,
+                animate:
+                    recordingAndroidController!.speechEnabled ? true : false,
                 glowColor: theme.colorScheme.primary,
                 glowRadiusFactor: 0.3,
                 duration: const Duration(milliseconds: 1700),
@@ -136,7 +142,17 @@ class _RecordingAndroidView
                       if (!recordingAndroidController!.speechEnabled) {
                         recordingAndroidController!.startListening();
                       } else {
-                        recordingAndroidController!.stopListening();
+                        showPopupWithAction(
+                            'Do you want to use this recording for processing?',
+                            'Yes',
+                            () {
+                              recordingAndroidController!.stopListening();
+                            },
+                            'Processing confirmation',
+                            'No',
+                            () {
+                              recordingAndroidController!.cancelRecording();
+                            });
                       }
                     },
                     child: Container(
