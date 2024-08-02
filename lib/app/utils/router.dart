@@ -1,7 +1,6 @@
 // Setting up specific cases for when you navigate to pages
 
 import 'package:flutter/cupertino.dart';
-import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
@@ -12,8 +11,8 @@ import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
+import '../pages/home/chat/chat_bot/chat_bot_view.dart';
 import '../pages/home/patient_doc/enhanced_note/enhanced_note_view.dart';
-import '../pages/home/patient_doc/note/note_view.dart';
 import '../pages/onboarding/confirm/confirm_view.dart';
 import '../pages/onboarding/reset/reset_view.dart';
 import '../pages/onboarding/signup/sign_up_view.dart';

@@ -86,6 +86,7 @@ class Global {
     "gray_17": "#2B2D42",
     "gray_18": "#3A3D59",
     "gray_19": "#C6CCD7",
+    "gray_20": "#72777A",
     "brown_1": "#B8601F",
     "orange_1": "#FE724C",
     "white_1": "#D3D1D8",
