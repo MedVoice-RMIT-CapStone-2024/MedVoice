@@ -13,4 +13,6 @@ class IconAssets {
   static const String icVoiceRecording = 'assets/icons/ic_voice_recording.png';
   static const String icPdf = 'assets/icons/ic_pdf.png';
   static const String icPdfFilled = 'assets/icons/ic_pdf_filled.png';
+  static const String icMedvoiceBotLogo = 'assets/icons/ic_medvoice_bot_logo.png';
+  static const String icBackArrow = 'assets/icons/ic_back_arrow.png';
 }

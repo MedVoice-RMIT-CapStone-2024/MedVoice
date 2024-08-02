@@ -1,67 +1,74 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import 'package:med_voice/app/pages/home/chat/chat_bot/chat_bot_presenter.dart';
 import 'package:med_voice/domain/entities/ask/chat_info.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
 import 'package:med_voice/domain/entities/ask/get_answer_params.dart';
 
-enum SendMode {
-  typing,
-  notTyping,
-}
+import 'chat_bot_presenter.dart';
 
 class ChatBotController extends BaseController {
   final ChatBotPresenter _presenter;
+  TextEditingController textController = TextEditingController();
   List<ChatInfo> messages = [];
-  SendMode _sendMode = SendMode.notTyping;
+  List<String> bubbles = [];
   GetAnswerParams? getAnswerParams;
+  ScrollController scrollController;
+  bool compilingMessage = false;
 
-  ChatBotController(askRepository)
+  ChatBotController(this.scrollController, askRepository)
       : _presenter = ChatBotPresenter(askRepository);
-
-  SendMode get sendMode => _sendMode;
-
-  void setSendMode(SendMode mode) {
-    _sendMode = mode;
-    refreshUI();
-  }
-
-  void sendMessage(String message) {
-    if (_sendMode == SendMode.typing && message.isNotEmpty) {
-      messages
-          .add(ChatInfo(message: message, isMe: true, time: DateTime.now()));
-      refreshUI();
-      _presenter.executeGetAnswer(message, 'json');
-      setSendMode(SendMode.notTyping);
-    }
-  }
-
-  void onMessageChanged(String value) {
-    setSendMode(value.isNotEmpty ? SendMode.typing : SendMode.notTyping);
-  }
 
   @override
   void firstLoad() {
-    // TODO: implement firstLoad
+    messages = [
+      ChatInfo(
+          isMe: false,
+          message: 'Hello, I am MVBot. How can I assist you today?',
+          time: DateTime.now()),
+    ];
   }
 
   @override
   void onListener() {
-    // TODO: implement onListener
     _presenter.onGetAnswerSuccess = (AskInfo response) {
-      messages.add(ChatInfo(
-          message: response.mAnswer, isMe: false, time: DateTime.now()));
-      refreshUI();
+      Future.delayed(const Duration(seconds: 2), () {
+        messages.add(ChatInfo(
+            message: response.mAnswer, isMe: false, time: DateTime.now()));
+        compilingMessage = false;
+        refreshUI();
+      });
     };
 
     _presenter.onGetAnswerFailed = (error) {
       debugPrint("Error getting answer: $error");
+      compilingMessage = false;
       view.showErrorFromServer("Failed to get answer: $error");
+      refreshUI();
     };
 
     _presenter.onCompleted = () {
       debugPrint("Get answer completed");
     };
+  }
+
+  void sendMessage(String message) {
+    messages.add(ChatInfo(message: message, isMe: true, time: DateTime.now()));
+    compilingMessage = true;
+    refreshUI();
+    _presenter.executeGetAnswer(message, 'json');
+    scrollToEndOfMessageList();
+  }
+
+  void scrollToEndOfMessageList() {
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.minScrollExtent,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.fastOutSlowIn,
+        );
+      }
+    });
   }
 }
