@@ -212,6 +212,20 @@ class RecordingController extends BaseController {
     refreshUI();
   }
 
+  Future<void> cancelRecording() async {
+    await speech!.stop();
+    final path = await audioRecorder.stop();
+    onDelete(path ?? "");
+    timer?.cancel();
+    recordingName.clear();
+    speechEnabled = false;
+    isTheSameFile = false;
+    isStartingRecording = false;
+    recordDuration = 0;
+    guideText = 'Press the button and start speaking';
+    refreshUI();
+  }
+
   void onSpeechResult(SpeechRecognitionResult result) {
     debugPrint("Speech recognized: ${result.recognizedWords}");
     view.setState(() {

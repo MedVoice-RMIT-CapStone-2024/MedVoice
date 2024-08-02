@@ -110,7 +110,13 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                       if (!recordingController!.speechEnabled) {
                         recordingController!.startListening();
                       } else {
-                        recordingController!.stopListening();
+                        showPopupWithAction(
+                            'Do you want to use this recording for processing?',
+                            'Yes', () {
+                          recordingController!.stopListening();
+                        }, 'Processing confirmation', 'No', (){
+                          recordingController!.cancelRecording();
+                        });
                       }
                     },
                     child: Container(
