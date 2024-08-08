@@ -16,4 +16,5 @@ class Pages {
   static const String noteArchiveDetails = '/note';
   static const String noteArchiveEnhancedDetails = '/enhancedNote';
   static const String chatBot = '/chatBot';
+  static const String onBoardingWelcome = '/onBoardingWelcome';
 }

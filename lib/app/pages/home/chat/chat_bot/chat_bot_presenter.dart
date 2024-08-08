@@ -1,6 +1,6 @@
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
-import 'package:med_voice/domain/entities/ask/get_answer_params.dart';
+import 'package:med_voice/domain/entities/ask/ask_request.dart';
 import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
 import 'package:med_voice/domain/usecase/bot_answer/GetAnswerUseCase.dart';
 
@@ -22,9 +22,9 @@ class ChatBotPresenter extends Presenter {
     _getAnswerUseCase?.dispose();
   }
 
-  void executeGetAnswer(String question, String sourceType) {
+  void executeGetAnswer(AskRequest params) {
     _getAnswerUseCase?.execute(
-        _GetAnswerObserver(this), GetAnswerParams(question, sourceType));
+        _GetAnswerObserver(this), params);
   }
 }
 

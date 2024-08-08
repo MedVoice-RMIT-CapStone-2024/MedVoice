@@ -3,7 +3,7 @@ class AskResponse {
 
   AskResponse(this.answer);
 
-  factory AskResponse.fromJson(Map<String, dynamic> json) {
+  factory AskResponse.fromJson(dynamic json) {
     return AskResponse(json['response']);
   }
 }

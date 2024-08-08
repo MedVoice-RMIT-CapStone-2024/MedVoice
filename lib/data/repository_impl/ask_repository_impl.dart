@@ -16,16 +16,16 @@ class AskRepositoryImpl implements AskRepository {
 
   @override
   Future<AskInfo> getAnswer(AskRequest request) async {
+    AskResponse askResponse;
+    AskInfo askInfo;
     Map<String, dynamic>? body;
 
     try {
       body = await HttpHelper.invokeHttp(
         Uri.parse(Constants.askEndpoint),
         RequestType.post,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(request.toJson()),
+        headers:  null,
+        body: const JsonEncoder().convert(request.toJson()),
       );
     } catch (error) {
       debugPrint("Failed to get answer");
@@ -34,7 +34,8 @@ class AskRepositoryImpl implements AskRepository {
 
     if (body == null) return AskInfo.buildDefault();
 
-    AskResponse askResponse = AskResponse.fromJson(body);
-    return AskInfo(askResponse.answer ?? '');
+    askResponse = AskResponse.fromJson(body);
+    askInfo = AskInfo(askResponse.answer ??= '');
+    return askInfo;
   }
 }

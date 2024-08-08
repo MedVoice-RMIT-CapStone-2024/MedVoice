@@ -73,7 +73,6 @@ dependencies:
   pretty_qr_code: ^3.3.0
   flutter_barcode_scanner: ^2.0.0
   password_strength_checker: ^1.2.3
- 
   record: ^4.4.4
   just_audio: ^0.9.37
   http: ^1.1.0
@@ -91,6 +90,7 @@ dependencies:
   local_auth: ^2.2.0
   feedback: ^3.1.0
   flutter_email_sender: ^6.0.3
+  tutorial_coach_mark: ^1.2.11
 
 
 dependency_overrides:
