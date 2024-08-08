@@ -243,6 +243,9 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
                             _buildInteractiveBubbles(controller, isDarkMode)),
                   )
                 : SizedBox(height: toSize(16)),
+        (controller.compilingMessage && index == controller.messages.length - 1)
+            ? _botTypingBubble(context, theme, isDarkMode)
+            : const SizedBox()
       ],
     );
   }
@@ -331,6 +334,57 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
     );
   }
 
+  Widget _botTypingBubble(
+      BuildContext context, ThemeData theme, bool isDarkMode) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black.withOpacity(0.3)),
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            IconAssets.icMedvoiceBotLogo,
+            width: toSize(32),
+            height: toSize(32),
+          ),
+        ),
+        SizedBox(
+          width: toSize(8),
+        ),
+        Container(
+          padding: EdgeInsets.all(toSize(10)),
+          decoration: BoxDecoration(
+              color: HexColor(Global.mColors['white_2'].toString()),
+              border: Border.all(color: theme.colorScheme.onSurface),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20))),
+          child: Row(
+            children: [
+              Lottie.asset(
+                (isDarkMode)
+                    ? LottieAssets.loadingDarkTheme
+                    : LottieAssets.loadingLightTheme,
+                height: 30,
+              ),
+              SizedBox(width: toSize(10)),
+              Text(
+                'MVBot is typing',
+                style: TextStyle(
+                    fontFamily: 'Rubik',
+                    fontSize: toSize(14),
+                    fontWeight: FontWeight.w500, color: Colors.black),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
   Row _userTextBubble(
       BuildContext context, ThemeData theme, String textContent) {
     return Row(
@@ -366,38 +420,42 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          (controller.compilingMessage)
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: toSize(25),
-                  padding: EdgeInsets.symmetric(horizontal: toSize(10)),
-                  decoration: BoxDecoration(
-                      color: (isDarkMode)
-                          ? Colors.black.withOpacity(0.5)
-                          : Colors.white,
-                      border: Border(
-                          top: BorderSide(
-                              color: (isDarkMode)
-                                  ? Colors.white.withOpacity(0.5)
-                                  : Colors.black.withOpacity(0.5),
-                              width: 0.5))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Lottie.asset(
-                        (isDarkMode)
-                            ? LottieAssets.loadingDarkTheme
-                            : LottieAssets.loadingLightTheme,
-                        height: 50,
-                      ),
-                      SizedBox(width: toSize(5)),
-                      Text("MVBot is typing",
-                          style: TextStyle(
-                              fontFamily: 'Rubik', fontSize: toSize(10))),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
+
+          // TYPING STATUS BAR UNDER TYPING FIELD
+
+          // (controller.compilingMessage)
+          //     ? Container(
+          //         width: MediaQuery.of(context).size.width,
+          //         height: toSize(40),
+          //         padding: EdgeInsets.symmetric(horizontal: toSize(10)),
+          //         decoration: BoxDecoration(
+          //             color: (isDarkMode)
+          //                 ? Colors.black.withOpacity(0.5)
+          //                 : Colors.white,
+          //             border: Border(
+          //                 top: BorderSide(
+          //                     color: (isDarkMode)
+          //                         ? Colors.white.withOpacity(0.5)
+          //                         : Colors.black.withOpacity(0.5),
+          //                     width: 0.5))),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.start,
+          //           children: [
+          //             Lottie.asset(
+          //               (isDarkMode)
+          //                   ? LottieAssets.loadingDarkTheme
+          //                   : LottieAssets.loadingLightTheme,
+          //               height: 50,
+          //             ),
+          //             SizedBox(width: toSize(5)),
+          //             Text("MVBot is typing",
+          //                 style: TextStyle(
+          //                     fontFamily: 'Rubik', fontSize: toSize(14))),
+          //           ],
+          //         ),
+          //       )
+          //     : const SizedBox(),
+
           Container(
             width: double.infinity,
             height: toSize(90),
@@ -437,7 +495,8 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
                 SizedBox(width: toSize(16)),
                 InkWell(
                   onTap: () {
-                    if (controller.textController.text.isNotEmpty && !controller.compilingMessage) {
+                    if (controller.textController.text.isNotEmpty &&
+                        !controller.compilingMessage) {
                       controller.sendMessage(controller.textController.text);
                       controller.textController.clear();
                       controller.refreshUI();
@@ -447,7 +506,8 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
                     width: toSize(50),
                     height: toSize(50),
                     decoration: BoxDecoration(
-                      color: (controller.textController.text.isNotEmpty && !controller.compilingMessage)
+                      color: (controller.textController.text.isNotEmpty &&
+                              !controller.compilingMessage)
                           ? theme.colorScheme.primary
                           : theme.colorScheme.primary.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(50),
