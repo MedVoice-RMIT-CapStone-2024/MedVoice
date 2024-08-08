@@ -1,5 +1,5 @@
 class AskInfo {
-  String mAnswer = "";
+  String? mAnswer = "";
 
   AskInfo(this.mAnswer);
   AskInfo.buildDefault();

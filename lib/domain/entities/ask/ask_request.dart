@@ -1,8 +1,9 @@
 class AskRequest {
-  String question = '';
-  String sourceType = '';
+  String? question;
+  String? sourceType;
 
   AskRequest(this.question, this.sourceType);
+
   AskRequest.buildDefault();
 
   Map<String, dynamic> toJson() {

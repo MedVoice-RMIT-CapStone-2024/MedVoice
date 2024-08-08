@@ -16,6 +16,7 @@ PODS:
     - Flutter
   - local_auth_darwin (0.0.1):
     - Flutter
+    - FlutterMacOS
   - modal_progress_hud_nsn (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -105,7 +106,7 @@ SPEC CHECKSUMS:
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
   hexcolor: fdfb9c4258ad96e949c2dbcdf790a62194b8aa89
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  local_auth_darwin: 4d56c90c2683319835a61274b57620df9c4520ab
+  local_auth_darwin: 66e40372f1c29f383a314c738c7446e2f7fdadc3
   modal_progress_hud_nsn: f6fb744cd060653d66ed8f325360ef3650eb2fde
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46

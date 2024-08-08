@@ -8,6 +8,7 @@ import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_p
 import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
+import 'package:med_voice/app/pages/onboarding/onboarding_welcome/onboarding_welcome_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
@@ -102,6 +103,9 @@ class AppRouter {
 
       case Pages.chatBot:
         return _buildRoute(settings, ChatBotView());
+
+      case Pages.onBoardingWelcome:
+        return _buildRoute(settings, const OnBoardingWelcomeView());
 
       default:
         return null;

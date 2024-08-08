@@ -1,31 +1,36 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
-import 'package:med_voice/domain/entities/ask/get_answer_params.dart';
 import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
 
+import '../../../data/exceptions/authentication_exception.dart';
 import '../../entities/ask/ask_request.dart';
 
-class GetAnswerUseCase extends UseCase<AskInfo, GetAnswerParams> {
+class GetAnswerUseCase extends UseCase<AskInfo, AskRequest> {
   final AskRepository _repository;
 
   GetAnswerUseCase(this._repository);
 
   @override
-  Future<Stream<AskInfo>> buildUseCaseStream(GetAnswerParams? params) async {
+  Future<Stream<AskInfo>> buildUseCaseStream(AskRequest? params) async {
     final StreamController<AskInfo> controller = StreamController();
 
     try {
-      final askInfo = await _repository.getAnswer(
-        AskRequest(params!.question, params.sourceType),
-      );
+      AskInfo askInfo = await _repository.getAnswer(params!);
       controller.add(askInfo);
+      debugPrint('get answer info successful.');
       controller.close();
     } catch (e) {
-      controller.addError(e);
+      if (e is APIException) {
+        debugPrint("failed ${e.message}");
+        controller.addError(e.message);
+      } else {
+        debugPrint("failed $e");
+        controller.addError("");
+      }
     }
-
     return controller.stream;
   }
 }

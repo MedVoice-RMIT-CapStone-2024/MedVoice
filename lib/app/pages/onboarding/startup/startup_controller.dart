@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/onboarding_welcome/onboarding_welcome_view.dart';
 
 import '../../../../common/base_controller.dart';
-import '../../../assets/lottie_assets.dart';
+import '../../../utils/shared_preferences.dart';
 
 class StartupController extends BaseController {
   bool isShowStartButton = false;
@@ -26,13 +24,25 @@ class StartupController extends BaseController {
 
   void startTimer() {
     debugPrint("start splash screen timer");
-    Timer(const Duration(milliseconds: 3500), () {
-      Navigator.pushReplacement(
-        view.context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => const OnBoardingWelcomeView(),
-        ),
-      );
+    Timer(const Duration(milliseconds: 3500), () async {
+      bool? firstInstallApp = await SharedPreferencesHelper().getBoolValue(
+          SharedData.APP_FIRST_INSTALL.toString(),
+          defaultValue: true);
+      if (firstInstallApp) {
+        Navigator.pushReplacement(
+          view.context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => const OnBoardingWelcomeView(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          view.context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => const SignInView(),
+          ),
+        );
+      }
     });
   }
 }
