@@ -175,6 +175,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
             Padding(
               padding: EdgeInsets.only(left: toSize(20), right: toSize(20)),
               child: ListView.separated(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 shrinkWrap: true,
                 itemCount: controller.messages.length,
                 primary: false,
