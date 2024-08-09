@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 
-import '../../domain/entities/recording/recording_archive_info.dart';
 import '../../domain/entities/recording_archive/recording_info.dart';
 
 class Global {
@@ -125,4 +124,8 @@ class Global {
   static String bucketName = "medvoice_audio_bucket_phase_2";
 
   static bool isSpeechServiceInitialized = false;
+
+  static String registerNurseEmail = '';
+  static String registerNursePassword = '';
+  static String registerNurseName = '';
 }

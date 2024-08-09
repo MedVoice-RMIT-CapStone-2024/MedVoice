@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +13,7 @@ class SmallTextField extends StatelessWidget {
     required this.controller,
     required this.showIconButton,
     required this.fillColor,
+    this.isReadOnly = false,
     this.onChanged,
     this.obscureText = false,
     this.icon,
@@ -28,10 +28,11 @@ class SmallTextField extends StatelessWidget {
   final bool showIconButton;
   final String? hint;
   final Color? iconColor;
+  final bool isReadOnly;
 
   final bool obscureText;
   final String? Function(String?)?
-      validator; // Accepts a function for validation
+      validator;
   final TextEditingController controller;
   final Function(String)? onChanged;
 
@@ -50,7 +51,6 @@ class SmallTextField extends StatelessWidget {
                 style: TextStyle(
                   color: theme.colorScheme.onBackground,
                   fontSize: toSize(11),
-                  // fontWeight: FontWeight.w400,
                   letterSpacing: toSize(1.5),
                   fontFamily: 'Rubik'
                 )),
@@ -58,10 +58,10 @@ class SmallTextField extends StatelessWidget {
           TextFormField(
             onChanged: onChanged,
             obscureText: obscureText,
+            readOnly: isReadOnly,
             style: TextStyle(
               color: theme.colorScheme.onBackground,
               fontSize: 14,
-              // fontWeight: FontWeight.w300,
             ),
             decoration: InputDecoration(
                 suffixIcon: Padding(
@@ -75,7 +75,7 @@ class SmallTextField extends StatelessWidget {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 border: OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(toSize(20)), // Adjusted size
+                      BorderRadius.circular(toSize(20)),
                   borderSide: const BorderSide(color: Colors.black),
                 ),
                 isDense: true,
@@ -91,22 +91,20 @@ class SmallTextField extends StatelessWidget {
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: theme.colorScheme
-                        .onSecondary, // Change this to your desired color
-                    // Adjust the width if necessary
+                        .onSecondary,
                   ),
                   borderRadius:
-                      BorderRadius.circular(toSize(20)), // Adjusted size
+                      BorderRadius.circular(toSize(20)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: theme.colorScheme
-                        .onSecondary, // Change this to your desired color
-                    // Adjust the width if necessary
+                        .onSecondary,
                   ),
                   borderRadius:
-                      BorderRadius.circular(toSize(20)), // Adjusted size
+                      BorderRadius.circular(toSize(20)),
                 )),
-            validator: validator, // Pass the validation function
+            validator: validator,
             controller: controller,
           ),
         ],

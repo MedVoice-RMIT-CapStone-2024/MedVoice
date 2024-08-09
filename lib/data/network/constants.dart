@@ -23,6 +23,8 @@ class Constants {
       "${firstBitUrl}get_transcript/{file_id}/{file_extension}";
 
   static String askEndpoint = "${firstBitUrl}test/llm/ask-llama2/";
+
+  static String createNurseAccount = "${firstBitUrl}nurses/";
 }
 
 const successStatusCodeList = [200, 201, 204];

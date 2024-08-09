@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/pages/onboarding/signup/sign_up_controller.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -93,39 +92,40 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                           showIconButton: false,
                           validator: _controller.validateName,
                           hint: "Jiara",
-                          controller: _controller.fnameController),
+                          controller: _controller.fNameController),
                       SmallTextField(
                           fillColor: theme.colorScheme.onPrimary,
                           labelText: "LAST NAME",
                           showIconButton: false,
                           validator: _controller.validateName,
                           hint: "Martins",
-                          controller: _controller.lnameController),
-                      SmallTextField(
-                        fillColor: theme.colorScheme.onPrimary,
-                        labelText: "DATE OF BIRTH",
-                        iconButton: IconButton(
-                          icon: Icon(Icons.calendar_today_outlined,
-                              color: theme.colorScheme.onBackground),
-                          onPressed: () {
-                            showDatePicker(
-                              context: context,
-                              initialDate: selectedDate,
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            ).then((value) {
-                              if (value != null) {
-                                _controller.dateOfBirthController.text =
-                                    "${value.day}/${value.month}/${value.year}";
-                              }
-                            });
-                          },
-                        ),
-                        showIconButton: true,
-                        hint: "Select",
-                        validator: _controller.validateDateOfBirth,
-                        controller: _controller.dateOfBirthController,
-                      ),
+                          controller: _controller.lNameController),
+                      // SmallTextField(
+                      //   fillColor: theme.colorScheme.onPrimary,
+                      //   isReadOnly: true,
+                      //   labelText: "DATE OF BIRTH",
+                      //   iconButton: IconButton(
+                      //     icon: Icon(Icons.calendar_today_outlined,
+                      //         color: theme.colorScheme.onBackground),
+                      //     onPressed: () {
+                      //       showDatePicker(
+                      //         context: context,
+                      //         initialDate: selectedDate,
+                      //         firstDate: DateTime(1900),
+                      //         lastDate: DateTime.now(),
+                      //       ).then((value) {
+                      //         if (value != null) {
+                      //           _controller.dateOfBirthController.text =
+                      //               "${value.day}/${value.month}/${value.year}";
+                      //         }
+                      //       });
+                      //     },
+                      //   ),
+                      //   showIconButton: true,
+                      //   hint: "Select",
+                      //   validator: _controller.validateDateOfBirth,
+                      //   controller: _controller.dateOfBirthController,
+                      // ),
                       Padding(
                         padding: EdgeInsets.all(toSize(20)),
                         child: ElevatedButton(

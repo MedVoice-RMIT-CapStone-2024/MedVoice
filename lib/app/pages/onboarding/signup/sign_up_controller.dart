@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../../common/base_controller.dart';
+import '../../../utils/global.dart';
 
 class SignUpController extends BaseController {
-  final TextEditingController fnameController = TextEditingController();
-  final TextEditingController lnameController = TextEditingController();
-  final TextEditingController dateOfBirthController = TextEditingController();
+  final TextEditingController fNameController = TextEditingController();
+  final TextEditingController lNameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   void onResumed() {}
 
@@ -20,8 +21,7 @@ class SignUpController extends BaseController {
     if (value == null || value.isEmpty) {
       return 'Date of birth is required';
     }
-    // Additional validation logic for date of birth can be added here
-    return null; // Return null if validation passes
+    return null;
   }
 
   String? validateName(String? value) {
@@ -31,26 +31,16 @@ class SignUpController extends BaseController {
     if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
       return 'This field can only contain letters and spaces';
     }
-    return null; // Return null if validation passes
-  }
-
-  void dispose() {
-    fnameController.dispose();
-    lnameController.dispose();
-    dateOfBirthController.dispose();
+    return null;
   }
 
   bool submitForm() {
     if (formKey.currentState!.validate()) {
-      // Extract values from controllers and handle submission logic here
-      String fname = fnameController.text;
-      String lname = lnameController.text;
-      String dateOfBirth = dateOfBirthController.text;
+      String fname = fNameController.text;
+      String lname = lNameController.text;
 
-      // Perform form submission logic (e.g., API call, navigation, etc.)
-      // This is where you handle the submitted data
-      print('Name: $fname $lname');
-      print('Date of Birth: $dateOfBirth');
+      Global.registerNurseName = '$fname $lname';
+      debugPrint('Name: ${Global.registerNurseName}');
       return true;
     }
     return false;

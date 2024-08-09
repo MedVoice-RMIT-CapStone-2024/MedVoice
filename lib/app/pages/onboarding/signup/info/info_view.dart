@@ -2,16 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
-import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_controller.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
-import 'package:med_voice/app/utils/pages.dart';
 import 'package:med_voice/app/widgets/password_strength.dart';
 import 'package:med_voice/app/widgets/small_text_field.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
+import 'package:med_voice/data/repository_impl/nurse_data_control_repository_impl.dart';
 import 'package:provider/provider.dart';
 
 class InfoView extends clean.View {
@@ -24,7 +22,7 @@ class InfoView extends clean.View {
 }
 
 class _InfoView extends BaseStateView<InfoView, InfoController> {
-  _InfoView() : super(InfoController());
+  _InfoView() : super(InfoController(NurseDataControlRepositoryImpl()));
 
   @override
   bool isInitialAppbar() {
@@ -117,9 +115,10 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
             padding: EdgeInsets.all(toSize(20)),
             child: ElevatedButton(
               onPressed: () {
-                if (_controller.submitForm()) {
-                  pushScreen(Pages.signIn, isAllowBack: false);
-                }
+                // if (_controller.submitForm()) {
+                //   pushScreen(Pages.signIn, isAllowBack: false);
+                // }
+                _controller.submitForm();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
@@ -131,11 +130,10 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
               child: Text(
                 "Sign up",
                 style: TextStyle(
-                  color: theme.colorScheme.surface,
-                  fontSize: toSize(18),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Rubik'
-                ),
+                    color: theme.colorScheme.surface,
+                    fontSize: toSize(18),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Rubik'),
               ),
             ),
           ),
