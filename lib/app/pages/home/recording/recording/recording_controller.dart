@@ -195,36 +195,48 @@ class RecordingController extends BaseController {
     final duration = recordDuration;
     recordDuration = 0;
     final path = await audioRecorder.stop();
-    if (path != null) {
-      view.showPopupWithAction(
-          'Recording finished! Kindly wait as audio is now being processed',
-          'okay');
-      audioPath = path;
-      pathForDelete = path;
-    } else {
-      debugPrint('path is empty');
-    }
     await speech!.stop();
-    onSaveRecordingToList(tempName, duration, audioPath);
-    dataRequest = PostTranscriptRequest(
-        '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
+
+    view.showPopupWithAction(
+        'Do you want to use this recording for processing?',
+        'Yes',
+            () {
+              if (path != null) {
+                view.showPopupWithAction(
+                    'Recording finished! Kindly wait as audio is now being processed',
+                    'okay');
+                audioPath = path;
+                pathForDelete = path;
+              } else {
+                debugPrint('path is empty');
+              }
+              onSaveRecordingToList(tempName, duration, audioPath);
+              dataRequest = PostTranscriptRequest(
+                  '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
+        },
+        'Processing confirmation',
+        'No',
+            () {
+          onDelete(path ?? "");
+          guideText = 'Press the button and start speaking';
+        });
     recordingName.clear();
     refreshUI();
   }
 
-  Future<void> cancelRecording() async {
-    await speech!.stop();
-    final path = await audioRecorder.stop();
-    onDelete(path ?? "");
-    timer?.cancel();
-    recordingName.clear();
-    speechEnabled = false;
-    isTheSameFile = false;
-    isStartingRecording = false;
-    recordDuration = 0;
-    guideText = 'Press the button and start speaking';
-    refreshUI();
-  }
+  // Future<void> cancelRecording() async {
+  //   await speech!.stop();
+  //   final path = await audioRecorder.stop();
+  //   onDelete(path ?? "");
+  //   timer?.cancel();
+  //   recordingName.clear();
+  //   speechEnabled = false;
+  //   isTheSameFile = false;
+  //   isStartingRecording = false;
+  //   recordDuration = 0;
+  //   guideText = 'Press the button and start speaking';
+  //   refreshUI();
+  // }
 
   void onSpeechResult(SpeechRecognitionResult result) {
     debugPrint("Speech recognized: ${result.recognizedWords}");
