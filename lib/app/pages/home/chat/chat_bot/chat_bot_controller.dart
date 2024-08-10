@@ -57,7 +57,7 @@ class ChatBotController extends BaseController {
 
   void sendMessage(String message) {
     messages.add(ChatInfo(message: message, isMe: true, time: DateTime.now()));
-    AskRequest param = AskRequest(message, 'pdf');
+    AskRequest param = AskRequest(message, 'json');
     compilingMessage = true;
     refreshUI();
     _presenter.executeGetAnswer(param);
