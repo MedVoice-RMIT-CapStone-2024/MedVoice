@@ -95,9 +95,9 @@ class PdfGeneratedView {
                                 fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: toSize(5)),
                         pw.Text(
-                            (patientDocument.mPatientAge != null &&
-                                    patientDocument.mPatientAge != 0)
-                                ? patientDocument.mPatientAge.toString()
+                            (patientDocument.mPatientDob != null &&
+                                    patientDocument.mPatientDob!.isNotEmpty)
+                                ? patientDocument.mPatientDob!
                                 : "N/A",
                             style: pw.TextStyle(fontSize: toSize(18))),
                       ]),

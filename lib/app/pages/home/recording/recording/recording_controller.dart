@@ -213,14 +213,15 @@ class RecordingController extends BaseController {
               onSaveRecordingToList(tempName, duration, audioPath);
               dataRequest = PostTranscriptRequest(
                   '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
+              recordingName.clear();
         },
         'Processing confirmation',
         'No',
             () {
           onDelete(path ?? "");
           guideText = 'Press the button and start speaking';
+          recordingName.clear();
         });
-    recordingName.clear();
     refreshUI();
   }
 

@@ -16,7 +16,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
 
-import '../../../../widgets/pdf_creation/pdf_generated_view.dart';
 import '../../../../widgets/theme_provider.dart';
 import 'enhanced_note_controller.dart';
 
@@ -205,7 +204,7 @@ class _EnhanceNoteViewState
                 _basicContentRow(
                     'Name', _controller!.jsonData!.mPatientName, false, theme),
                 _basicContentRow(
-                    'Age', _controller!.jsonData!.mPatientAge, false, theme),
+                    'Date of birth', _controller!.jsonData!.mPatientDob, false, theme),
                 _basicContentRow('Gender',
                     _controller!.jsonData!.mPatientGender, true, theme),
                 SizedBox(height: toSize(10)),

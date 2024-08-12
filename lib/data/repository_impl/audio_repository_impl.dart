@@ -9,7 +9,6 @@ import 'package:med_voice/domain/entities/recording/library_transcript/health_vi
 import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_response.dart';
 import 'package:med_voice/domain/entities/recording/library_transcript/medical_diagnosis_info.dart';
 import 'package:med_voice/domain/entities/recording/library_transcript/medical_treatment_response.dart';
-import 'package:med_voice/domain/entities/recording/sentences_info.dart';
 import 'package:med_voice/domain/entities/recording/upload_recording_request.dart';
 import 'package:med_voice/domain/repositories/audio_repository/audio_repository.dart';
 
@@ -243,7 +242,7 @@ class AudioRepositoryImpl implements AudioRepository {
 
     info = GetLibraryTranscriptJsonInfo(
         response.patientName ?? "",
-        response.patientAge ?? 0,
+        response.patientDob ?? "",
         response.patientGender ?? "",
         medicalDiagnosisInfoList,
         medicalTreatmentInfoList,
