@@ -142,17 +142,7 @@ class _RecordingAndroidView
                       if (!recordingAndroidController!.speechEnabled) {
                         recordingAndroidController!.startListening();
                       } else {
-                        showPopupWithAction(
-                            'Do you want to use this recording for processing?',
-                            'Yes',
-                            () {
-                              recordingAndroidController!.stopListening();
-                            },
-                            'Processing confirmation',
-                            'No',
-                            () {
-                              recordingAndroidController!.cancelRecording();
-                            });
+                        recordingAndroidController!.stopListening();
                       }
                     },
                     child: Container(

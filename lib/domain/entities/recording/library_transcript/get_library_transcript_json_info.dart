@@ -4,14 +4,14 @@ import 'package:med_voice/domain/entities/recording/library_transcript/medical_t
 
 class GetLibraryTranscriptJsonInfo {
   String? mPatientName = '';
-  int? mPatientAge = 0;
+  String? mPatientDob = '';
   String? mPatientGender = '';
   List<MedicalDiagnosisInfo>? mMedicalDiagnosis;
   List<MedicalTreatmentInfo>? mMedicalTreatment;
   List<HealthVitalInfo>? mHealthVitals;
   String? mMessage = '';
 
-  GetLibraryTranscriptJsonInfo(this.mPatientName, this.mPatientAge, this.mPatientGender, this.mMedicalDiagnosis, this.mMedicalTreatment, this.mHealthVitals, this.mMessage);
+  GetLibraryTranscriptJsonInfo(this.mPatientName, this.mPatientDob, this.mPatientGender, this.mMedicalDiagnosis, this.mMedicalTreatment, this.mHealthVitals, this.mMessage);
 
   GetLibraryTranscriptJsonInfo.buildDefault();
 }

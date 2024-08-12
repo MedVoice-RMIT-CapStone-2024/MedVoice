@@ -4,7 +4,7 @@ import 'package:med_voice/domain/entities/recording/library_transcript/medical_t
 
 class GetLibraryTranscriptJsonResponse {
   String? patientName = '';
-  int? patientAge = 0;
+  String? patientDob = '';
   String? patientGender = '';
   List<MedicalDiagnosisResponse>? medicalDiagnosis;
   List<MedicalTreatmentResponse>? medicalTreatment;
@@ -13,7 +13,7 @@ class GetLibraryTranscriptJsonResponse {
 
   GetLibraryTranscriptJsonResponse(
       this.patientName,
-      this.patientAge,
+      this.patientDob,
       this.patientGender,
       this.medicalDiagnosis,
       this.medicalTreatment,
@@ -47,7 +47,7 @@ class GetLibraryTranscriptJsonResponse {
     }
     return GetLibraryTranscriptJsonResponse(
       json['patient_name'],
-      json['patient_age'],
+      json['patient_dob'],
       json['patient_gender'],
       medicalDiagnosisResponse,
       medicalTreatmentResponse,

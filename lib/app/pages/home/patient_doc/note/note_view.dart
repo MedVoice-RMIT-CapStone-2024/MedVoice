@@ -100,8 +100,9 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                     children: [
                       SizedBox(height: toSize(60)),
                       Text("Replay audio",
-                          style:
-                              TextStyle(color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
+                          style: TextStyle(
+                              color: theme.colorScheme.onBackground,
+                              fontFamily: 'Rubik')),
                       SizedBox(height: toSize(20)),
                       InkWell(
                         onTap: () {
@@ -400,8 +401,8 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                 SizedBox(height: toSize(5)),
                 _basicContentRow(
                     'Name', _controller!.jsonData?.mPatientName, false, theme),
-                _basicContentRow(
-                    'Age', _controller!.jsonData?.mPatientAge, false, theme),
+                _basicContentRow('Date Of Birth',
+                    _controller!.jsonData?.mPatientDob, false, theme),
                 _basicContentRow('Gender',
                     _controller!.jsonData?.mPatientGender, true, theme),
                 SizedBox(height: toSize(10)),
@@ -606,11 +607,13 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                       color: theme.colorScheme.onSurface)),
               const Spacer(),
               Text(
-                  (value is String)
+                  (value is String && value.isNotEmpty)
                       ? value
-                      : (value is int)
-                          ? value.toString()
-                          : "N/A",
+                      : (value is String && value.isEmpty)
+                          ? "N/A"
+                          : (value is int)
+                              ? value.toString()
+                              : "N/A",
                   style: TextStyle(color: theme.colorScheme.onSurface))
             ],
           ),
