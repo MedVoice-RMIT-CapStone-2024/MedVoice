@@ -44,6 +44,11 @@ class _NurseProfileView
   }
 
   @override
+  bool isShowFeedbackFeature() {
+    return true;
+  }
+
+  @override
   List<Widget>? rightMenu() {
     theme = Provider.of<ThemeProvider>(context).themeData;
     return [

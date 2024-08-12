@@ -22,7 +22,7 @@ class Constants {
   static String getLibraryTranscript =
       "${firstBitUrl}get_transcript/{file_id}/{file_extension}";
 
-  static String askEndpoint = "${firstBitUrl}test/llm/ask-llama2/";
+  static String askEndpoint = "${firstBitUrl}ask";
 
   static String createNurseAccount = "${firstBitUrl}nurses/";
 }
