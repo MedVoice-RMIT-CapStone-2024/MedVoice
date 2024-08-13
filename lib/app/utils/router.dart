@@ -9,6 +9,7 @@ import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_ser
 import 'package:med_voice/app/pages/home/user_profile/profile_qr/my_qr_view.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_view.dart';
 import 'package:med_voice/app/pages/onboarding/onboarding_welcome/onboarding_welcome_view.dart';
+import 'package:med_voice/app/pages/onboarding/otp_verification/otp_verification_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/pages.dart';
 
@@ -106,6 +107,14 @@ class AppRouter {
 
       case Pages.onBoardingWelcome:
         return _buildRoute(settings, const OnBoardingWelcomeView());
+
+      case Pages.otpVerification:
+        Map<String, dynamic> arguments =
+            settings.arguments as Map<String, dynamic>;
+        return _buildRoute(
+            settings,
+            OtpVerificationView(
+                userEmailAddress: arguments[userEmailAddress] as String));
 
       default:
         return null;

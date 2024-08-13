@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/onboarding/otp_verification/otp_verification_view.dart';
 import 'package:med_voice/app/pages/onboarding/signup/info/info_presenter.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
@@ -32,7 +33,9 @@ class InfoController extends BaseController {
     _presenter.onRegisterNurseSuccess = (NurseInfo response) {
       debugPrint("Register nurse success! Moving to login view...");
       hideLoadingProgress();
-      view.showPopupWithAction('Account successfully created! Welcome ${response.mName} to Medvoice!', 'Confirm', (){
+      view.showPopupWithAction(
+          'Account successfully created! Welcome ${response.mName} to Medvoice!',
+          'Confirm', () {
         view.pushScreen(Pages.signIn, isAllowBack: false);
       });
     };
@@ -104,22 +107,13 @@ class InfoController extends BaseController {
   }
 
   void submitForm() {
-    showLoadingProgress();
+    // showLoadingProgress();
     if (formKey.currentState!.validate()) {
       Global.registerNurseEmail = emailController.text;
       Global.registerNursePassword = passwordController.text;
       String confirmPassword = confirmPasswordController.text;
-
-      NurseRegisterRequest request = NurseRegisterRequest(
-          Global.registerNurseName,
-          Global.registerNurseEmail,
-          Global.registerNursePassword);
-
-      debugPrint('Email: ${Global.registerNurseEmail}');
-      debugPrint('Password: ${Global.registerNursePassword}');
-      debugPrint('Confirm Password: $confirmPassword');
-
-      _presenter.executeUploadLibraryTranscript(request);
+      view.pushScreen(Pages.otpVerification,
+          arguments: {userEmailAddress: Global.registerNurseEmail});
     }
   }
 

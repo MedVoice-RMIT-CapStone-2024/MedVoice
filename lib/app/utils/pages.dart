@@ -17,4 +17,5 @@ class Pages {
   static const String noteArchiveEnhancedDetails = '/enhancedNote';
   static const String chatBot = '/chatBot';
   static const String onBoardingWelcome = '/onBoardingWelcome';
+  static const String otpVerification = '/otpVerification';
 }

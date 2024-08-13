@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
+import 'package:med_voice/app/assets/image_assets.dart';
 import 'package:med_voice/app/pages/onboarding/signup/sign_up_controller.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -46,129 +48,127 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
     final Size size = MediaQuery.of(context).size;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
     return Scaffold(
-        backgroundColor: theme.colorScheme.background,
-        body: Form(
-          key: _controller.formKey,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const Spacer(),
-                      Text("Create Account",
-                          style: TextStyle(
-                            color: theme.colorScheme.onBackground,
-                            fontSize: toSize(35),
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Rubik'
-                          )),
-                      SizedBox(height: toSize(10)),
-                      InkWell(
-                        onTap: () {
-                          if (widget.isFromOnBoarding) {
-                            pushScreen(Pages.signIn);
-                          } else {
-                            onBack();
-                          }
-                        },
-                        child: Text(
-                          "Already registered? Log in here.",
-                          style: TextStyle(
-                            color: theme.colorScheme.onBackground,
-                            fontSize: toSize(14),
-                            // fontWeight: FontWeight.w300,
-                            fontFamily: 'Rubik'
+        resizeToAvoidBottomInset: true,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Form(
+              key: _controller.formKey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(22)),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: toSize(120)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(ImageAssets.medVoiceCroppedLogo,
+                                  height: toSize(55)),
+                              SizedBox(height: toSize(25)),
+                              Text("Create Account",
+                                  style: TextStyle(
+                                      color: theme.colorScheme.onBackground,
+                                      fontSize: toSize(35),
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Rubik')),
+                            ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: toSize(40)),
-                      SmallTextField(
-                          fillColor: theme.colorScheme.onPrimary,
-                          labelText: "FIRST NAME",
-                          showIconButton: false,
-                          validator: _controller.validateName,
-                          hint: "Jiara",
-                          controller: _controller.fNameController),
-                      SmallTextField(
-                          fillColor: theme.colorScheme.onPrimary,
-                          labelText: "LAST NAME",
-                          showIconButton: false,
-                          validator: _controller.validateName,
-                          hint: "Martins",
-                          controller: _controller.lNameController),
-                      // SmallTextField(
-                      //   fillColor: theme.colorScheme.onPrimary,
-                      //   isReadOnly: true,
-                      //   labelText: "DATE OF BIRTH",
-                      //   iconButton: IconButton(
-                      //     icon: Icon(Icons.calendar_today_outlined,
-                      //         color: theme.colorScheme.onBackground),
-                      //     onPressed: () {
-                      //       showDatePicker(
-                      //         context: context,
-                      //         initialDate: selectedDate,
-                      //         firstDate: DateTime(1900),
-                      //         lastDate: DateTime.now(),
-                      //       ).then((value) {
-                      //         if (value != null) {
-                      //           _controller.dateOfBirthController.text =
-                      //               "${value.day}/${value.month}/${value.year}";
-                      //         }
-                      //       });
-                      //     },
-                      //   ),
-                      //   showIconButton: true,
-                      //   hint: "Select",
-                      //   validator: _controller.validateDateOfBirth,
-                      //   controller: _controller.dateOfBirthController,
-                      // ),
-                      Padding(
-                        padding: EdgeInsets.all(toSize(20)),
-                        child: ElevatedButton(
-                          onPressed: () {
+                        SizedBox(height: toSize(25)),
+                        SmallTextField(
+                            fillColor: theme.colorScheme.onPrimary,
+                            labelText: "FIRST NAME",
+                            showIconButton: false,
+                            validator: _controller.validateName,
+                            hint: "First name",
+                            controller: _controller.fNameController),
+                        SizedBox(height: toSize(5)),
+                        SmallTextField(
+                            fillColor: theme.colorScheme.onPrimary,
+                            labelText: "LAST NAME",
+                            showIconButton: false,
+                            validator: _controller.validateName,
+                            hint: "Last name",
+                            controller: _controller.lNameController),
+                        SizedBox(height: toSize(35)),
+                        InkWell(
+                          onTap: () {
                             if (_controller.submitForm()) {
-                              pushScreen(Pages.info, isAllowBack: false);
+                              pushScreen(Pages.info, isAllowBack: true);
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            fixedSize: Size(size.width * 0.75, toSize(50)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                          child: Container(
+                            width: double.infinity,
+                            height: toSize(55),
+                            decoration: BoxDecoration(
+                                color: theme.colorScheme.primary,
+                                borderRadius:
+                                    BorderRadius.circular(toSize(10))),
+                            child: Center(
+                                child: Text("Continue",
+                                    style: TextStyle(
+                                        color: theme.colorScheme.onPrimary
+                                            .withOpacity(0.9),
+                                        fontFamily: 'Rubik',
+                                        fontSize: toSize(17)))),
                           ),
-                          child: Text(
-                            "Next",
-                            style: TextStyle(
-                              color: theme.colorScheme.surface,
-                              fontSize: toSize(18),
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Rubik'
+                        ),
+                        SizedBox(height: toSize(23)),
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              if (widget.isFromOnBoarding) {
+                                pushScreen(Pages.signIn);
+                              } else {
+                                onBack();
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Already registered?",
+                                  style: TextStyle(
+                                      color: theme.colorScheme.onBackground,
+                                      fontSize: toSize(15),
+                                      fontFamily: 'Rubik'),
+                                ),
+                                SizedBox(width: toSize(5)),
+                                Text("Log in here.",
+                                    style: TextStyle(
+                                        color: theme.colorScheme.primary,
+                                        fontSize: toSize(15),
+                                        fontFamily: 'Rubik',
+                                        fontWeight: FontWeight.w900))
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                  Positioned(
-                    top: toSize(60),
-                    child: InkWell(
-                      onTap: () {
-                        onBack();
-                      },
-                      child: Image.asset(
-                        IconAssets.icBack,
-                        width: toSize(20),
-                        height: toSize(20),
+                        SizedBox(height: toSize(30))
+                      ],
+                    ),
+                    Positioned(
+                      top: toSize(60),
+                      left: toSize(12),
+                      child: InkWell(
+                        onTap: () {
+                          onBack();
+                        },
+                        child: Image.asset(
+                          IconAssets.icBack,
+                          width: toSize(20),
+                          height: toSize(20),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

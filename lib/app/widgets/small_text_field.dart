@@ -40,8 +40,7 @@ class SmallTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: toSize(10)),
-      padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+      // margin: EdgeInsets.symmetric(vertical: toSize(5)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,6 +61,7 @@ class SmallTextField extends StatelessWidget {
             style: TextStyle(
               color: theme.colorScheme.onBackground,
               fontSize: 14,
+              fontFamily: 'Rubik'
             ),
             decoration: InputDecoration(
                 suffixIcon: Padding(
@@ -75,7 +75,7 @@ class SmallTextField extends StatelessWidget {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 border: OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(toSize(20)),
+                      BorderRadius.circular(toSize(10)),
                   borderSide: const BorderSide(color: Colors.black),
                 ),
                 isDense: true,
@@ -84,9 +84,11 @@ class SmallTextField extends StatelessWidget {
                   color: theme.colorScheme.onBackground,
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
+                  fontFamily: 'Rubik'
                 ),
                 errorStyle: TextStyle(
                   color: theme.colorScheme.onSecondary,
+                  fontFamily: 'Rubik'
                 ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -94,7 +96,7 @@ class SmallTextField extends StatelessWidget {
                         .onSecondary,
                   ),
                   borderRadius:
-                      BorderRadius.circular(toSize(20)),
+                      BorderRadius.circular(toSize(10)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -102,7 +104,7 @@ class SmallTextField extends StatelessWidget {
                         .onSecondary,
                   ),
                   borderRadius:
-                      BorderRadius.circular(toSize(20)),
+                      BorderRadius.circular(toSize(10)),
                 )),
             validator: validator,
             controller: controller,
