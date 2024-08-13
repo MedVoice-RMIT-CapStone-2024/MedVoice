@@ -159,7 +159,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                               ),
                             ),
                           ),
-                          SizedBox(width: toSize(5)),
+                          SizedBox(width: toSize(15)),
                           InkWell(
                             onTap: () async {
                               _controller.onLogInThroughBioAuth();
