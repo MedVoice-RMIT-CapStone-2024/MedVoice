@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/data/repository_impl/nurse_data_control_repository_impl.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,6 @@ import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../assets/icon_assets.dart';
 import '../../../assets/image_assets.dart';
-import '../../../utils/global.dart';
 import '../../../widgets/theme_provider.dart';
 import 'otp_verification_controller.dart';
 

@@ -25,6 +25,8 @@ class Constants {
   static String askEndpoint = "${firstBitUrl}ask";
 
   static String createNurseAccount = "${firstBitUrl}nurses/";
+
+  static String getNurseInformation = "${firstBitUrl}nurses/{nurse_id}";
 }
 
 const successStatusCodeList = [200, 201, 204];

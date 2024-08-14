@@ -62,7 +62,7 @@ class SmallTextField extends StatelessWidget {
               color: theme.colorScheme.onBackground,
               fontSize: 14,
               fontFamily: 'Rubik',
-              fontWeight: FontWeight.w600
+              fontWeight: FontWeight.w500
             ),
             decoration: InputDecoration(
                 suffixIcon: Padding(

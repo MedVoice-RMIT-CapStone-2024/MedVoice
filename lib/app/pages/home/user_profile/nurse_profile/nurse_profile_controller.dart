@@ -1,28 +1,53 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_presenter.dart';
+import 'package:med_voice/domain/entities/nurse/nurse_info.dart';
+import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../common/base_controller.dart';
+import '../../../../utils/global.dart';
 
 class NurseProfileController extends BaseController {
+  final NurseProfilePresenter _presenter;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool toggleBioAuth = false;
+  NurseInfo? data;
 
   bool isShowStartButton = false;
   Timer? timer;
   ThemeMode themeMode = ThemeMode.system;
 
+  NurseProfileController(nurseRepository)
+      : _presenter = NurseProfilePresenter(nurseRepository);
+
   @override
   void onResumed() {}
 
   @override
-  void onListener() {}
+  void onListener() {
+    _presenter.onGetNurseInfoSucceed = (NurseInfo response) {
+      data = response;
+      fetchPriorCredentials();
+      debugPrint("Fetch nurse data success");
+      hideLoadingProgress();
+    };
+    _presenter.onGetNurseInfoFailed = (e) {
+      debugPrint("Fetch nurse data failed");
+      hideLoadingProgress();
+      view.showErrorFromServer(
+          "Failed to fetch information\nPlease try again later");
+    };
+    _presenter.onCompleted = () {
+      debugPrint("Finished fetching nurse data");
+    };
+  }
 
   @override
   void firstLoad() {
-    fetchPriorCredentials();
+    onLoadNurseInfo();
   }
 
   Future<void> saveCredentials() async {
@@ -90,6 +115,14 @@ class NurseProfileController extends BaseController {
       }
     }
     refreshUI();
+  }
+
+  void onLoadNurseInfo() {
+    showLoadingProgress(loadingContent: 'Fetching nurse info');
+    NurseRegisterRequest request = NurseRegisterRequest.buildDefault();
+    request.id = Global.nurseId.toString();
+    debugPrint("Request id: ${request.id}");
+    _presenter.executeGetNurseInfo(request);
   }
 
   Future<void> resetBioCredentials() async {

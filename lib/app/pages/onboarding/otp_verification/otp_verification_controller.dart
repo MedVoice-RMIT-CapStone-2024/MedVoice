@@ -32,6 +32,7 @@ class OtpVerificationController extends BaseController {
   void onListener() {
     _presenter.onRegisterNurseSuccess = (NurseInfo response) {
       debugPrint("Register nurse success! Moving to login view...");
+      Global.nurseId = response.mId.toString();
       hideLoadingProgress();
       view.showPopupWithAction(
           'Account successfully created! Welcome ${response.mName} to Medvoice!',
@@ -42,7 +43,7 @@ class OtpVerificationController extends BaseController {
     _presenter.onRegisterNurseFailed = (error) {
       debugPrint("Error registering nurse");
       hideLoadingProgress();
-      view.showErrorFromServer("Failed to register this account: $error");
+      view.showErrorFromServer("Email has already taken");
     };
     _presenter.onCompleted = () {
       debugPrint("Register nurse success!");
@@ -50,7 +51,7 @@ class OtpVerificationController extends BaseController {
   }
 
   void sendOtp(String userEmail) async {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Sending OTP');
     isSent = false;
     EmailOTP.config(
       appName: 'MedVoice',
@@ -78,7 +79,7 @@ class OtpVerificationController extends BaseController {
   }
 
   void otpVerification(String otpCode) async {
-    showLoadingProgress();
+    showLoadingProgress(loadingContent: 'Verifying OTP');
     if (EmailOTP.verifyOTP(otp: otpCode)) {
       registerNurse();
     } else {
@@ -91,12 +92,13 @@ class OtpVerificationController extends BaseController {
     NurseRegisterRequest request = NurseRegisterRequest(
         Global.registerNurseName,
         Global.registerNurseEmail,
-        Global.registerNursePassword);
+        Global.registerNursePassword,
+        null);
 
     debugPrint('Email: ${Global.registerNurseEmail}');
     debugPrint('Password: ${Global.registerNursePassword}');
 
-    _presenter.executeUploadLibraryTranscript(request);
+    _presenter.executeCreateNurseAccount(request);
   }
 
   String formatNumber(int number) {

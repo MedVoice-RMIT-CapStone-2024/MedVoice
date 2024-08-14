@@ -22,7 +22,7 @@ class OtpVerificationPresenter extends Presenter {
     _registerNurseUseCase?.dispose();
   }
 
-  void executeUploadLibraryTranscript(NurseRegisterRequest params) => _registerNurseUseCase?.execute(_RegisterNurseUseCaseObserver(this), params);
+  void executeCreateNurseAccount(NurseRegisterRequest params) => _registerNurseUseCase?.execute(_RegisterNurseUseCaseObserver(this), params);
 
 }
 

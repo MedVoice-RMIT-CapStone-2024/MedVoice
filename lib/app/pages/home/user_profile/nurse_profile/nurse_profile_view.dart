@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
-import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
-import '../../../../utils/global.dart';
+import '../../../../../data/repository_impl/nurse_data_control_repository_impl.dart';
 import '../../../../utils/module_utils.dart';
 import '../../../../utils/pages.dart';
 import 'nurse_profile_controller.dart';
@@ -24,7 +23,7 @@ class NurseProfileView extends clean.View {
 
 class _NurseProfileView
     extends BaseStateView<NurseProfileView, NurseProfileController> {
-  _NurseProfileView() : super(NurseProfileController());
+  _NurseProfileView() : super(NurseProfileController(NurseDataControlRepositoryImpl()));
 
   ThemeData? theme;
 
@@ -104,11 +103,11 @@ class _NurseProfileView
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Nurse name",
+                        Text(_controller.data?.mName ?? "N/A",
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
                         const Spacer(),
-                        Text("nurse_email@email.com",
+                        Text(_controller.data?.mEmail ?? "N/A",
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
                       ],
@@ -247,7 +246,7 @@ class _NurseProfileView
                       },
                       child: Row(
                         children: [
-                          Text("What's New",
+                          Text("Assist Bot",
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17),

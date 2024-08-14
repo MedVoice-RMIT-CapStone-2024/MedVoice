@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_presenter.dart';
@@ -182,6 +184,12 @@ class MedicalArchiveController extends BaseController {
       currentIndex += group.items!.length;
     }
     return null;
+  }
+
+  void startCountdown() {
+    Timer(const Duration(seconds: 2), () {
+      debugPrint("Testing controller check");
+    });
   }
 }
 

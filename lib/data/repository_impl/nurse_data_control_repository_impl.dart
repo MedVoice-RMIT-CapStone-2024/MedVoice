@@ -38,4 +38,27 @@ class NurseDataControlRepositoryImpl implements NurseDataControlRepository {
 
     return nurseInfo;
   }
+
+  @override
+  Future<NurseInfo> getNurseInfo(NurseRegisterRequest param) async {
+    NurseInfo nurseInfo;
+    NurseResponse nurseResponse;
+    Map<String, dynamic>? body;
+
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(Constants.getNurseInformation.replaceAll('{nurse_id}', param.id ?? "")), RequestType.get,
+          headers: null, body: null);
+    } catch (e) {
+      debugPrint("Invoke HTTP failed: $e");
+      rethrow;
+    }
+
+    if (body == null) return NurseInfo.buildDefault();
+    nurseResponse = NurseResponse.fromJson(body);
+    nurseInfo =
+        NurseInfo(nurseResponse.id, nurseResponse.name, nurseResponse.email);
+
+    return nurseInfo;
+  }
 }

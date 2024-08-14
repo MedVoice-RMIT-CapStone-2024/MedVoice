@@ -128,4 +128,5 @@ class Global {
   static String registerNurseEmail = '';
   static String registerNursePassword = '';
   static String registerNurseName = '';
+  static String nurseId = "";
 }
