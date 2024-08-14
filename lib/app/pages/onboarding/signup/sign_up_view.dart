@@ -70,13 +70,15 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             children: [
                               Image.asset(ImageAssets.medVoiceCroppedLogo,
                                   height: toSize(55)),
-                              SizedBox(height: toSize(25)),
-                              Text("Create Account",
-                                  style: TextStyle(
-                                      color: theme.colorScheme.onBackground,
-                                      fontSize: toSize(35),
-                                      fontWeight: FontWeight.w900,
-                                      fontFamily: 'Rubik')),
+                              SizedBox(height: toSize(30)),
+                              Center(
+                                child: Text("Create Account",
+                                    style: TextStyle(
+                                        color: theme.colorScheme.onBackground,
+                                        fontSize: toSize(35),
+                                        fontWeight: FontWeight.w900,
+                                        fontFamily: 'Rubik')),
+                              ),
                             ],
                           ),
                         ),
@@ -131,6 +133,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   "Already registered?",

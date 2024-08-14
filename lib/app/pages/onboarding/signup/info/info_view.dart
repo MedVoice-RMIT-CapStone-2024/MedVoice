@@ -66,12 +66,14 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                             Image.asset(ImageAssets.medVoiceCroppedLogo,
                                 height: toSize(55)),
                             SizedBox(height: toSize(25)),
-                            Text("Account information",
-                                style: TextStyle(
-                                    color: theme.colorScheme.onBackground,
-                                    fontSize: toSize(35),
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Rubik')),
+                            Center(
+                              child: Text("Account information",
+                                  style: TextStyle(
+                                      color: theme.colorScheme.onBackground,
+                                      fontSize: toSize(35),
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Rubik')),
+                            ),
                           ],
                         ),
                       ),
@@ -149,32 +151,26 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                         },
                       ),
                       SizedBox(height: toSize(20)),
-                      Padding(
-                        padding: EdgeInsets.all(toSize(20)),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // if (_controller.submitForm()) {
-                            //   pushScreen(Pages.signIn, isAllowBack: false);
-                            // }
-                            _controller.submitForm();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            fixedSize: Size(size.width * 0.75, toSize(50)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                      InkWell(
+                        onTap: (){
+                          _controller.submitForm();
+                        },
+                        child: Container(
+                          height: toSize(55),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(toSize(10)),
+                            color: theme.colorScheme.primary
                           ),
-                          child: Text(
-                            "Sign up",
-                            style: TextStyle(
-                                color: theme.colorScheme.surface,
-                                fontSize: toSize(18),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Rubik'),
-                          ),
+                          child: Center(child: Text("Sign Up",
+                              style: TextStyle(
+                                  color: theme.colorScheme.onPrimary
+                                      .withOpacity(0.9),
+                                  fontSize: toSize(17),
+                                  fontFamily: 'Rubik'))),
                         ),
                       ),
+                      SizedBox(height: toSize(20))
                     ],
                   ),
                   Positioned(

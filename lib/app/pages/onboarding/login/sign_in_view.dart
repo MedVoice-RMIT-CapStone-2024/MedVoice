@@ -171,7 +171,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           )
                         ],
                       ),
-                      SizedBox(height: toSize(17)),
+                      SizedBox(height: toSize(23)),
                       Center(
                         child: Column(
                           children: [
@@ -182,18 +182,19 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text("Don't have an account?",
                                       style: TextStyle(
                                           color: theme.colorScheme.onBackground,
-                                          fontSize: toSize(14),
+                                          fontSize: toSize(15),
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Rubik')),
                                   SizedBox(width: toSize(5)),
                                   Text("Register now",
                                       style: TextStyle(
                                           color: theme.colorScheme.primary,
-                                          fontSize: toSize(14),
+                                          fontSize: toSize(15),
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Rubik')),
                                 ],
