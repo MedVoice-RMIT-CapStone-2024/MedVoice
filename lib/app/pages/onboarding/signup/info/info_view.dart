@@ -42,15 +42,6 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
   }
 
   @override
-  bool isHideBackButton() {
-    if(widget.isFromOnBoarding) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  @override
   Widget body(BuildContext context, BaseController controller) {
     InfoController _controller = controller as InfoController;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
@@ -164,22 +155,22 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                       ),
                       SizedBox(height: toSize(20)),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           _controller.submitForm();
                         },
                         child: Container(
                           height: toSize(55),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(toSize(10)),
-                            color: theme.colorScheme.primary
-                          ),
-                          child: Center(child: Text("Sign Up",
-                              style: TextStyle(
-                                  color: theme.colorScheme.onPrimary
-                                      .withOpacity(0.9),
-                                  fontSize: toSize(17),
-                                  fontFamily: 'Rubik'))),
+                              borderRadius: BorderRadius.circular(toSize(10)),
+                              color: theme.colorScheme.primary),
+                          child: Center(
+                              child: Text("Sign Up",
+                                  style: TextStyle(
+                                      color: theme.colorScheme.onPrimary
+                                          .withOpacity(0.9),
+                                      fontSize: toSize(17),
+                                      fontFamily: 'Rubik'))),
                         ),
                       ),
                       SizedBox(height: toSize(20)),
@@ -217,20 +208,22 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                       SizedBox(height: toSize(20))
                     ],
                   ),
-                  Positioned(
-                    top: toSize(60),
-                    left: toSize(12),
-                    child: InkWell(
-                      onTap: () {
-                        onBack();
-                      },
-                      child: Image.asset(
-                        IconAssets.icBack,
-                        width: toSize(20),
-                        height: toSize(20),
-                      ),
-                    ),
-                  ),
+                  (!widget.isFromOnBoarding)
+                      ? Positioned(
+                          top: toSize(60),
+                          left: toSize(12),
+                          child: InkWell(
+                            onTap: () {
+                              onBack();
+                            },
+                            child: Image.asset(
+                              IconAssets.icBack,
+                              width: toSize(20),
+                              height: toSize(20),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),
