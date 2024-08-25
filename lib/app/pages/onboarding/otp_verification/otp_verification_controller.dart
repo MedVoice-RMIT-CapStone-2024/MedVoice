@@ -132,7 +132,7 @@ class OtpVerificationController extends BaseController {
 
   void registerNurse() {
     NurseRegisterRequest request = NurseRegisterRequest(
-        Global.userCredentials.name,
+        '',
         Global.userCredentials.email,
         Global.userCredentials.password,
         null);
