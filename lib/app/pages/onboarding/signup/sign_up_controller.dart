@@ -36,11 +36,10 @@ class SignUpController extends BaseController {
 
   bool submitForm() {
     if (formKey.currentState!.validate()) {
-      String fname = fNameController.text;
-      String lname = lNameController.text;
+      String fName = fNameController.text;
+      String lName = lNameController.text;
 
-      Global.registerNurseName = '$fname $lname';
-      debugPrint('Name: ${Global.registerNurseName}');
+      Global.userCredentials.name = '$fName $lName';
       return true;
     }
     return false;

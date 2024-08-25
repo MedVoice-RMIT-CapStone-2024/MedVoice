@@ -14,7 +14,6 @@ class NurseProfileController extends BaseController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool toggleBioAuth = false;
-  NurseInfo? data;
 
   bool isShowStartButton = false;
   Timer? timer;
@@ -29,7 +28,9 @@ class NurseProfileController extends BaseController {
   @override
   void onListener() {
     _presenter.onGetNurseInfoSucceed = (NurseInfo response) {
-      data = response;
+      Global.userCredentials.id = response.mId.toString();
+      Global.userCredentials.name = response.mName;
+      Global.userCredentials.email = response.mEmail;
       fetchPriorCredentials();
       debugPrint("Fetch nurse data success");
       hideLoadingProgress();
@@ -120,7 +121,7 @@ class NurseProfileController extends BaseController {
   void onLoadNurseInfo() {
     showLoadingProgress(loadingContent: 'Fetching nurse info');
     NurseRegisterRequest request = NurseRegisterRequest.buildDefault();
-    request.id = Global.nurseId.toString();
+    request.id = Global.userCredentials.id.toString();
     debugPrint("Request id: ${request.id}");
     _presenter.executeGetNurseInfo(request);
   }

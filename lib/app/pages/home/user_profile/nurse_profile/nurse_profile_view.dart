@@ -8,12 +8,13 @@ import 'package:provider/provider.dart';
 import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
 import '../../../../../data/repository_impl/nurse_data_control_repository_impl.dart';
+import '../../../../utils/global.dart';
 import '../../../../utils/module_utils.dart';
 import '../../../../utils/pages.dart';
 import 'nurse_profile_controller.dart';
 
 class NurseProfileView extends clean.View {
-  NurseProfileView({Key? key}) : super(key: key);
+  const NurseProfileView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -82,47 +83,52 @@ class _NurseProfileView
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(height: toSize(23)),
-              Container(
-                height: toSize(90),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                    horizontal: toSize(17), vertical: toSize(20)),
-                decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(toSize(10))),
-                child: Row(
-                  children: [
-                    Container(
-                      height: toSize(48),
-                      width: toSize(48),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(7)),
-                    ),
-                    SizedBox(width: toSize(12)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_controller.data?.mName ?? "N/A",
-                            style: TextStyle(
-                                color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
-                        const Spacer(),
-                        Text(_controller.data?.mEmail ?? "N/A",
-                            style: TextStyle(
-                                color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
-                      ],
-                    ),
-                    const Spacer(),
-                    RotatedBox(
-                      quarterTurns: 2,
-                      child: SizedBox(
-                        height: toSize(20),
-                        width: toSize(20),
-                        child: Image.asset(IconAssets.icBack,
-                            color: theme.colorScheme.onSurface),
+              InkWell(
+                onTap: (){
+                  pushScreen(Pages.nurseProfileDetail);
+                },
+                child: Container(
+                  height: toSize(90),
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: toSize(17), vertical: toSize(20)),
+                  decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(toSize(10))),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: toSize(48),
+                        width: toSize(48),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(7)),
                       ),
-                    )
-                  ],
+                      SizedBox(width: toSize(14)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text((Global.userCredentials.email != null && Global.userCredentials.email!.isNotEmpty) ?  Global.userCredentials.email! : "N/A",
+                              style: TextStyle(
+                                  color: theme.colorScheme.onSurface, fontFamily: 'Rubik', fontSize: toSize(17), fontWeight: FontWeight.w500)),
+                          const Spacer(),
+                          Text((Global.userCredentials.id != null && Global.userCredentials.id!.isNotEmpty) ?  "User ID: ${Global.userCredentials.id!}" : "N/A",
+                              style: TextStyle(
+                                  color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
+                        ],
+                      ),
+                      const Spacer(),
+                      RotatedBox(
+                        quarterTurns: 2,
+                        child: SizedBox(
+                          height: toSize(20),
+                          width: toSize(20),
+                          child: Image.asset(IconAssets.icBack,
+                              color: theme.colorScheme.onSurface),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 14),
@@ -230,7 +236,7 @@ class _NurseProfileView
               ),
               SizedBox(height: toSize(17)),
               Container(
-                height: toSize(269),
+                height: toSize(240),
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
                     horizontal: toSize(17), vertical: toSize(20)),
@@ -347,29 +353,6 @@ class _NurseProfileView
                                   color: theme.colorScheme.onSurface),
                             ),
                           )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: toSize(5)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: toSize(8)),
-                      child: Divider(
-                          color:
-                              theme.colorScheme.background.withOpacity(0.5)),
-                    ),
-                    SizedBox(height: toSize(5)),
-                    InkWell(
-                      onTap: () {
-                        pushScreen(Pages.signIn, isAllowBack: false);
-                      },
-                      child: Row(
-                        children: [
-                          Text("Sign out",
-                              style: TextStyle(
-                                  color: theme.colorScheme.primary,
-                                  fontSize: toSize(17),
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Rubik')),
                         ],
                       ),
                     ),

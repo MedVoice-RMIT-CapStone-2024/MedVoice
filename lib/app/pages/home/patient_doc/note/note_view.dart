@@ -218,26 +218,6 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
           ],
         ),
       ),
-      // bottomNavigationBar: InkWell(
-      //   onTap: () {
-      //     _controller!.onInitializeEnhancement();
-      //   },
-      //   child: Container(
-      //     width: double.infinity,
-      //     height: toSize(53),
-      //     margin: EdgeInsets.only(
-      //         bottom: toSize(40), left: toSize(10), right: toSize(10)),
-      //     decoration: BoxDecoration(
-      //         color: theme.colorScheme.primary,
-      //         borderRadius: BorderRadius.circular(toSize(10))),
-      //     child: Center(
-      //       child: Text(
-      //         'ENHANCE',
-      //         style: TextStyle(color: theme.colorScheme.onPrimary),
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -406,174 +386,123 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                 _basicContentRow('Gender',
                     _controller!.jsonData?.mPatientGender, true, theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Diagnosis", theme),
-                _expansionTileDiagnosis(theme),
-                _contentLabel("Treatment", theme),
-                _expansionTileTreatment(theme),
-                _contentLabel("Health Vitals", theme),
-                _expansionTileVitals(theme),
+                _contentLabel("Patient's demographics", theme),
+                SizedBox(height: toSize(5)),
+                _overflowContentRow(
+                    'Marital status',
+                    _controller!
+                        .jsonData?.mPatientDemographicInfo?.mMaritalStatus,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Ethnicity',
+                    _controller!.jsonData?.mPatientDemographicInfo?.mEthnicity,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Occupation',
+                    _controller!.jsonData?.mPatientDemographicInfo?.mOccupation,
+                    true,
+                    theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Past medical history", theme),
+                SizedBox(height: toSize(5)),
+                _overflowContentRow(
+                    'Medical history',
+                    _controller!.jsonData?.mPatientPastMedicalHistoryInfo
+                        ?.mMedicalHistory,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Surgical history',
+                    _controller!.jsonData?.mPatientPastMedicalHistoryInfo
+                        ?.mSurgicalHistory,
+                    true,
+                    theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Current medications and drug allergies", theme),
+                SizedBox(height: toSize(5)),
+                _overflowContentRow(
+                    'Drug allergy',
+                    _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
+                        ?.mDrugAllergy,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Prescribed medications',
+                    _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
+                        ?.mPrescribedMedications,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Recently prescribed medications',
+                    _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
+                        ?.mRecentlyPrescribedMedications,
+                    true,
+                    theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Mental state examination", theme),
+                SizedBox(height: toSize(5)),
+                _overflowContentRow(
+                    'Appearance and behavior',
+                    _controller!.jsonData?.mPatientMentalStateExaminationInfo
+                        ?.mAppearanceAndBehaviour,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Speech and thoughts',
+                    _controller!.jsonData?.mPatientMentalStateExaminationInfo
+                        ?.mSpeechAndThoughts,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Mood',
+                    _controller!
+                        .jsonData?.mPatientMentalStateExaminationInfo?.mMood,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Thoughts',
+                    _controller!.jsonData?.mPatientMentalStateExaminationInfo
+                        ?.mThoughts,
+                    true,
+                    theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Physical examination", theme),
+                SizedBox(height: toSize(5)),
+                _overflowContentRow(
+                    'Blood pressure',
+                    _controller!.jsonData?.mPatientPhysicalExaminationInfo
+                        ?.mBloodPressure,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Pulse rate',
+                    _controller!
+                        .jsonData?.mPatientPhysicalExaminationInfo?.mPulseRate,
+                    false,
+                    theme),
+                _overflowContentRow(
+                    'Temperature',
+                    _controller!.jsonData?.mPatientPhysicalExaminationInfo
+                        ?.mTemperature,
+                    true,
+                    theme),
+                SizedBox(height: toSize(10)),
+                _contentLabel("Additional notes", theme),
+                SizedBox(height: toSize(5)),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: toSize(20), vertical: toSize(10)),
+                  child: Text(_controller!.jsonData?.mNote ?? "",
+                      style: const TextStyle(fontFamily: 'Rubik')),
+                )
               ],
             ),
           ),
+          SizedBox(height: toSize(10))
         ],
       ),
-    );
-  }
-
-  Widget _expansionTileVitals(ThemeData theme) {
-    return ExpansionTile(
-      title: Text(
-          'Vital count: ${_controller!.jsonData?.mHealthVitals?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
-      textColor: theme.colorScheme.primary,
-      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
-              minHeight: toSize(110)),
-          child: ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData?.mHealthVitals?.length ?? 0,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Status: ${_controller!.jsonData?.mHealthVitals?[index].mStatus}",
-                        style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
-                      ),
-                      SizedBox(height: toSize(12)),
-                      Text(
-                        "Value: ${_controller!.jsonData?.mHealthVitals?[index].mValue}",
-                        style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
-                      ),
-                      SizedBox(height: toSize(12)),
-                      Text(
-                        "Units: ${_controller!.jsonData?.mHealthVitals?[index].mUnits}",
-                        style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: Divider(
-                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _expansionTileTreatment(ThemeData theme) {
-    return ExpansionTile(
-      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
-      title: Text(
-          'Treatment count: ${_controller!.jsonData?.mMedicalTreatment?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
-      textColor: theme.colorScheme.primary,
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
-              minHeight: toSize(80)),
-          child: ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData?.mMedicalTreatment?.length ?? 0,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Name: ${_controller!.jsonData?.mMedicalTreatment?[index].mName}",
-                        style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
-                      ),
-                      SizedBox(height: toSize(12)),
-                      Text(
-                        "Prescription: ${_controller!.jsonData?.mMedicalTreatment?[index].mPrescription}",
-                        style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontSize: toSize(15)),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: Divider(
-                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _expansionTileDiagnosis(ThemeData theme) {
-    return ExpansionTile(
-      tilePadding: EdgeInsets.symmetric(horizontal: toSize(20)),
-      title: Text(
-          'Diagnosis count: ${_controller!.jsonData?.mMedicalDiagnosis?.length ?? 0}',
-          style: TextStyle(fontSize: toSize(15))),
-      textColor: theme.colorScheme.primary,
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
-              minHeight: toSize(65)),
-          child: ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            itemCount: _controller!.jsonData?.mMedicalDiagnosis?.length ?? 0,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: ListTile(
-                  title: Text(
-                    "Name: ${_controller!.jsonData?.mMedicalDiagnosis?[index].mName}",
-                    style: TextStyle(
-                        fontSize: toSize(15),
-                        color: theme.colorScheme.onSurface),
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-                child: Divider(
-                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 
@@ -588,7 +517,8 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
           Text(label,
               style: TextStyle(
                   color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w700))
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rubik'))
         ]));
   }
 
@@ -604,7 +534,8 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
               Text("$label:",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: theme.colorScheme.onSurface)),
+                      color: theme.colorScheme.onSurface,
+                      fontFamily: 'Rubik')),
               const Spacer(),
               Text(
                   (value is String && value.isNotEmpty)
@@ -614,7 +545,8 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                           : (value is int)
                               ? value.toString()
                               : "N/A",
-                  style: TextStyle(color: theme.colorScheme.onSurface))
+                  style: TextStyle(
+                      color: theme.colorScheme.onSurface, fontFamily: 'Rubik'))
             ],
           ),
         ),
@@ -628,6 +560,49 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
       ],
     );
   }
+
+  Widget _overflowContentRow(
+      String label, dynamic value, bool isLastItem, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding:
+              EdgeInsets.symmetric(horizontal: toSize(20), vertical: toSize(5)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("$label:",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: theme.colorScheme.onSurface,
+                      fontSize: toSize(14),
+                      fontFamily: 'Rubik')),
+              SizedBox(height: toSize(10)),
+              Text(
+                  (value is String && value.isNotEmpty)
+                      ? value
+                      : (value is String && value.isEmpty)
+                          ? "N/A"
+                          : (value is int)
+                              ? value.toString()
+                              : "N/A",
+                  style: TextStyle(
+                      color: theme.colorScheme.onSurface, fontFamily: 'Rubik'))
+            ],
+          ),
+        ),
+        (!isLastItem)
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: toSize(15)),
+                child: Divider(
+                    color: theme.colorScheme.onSurface.withOpacity(0.4)),
+              )
+            : const SizedBox(),
+      ],
+    );
+  }
+
   //
   // Future<File?> generateAndSavePdf() async {
   //   final pdf = pw.Document();

@@ -7,6 +7,8 @@ import 'package:med_voice/domain/entities/ask/ask_request.dart';
 import 'package:med_voice/domain/entities/ask/ask_response.dart';
 import 'package:med_voice/domain/repositories/ask_repository/ask_repository.dart';
 
+import '../../app/utils/global.dart';
+
 class AskRepositoryImpl implements AskRepository {
   static final AskRepositoryImpl _instance = AskRepositoryImpl._internal();
 
@@ -22,7 +24,7 @@ class AskRepositoryImpl implements AskRepository {
 
     try {
       body = await HttpHelper.invokeHttp(
-        Uri.parse(Constants.askEndpoint),
+        Uri.parse(Constants.askEndpoint.replaceAll('{user_id}', Global.userCredentials.id ?? "")),
         RequestType.post,
         headers:  null,
         body: const JsonEncoder().convert(request.toJson()),

@@ -3,8 +3,10 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
 
 import 'package:med_voice/app/pages/onboarding/login/sign_in_controller.dart';
+import 'package:med_voice/app/pages/onboarding/signup/info/info_view.dart';
 import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
+import 'package:med_voice/data/repository_impl/nurse_data_control_repository_impl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common/base_controller.dart';
@@ -13,7 +15,6 @@ import '../../../../common/base_state_view.dart';
 import '../../../assets/image_assets.dart';
 import '../../../utils/pages.dart';
 import '../../../widgets/small_text_field.dart';
-import '../signup/sign_up_view.dart';
 
 class SignInView extends clean.View {
   const SignInView({Key? key}) : super(key: key);
@@ -25,8 +26,9 @@ class SignInView extends clean.View {
 }
 
 class _SignInView extends BaseStateView<SignInView, SignInController> {
-  _SignInView() : super(SignInController());
+  _SignInView() : super(SignInController(NurseDataControlRepositoryImpl()));
   bool obscureText = true;
+  SignInController? _controller;
 
   @override
   bool isInitialAppbar() {
@@ -45,7 +47,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
 
   @override
   Widget body(BuildContext context, BaseController controller) {
-    SignInController _controller = controller as SignInController;
+    _controller = controller as SignInController;
     final theme = Provider.of<ThemeProvider>(context).themeData;
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -54,7 +56,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Form(
-              key: _controller.formKey,
+              key: _controller?.formKey,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: toSize(20)),
                 child: Column(
@@ -92,9 +94,9 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                         fillColor: theme.colorScheme.onPrimary,
                         labelText: "EMAIL ADDRESS",
                         hint: "Enter your email",
-                        validator: _controller.validateEmail,
+                        validator: _controller?.validateEmail,
                         showIconButton: false,
-                        controller: _controller.emailController,
+                        controller: _controller!.emailController,
                       ),
                       SizedBox(height: toSize(5)),
                       SmallTextField(
@@ -116,24 +118,24 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           },
                         ),
                         showIconButton: true,
-                        validator: _controller.validatePassword,
-                        controller: _controller.passwordController,
+                        validator: _controller?.validatePassword,
+                        controller: _controller!.passwordController,
                       ),
-                      SizedBox(height: toSize(13)),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            pushScreen(Pages.reset);
-                          },
-                          child: Text("Forgot password?",
-                              style: TextStyle(
-                                  color: theme.colorScheme.onBackground,
-                                  fontSize: toSize(13),
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Rubik')),
-                        ),
-                      ),
+                      // SizedBox(height: toSize(13)),
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       pushScreen(Pages.reset);
+                      //     },
+                      //     child: Text("Forgot password?",
+                      //         style: TextStyle(
+                      //             color: theme.colorScheme.onBackground,
+                      //             fontSize: toSize(13),
+                      //             fontWeight: FontWeight.w500,
+                      //             fontFamily: 'Rubik')),
+                      //   ),
+                      // ),
                       SizedBox(height: toSize(23)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -141,8 +143,8 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           Expanded(
                             child: InkWell(
                               onTap: (){
-                                if (_controller.submitForm()) {
-                                  pushScreen(Pages.main, isAllowBack: false);
+                                if (_controller!.submitForm()) {
+                                  _controller!.onLogin(_controller!.emailController.text, _controller!.passwordController.text);
                                 }
                               },
                               child: Container(
@@ -162,7 +164,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           SizedBox(width: toSize(15)),
                           InkWell(
                             onTap: () async {
-                              _controller.onLogInThroughBioAuth();
+                              _controller!.onLogInThroughBioAuth();
                             },
                             child: Container(
                                 margin: EdgeInsets.only(right: toSize(4)),
@@ -177,8 +179,9 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                           children: [
                             InkWell(
                               onTap: () {
-                                pushScreen(Pages.signUp,
-                                    arguments: {isFromOnBoardingParam: false});
+                                // pushScreen(Pages.signUp,
+                                //     arguments: {isFromOnBoardingParam: false});
+                                pushScreen(Pages.info, arguments: {isFromOnBoardingParam: false});
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

@@ -26,7 +26,8 @@ class MedicalArchiveView extends clean.View {
 }
 
 class _MedicalArchiveView
-    extends BaseStateView<MedicalArchiveView, MedicalArchiveController> with TickerProviderStateMixin {
+    extends BaseStateView<MedicalArchiveView, MedicalArchiveController>
+    with TickerProviderStateMixin {
   _MedicalArchiveView()
       : super(MedicalArchiveController(AudioRepositoryImpl()));
   MedicalArchiveController? _controller;
@@ -74,7 +75,7 @@ class _MedicalArchiveView
   }
 
   void startCountdown() {
-    Timer(const Duration(seconds: 4), () {
+    Timer(const Duration(milliseconds: 3500), () {
       setState(() {
         showChatBubble = true;
         animationController.forward();
@@ -112,26 +113,28 @@ class _MedicalArchiveView
                 children: [
                   showChatBubble
                       ? AnimatedBuilder(
-                    animation: scaleAnimation,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: scaleAnimation.value,
-                        alignment: Alignment.centerRight,
-                        child: child,
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(toSize(10)),
-                      decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(15)
-                      ),
-                      child: const Text(
-                        'Need an assistant?',
-                        style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: 'Rubik'),
-                      ),
-                    ),
-                  )
+                          animation: scaleAnimation,
+                          builder: (context, child) {
+                            return Transform.scale(
+                              scale: scaleAnimation.value,
+                              alignment: Alignment.centerRight,
+                              child: child,
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(toSize(10)),
+                            decoration: BoxDecoration(
+                                color: theme.colorScheme.primary,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Text(
+                              'Need an assistant?',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'Rubik'),
+                            ),
+                          ),
+                        )
                       : const SizedBox.shrink(),
                   SizedBox(width: toSize(5)),
                   Container(

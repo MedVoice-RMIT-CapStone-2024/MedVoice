@@ -72,27 +72,27 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                 style: TextStyle(
                   color: theme.colorScheme.onBackground, fontFamily: 'Rubik'
                 )),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: toSize(20), vertical: 20),
-                child: Container(
-                    height: toSize(400),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: toSize(15), vertical: toSize(15)),
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: toSize(20), vertical: 20),
+              child: Container(
+                  height: toSize(400),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: toSize(15), vertical: toSize(15)),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
                     child: Text(recordingController!.guideText,
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontFamily: 'Rubik',
                             fontWeight: FontWeight.w500,
-                            fontSize: toSize(18)))),
-              ),
+                            fontSize: toSize(18))),
+                  )),
             ),
             recordingController!.speechEnabled
               ? _buildTimer(theme)

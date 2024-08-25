@@ -1,58 +1,56 @@
-import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_response.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/medical_diagnosis_response.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/medical_treatment_response.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/past_medical_history_response.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/physical_examination_response.dart';
+
+import 'current_med_and_drug_aller_response.dart';
+import 'demographic_response.dart';
+import 'mental_state_examination_response.dart';
 
 class GetLibraryTranscriptJsonResponse {
   String? patientName = '';
   String? patientDob = '';
   String? patientGender = '';
-  List<MedicalDiagnosisResponse>? medicalDiagnosis;
-  List<MedicalTreatmentResponse>? medicalTreatment;
-  List<HealthVitalResponse>? healthVitals;
+  DemographicResponse? patientDemographicResponse;
+  PastMedicalHistoryResponse? patientPastMedicalHistoryResponse;
+  CurrentMedAndDrugAllerResponse? patientCurrentMedAndDrugAllerResponse;
+  MentalStateExaminationResponse? patientMentalStateExaminationResponse;
+  PhysicalExaminationResponse? patientPhysicalExaminationResponse;
+  String? note = '';
   String? message = '';
 
   GetLibraryTranscriptJsonResponse(
       this.patientName,
       this.patientDob,
       this.patientGender,
-      this.medicalDiagnosis,
-      this.medicalTreatment,
-      this.healthVitals,
+      this.patientDemographicResponse,
+      this.patientPastMedicalHistoryResponse,
+      this.patientCurrentMedAndDrugAllerResponse,
+      this.patientMentalStateExaminationResponse,
+      this.patientPhysicalExaminationResponse,
+      this.note,
       this.message);
 
   factory GetLibraryTranscriptJsonResponse.fromJson(Map<String, dynamic> json) {
-    List<MedicalDiagnosisResponse> medicalDiagnosisResponse = [];
-    List<MedicalTreatmentResponse> medicalTreatmentResponse = [];
-    List<HealthVitalResponse> healthVitalResponse = [];
-    if (json['medical_diagnosis'] != null) {
-      List<dynamic> arrData = json['medical_diagnosis'];
-      for (int i = 0; i < arrData.length; i++) {
-        medicalDiagnosisResponse.add(MedicalDiagnosisResponse.fromJson(
-            arrData[i] as Map<String, dynamic>));
-      }
-    }
-    if (json['medical_treatment'] != null) {
-      List<dynamic> arrData = json['medical_treatment'];
-      for (int i = 0; i < arrData.length; i++) {
-        medicalTreatmentResponse.add(MedicalTreatmentResponse.fromJson(
-            arrData[i] as Map<String, dynamic>));
-      }
-    }
-    if (json['health_vital'] != null) {
-      List<dynamic> arrData = json['health_vital'];
-      for (int i = 0; i < arrData.length; i++) {
-        healthVitalResponse.add(HealthVitalResponse.fromJson(
-            arrData[i] as Map<String, dynamic>));
-      }
-    }
     return GetLibraryTranscriptJsonResponse(
-      json['patient_name'],
-      json['patient_dob'],
-      json['patient_gender'],
-      medicalDiagnosisResponse,
-      medicalTreatmentResponse,
-      healthVitalResponse,
-      json['message']
+        json['patient_name'],
+        json['patient_dob'],
+        json['patient_gender'],
+        (json['Demographics_of_patient'] != null)
+            ? DemographicResponse.fromJson(json['Demographics_of_patient'])
+            : null,
+        (json['Past_medical_history'] != null)
+            ? PastMedicalHistoryResponse.fromJson(json['Past_medical_history'])
+            : null,
+        (json['Current_medications_and_drug_allergies'] != null)
+            ? CurrentMedAndDrugAllerResponse.fromJson(json['Current_medications_and_drug_allergies'])
+            : null,
+        (json['Mental_state_examination'] != null)
+            ? MentalStateExaminationResponse.fromJson(json['Mental_state_examination'])
+            : null,
+        (json['Physical_examination'] != null)
+            ? PhysicalExaminationResponse.fromJson(json['Physical_examination'])
+            : null,
+        json['note'],
+        json['message']
     );
   }
 }

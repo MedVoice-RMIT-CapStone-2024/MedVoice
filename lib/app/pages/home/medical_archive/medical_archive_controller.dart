@@ -54,7 +54,17 @@ class MedicalArchiveController extends BaseController {
 
   void onLoadRecordingArchive() {
     showLoadingProgress(loadingContent: 'Fetching medical archive...');
-    _presenter.executeGetRecordingArchive();
+    if (Global.userCredentials.id != null) {
+      if (Global.userCredentials.id!.isNotEmpty) {
+        _presenter.executeGetRecordingArchive(Global.userCredentials.id!);
+      } else {
+        hideLoadingProgress();
+        view.onGeneralError('Failed to fetch user ID');
+      }
+    } else {
+      hideLoadingProgress();
+      view.onGeneralError('Failed to fetch user ID');
+    }
   }
 
   void onChooseRecord(int index) {

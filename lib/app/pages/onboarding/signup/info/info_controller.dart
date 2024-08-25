@@ -107,13 +107,13 @@ class InfoController extends BaseController {
   }
 
   void submitForm() {
-    // showLoadingProgress();
     if (formKey.currentState!.validate()) {
-      Global.registerNurseEmail = emailController.text.toLowerCase();
-      Global.registerNursePassword = passwordController.text;
-      String confirmPassword = confirmPasswordController.text;
-      view.pushScreen(Pages.otpVerification,
-          arguments: {userEmailAddress: Global.registerNurseEmail});
+      Global.userCredentials.email = emailController.text.toLowerCase();
+      Global.userCredentials.password = passwordController.text;
+      view.pushScreen(Pages.otpVerification, arguments: {
+        isFromEmailChange: false,
+        isFromPasswordReset: false,
+      });
     }
   }
 

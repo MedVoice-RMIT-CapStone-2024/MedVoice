@@ -1,26 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:med_voice/app/pages/onboarding/login/sign_in_presenter.dart';
+import 'package:med_voice/domain/entities/nurse/nurse_login_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/base_controller.dart';
+import '../../../../domain/entities/nurse/nurse_login_info.dart';
+import '../../../utils/global.dart';
 import '../../../utils/pages.dart';
 
 
-typedef String? Validator(String? value);
+typedef Validator = String? Function(String? value);
 
 class SignInController extends BaseController {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final SignInPresenter _presenter;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool isAuthenticated = false;
   LocalAuthentication auth = LocalAuthentication();
+  NurseLoginRequest request = NurseLoginRequest.buildDefault();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  SignInController(nurseRepository) : _presenter = SignInPresenter(nurseRepository);
 
   @override
   void onResumed() {}
 
   @override
-  void onListener() {}
+  void onListener() {
+    _presenter.onLoginNurseSucceed = (NurseLoginInfo response) {
+      debugPrint("Login nurse success");
+      Global.userCredentials.id = response.mNurseId.toString();
+      Global.userCredentials.email = emailController.text;
+      Global.userCredentials.password = passwordController.text;
+      hideLoadingProgress();
+      if (response.mDetail != null) {
+        if (response.mDetail!.isNotEmpty) {
+          view.onGeneralError(response.mDetail);
+        }
+      } else {
+        view.pushScreen(Pages.main, isAllowBack: false);
+      }
+    };
+    _presenter.onLoginNurseFailed = (e) {
+      debugPrint("Login nurse failed");
+      hideLoadingProgress();
+      view.onGeneralError('Failed to login $e');
+    };
+    _presenter.onCompleted = () {
+      debugPrint("Login complete");
+    };
+  }
 
   @override
   void firstLoad() {}
@@ -29,20 +61,18 @@ class SignInController extends BaseController {
     if (value == null || value.isEmpty) {
       return 'Email address is required';
     }
-    // Validate email format using regex
     if (!value.contains('@') &&
         !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
       return 'Enter a valid email address';
     }
-    return null; // Return null if validation passes
+    return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
-    // Add additional validation logic for password (e.g., minimum length, strength)
-    return null; // Return null if validation passes
+    return null;
   }
 
   void dispose() {
@@ -52,12 +82,9 @@ class SignInController extends BaseController {
 
   bool submitForm() {
     if (formKey.currentState!.validate()) {
-      // Extract values from controllers and handle submission logic here
       String email = emailController.text;
       String password = passwordController.text;
 
-      // Perform form submission logic (e.g., API call, navigation, etc.)
-      // This is where you handle the submitted data
       debugPrint('Email: $email');
       debugPrint('Password: $password');
       saveCredentials();
@@ -71,7 +98,6 @@ class SignInController extends BaseController {
     await prefs.setString('loginEmail', emailController.text);
     await prefs.setString('loginPassword', passwordController.text);
     refreshUI();
-    view.showPopupWithAction('Email: ${emailController.text} \nPassword: ${passwordController.text}', 'Okay', (){}, 'Credentials saved');
   }
 
   Future<void> fetchCredentials() async {
@@ -86,7 +112,7 @@ class SignInController extends BaseController {
       } else {
         emailController.text = email;
         passwordController.text = password;
-        view.pushScreen(Pages.main, isAllowBack: false);
+        onLogin(emailController.text, passwordController.text);
         refreshUI();
       }
     } else {
@@ -121,5 +147,21 @@ class SignInController extends BaseController {
       view.onGeneralError(
           'Your device does not support authentication!');
     }
+  }
+
+  void onLogin(String email, String password) {
+    showLoadingProgress();
+    request.email = emailController.text;
+    request.password = passwordController.text;
+
+    // TODO: Remove the Global.admin when the app is distributed
+    // if (request.email == Global.adminEmail && request.password == Global.adminPassword){
+    //   hideLoadingProgress();
+    //   view.pushScreen(Pages.main, isAllowBack: false);
+    // } else {
+    //   _presenter.executeLoginNurseAccount(request);
+    // }
+
+    _presenter.executeLoginNurseAccount(request);
   }
 }

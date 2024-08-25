@@ -8,11 +8,18 @@ class NurseRegisterRequest {
 
   NurseRegisterRequest.buildDefault();
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJsonForRegister() {
     return {
       'name': name,
       'email': email,
       'password': password
+    };
+  }
+
+  Map<String, dynamic> toJsonForEdit() {
+    return {
+      'name': name,
+      'email': email,
     };
   }
 }

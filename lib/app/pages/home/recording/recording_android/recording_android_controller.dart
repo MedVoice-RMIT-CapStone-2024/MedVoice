@@ -237,27 +237,10 @@ class RecordingAndroidController extends BaseController {
               guideText = 'Press the button and start speaking';
               resultGuideText = 'Will be filtered from prediction texts.';
         });
-    dataRequest = PostTranscriptRequest('${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
+    dataRequest = PostTranscriptRequest(Global.userCredentials.id, '${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
     recordingName.clear();
     refreshUI();
   }
-
-  // Future<void> cancelRecording() async {
-  //   if (speechServiceController != null) {
-  //     await speechServiceController!.stop();
-  //   }
-  //   final path = await audioRecorder.stop();
-  //   onDelete(path ?? "");
-  //   timer?.cancel();
-  //   recordingName.clear();
-  //   speechEnabled = false;
-  //   isTheSameFile = false;
-  //   isStartingRecording = false;
-  //   recordDuration = 0;
-  //   guideText = 'Press the button and start speaking';
-  //   resultGuideText = 'Will be filtered from prediction texts.';
-  //   refreshUI();
-  // }
 
   void onSaveRecordingToList(String title, int duration, String path) {
     RecordingInfo item = RecordingInfo(

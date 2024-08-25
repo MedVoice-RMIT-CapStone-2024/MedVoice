@@ -12,28 +12,31 @@ import '../../../../common/base_controller.dart';
 import '../../../../common/base_state_view.dart';
 import '../../../assets/icon_assets.dart';
 import '../../../assets/image_assets.dart';
+import '../../../utils/global.dart';
 import '../../../widgets/theme_provider.dart';
 import 'otp_verification_controller.dart';
 
-const userEmailAddress = 'userEmailAddress';
+const isFromEmailChange = 'isFromEmailChange';
+const isFromPasswordReset = 'isFromPasswordReset';
 
 class OtpVerificationView extends clean.View {
-  final String userEmailAddress;
-  const OtpVerificationView({Key? key, required this.userEmailAddress})
+  final bool isFromEmailChange;
+  final bool isFromPasswordReset;
+  const OtpVerificationView({Key? key, required this.isFromEmailChange, required this.isFromPasswordReset})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _OtpVerificationView(userEmailAddress);
+    return _OtpVerificationView(isFromEmailChange, isFromPasswordReset);
   }
 }
 
 class _OtpVerificationView
     extends BaseStateView<OtpVerificationView, OtpVerificationController>
     with SingleTickerProviderStateMixin {
-  _OtpVerificationView(userEmailAddress)
+  _OtpVerificationView(isFromEmailChange, isFromPasswordReset)
       : super(OtpVerificationController(
-            NurseDataControlRepositoryImpl(), userEmailAddress));
+            NurseDataControlRepositoryImpl(), isFromEmailChange, isFromPasswordReset));
 
   OtpVerificationController? _controller;
 
@@ -84,12 +87,16 @@ class _OtpVerificationView
                           ),
                           SizedBox(height: toSize(10)),
                           const Center(
-                            child: Text("Enter the 5-digit OTP code we have sent to:",
+                            child: Text(
+                                "Enter the 5-digit OTP code we have sent to:",
                                 style: TextStyle(fontFamily: 'Rubik')),
                           ),
                           SizedBox(height: toSize(5)),
                           Center(
-                            child: Text(widget.userEmailAddress,
+                            child: Text(
+                                (!widget.isFromEmailChange)
+                                    ? Global.userCredentials.email ?? ""
+                                    : Global.editUserCredentials.email ?? "",
                                 style: TextStyle(
                                     fontFamily: 'Rubik',
                                     fontSize: toSize(16),
@@ -99,14 +106,17 @@ class _OtpVerificationView
                       ),
                     ),
                     SizedBox(height: toSize(30)),
-                    Center(child: _buildTimer(theme, _controller!.otpDuration, false)),
+                    Center(
+                        child: _buildTimer(
+                            theme, _controller!.otpDuration, false)),
                     SizedBox(height: toSize(20)),
                     OtpTextField(
                       numberOfFields: 5,
                       autoFocus: _controller!.isSent,
                       margin: EdgeInsets.symmetric(horizontal: toSize(5)),
                       borderRadius: BorderRadius.circular(toSize(10)),
-                      enabledBorderColor: theme.colorScheme.onSurface.withOpacity(0.6),
+                      enabledBorderColor:
+                          theme.colorScheme.onSurface.withOpacity(0.6),
                       focusedBorderColor: theme.colorScheme.primary,
                       showFieldAsBox: true,
                       fieldHeight: toSize(60),
@@ -116,21 +126,28 @@ class _OtpVerificationView
                       onSubmit: (String verificationCode) {
                         _controller!.otpVerification(verificationCode);
                       },
-                      textStyle: const TextStyle(fontFamily: 'Rubik', fontWeight: FontWeight.w600),
-
+                      textStyle: const TextStyle(
+                          fontFamily: 'Rubik', fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: toSize(20)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Did not receive a code?",
-                            style: TextStyle(fontFamily: 'Rubik', fontSize: toSize(15))),
+                            style: TextStyle(
+                                fontFamily: 'Rubik', fontSize: toSize(15))),
                         SizedBox(width: toSize(5)),
                         InkWell(
                             onTap: () {
                               if (_controller!.isAvailableToClick) {
                                 _controller!.isAvailableToClick = false;
-                                _controller!.sendOtp(widget.userEmailAddress);
+                                if (!widget.isFromEmailChange || widget.isFromPasswordReset) {
+                                  _controller!.sendOtp(
+                                      Global.userCredentials.email ?? "");
+                                } else {
+                                  _controller!.sendOtp(
+                                      Global.editUserCredentials.email ?? "");
+                                }
                                 _controller!.refreshUI();
                               }
                             },
@@ -145,7 +162,8 @@ class _OtpVerificationView
                                 ))),
                         SizedBox(width: toSize(5)),
                         (!_controller!.isAvailableToClick)
-                            ? _buildTimer(theme, _controller!.resendDuration, true)
+                            ? _buildTimer(
+                                theme, _controller!.resendDuration, true)
                             : const SizedBox()
                       ],
                     )

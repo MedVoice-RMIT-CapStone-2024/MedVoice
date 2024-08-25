@@ -1,6 +1,7 @@
 // Creating and storing application's global variables
 
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
 
 import '../../domain/entities/recording_archive/recording_info.dart';
 
@@ -125,8 +126,9 @@ class Global {
 
   static bool isSpeechServiceInitialized = false;
 
-  static String registerNurseEmail = '';
-  static String registerNursePassword = '';
-  static String registerNurseName = '';
-  static String nurseId = "";
+  static NurseRegisterRequest userCredentials = NurseRegisterRequest.buildDefault();
+  static NurseRegisterRequest editUserCredentials = NurseRegisterRequest.buildDefault();
+
+  static String adminEmail = '1@a.com';
+  static String adminPassword = '1';
 }

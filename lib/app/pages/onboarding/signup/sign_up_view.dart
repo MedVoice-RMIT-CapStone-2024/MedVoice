@@ -15,12 +15,10 @@ import '../../../utils/module_utils.dart';
 import '../../../utils/pages.dart';
 import '../../../widgets/small_text_field.dart';
 
-const isFromOnBoardingParam = "isFromOnBoardingParam";
 
 class SignUpView extends clean.View {
-  final bool isFromOnBoarding;
 
-  SignUpView({Key? key, required this.isFromOnBoarding}) : super(key: key);
+  SignUpView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -125,11 +123,7 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                         Center(
                           child: InkWell(
                             onTap: () {
-                              if (widget.isFromOnBoarding) {
-                                pushScreen(Pages.signIn);
-                              } else {
-                                onBack();
-                              }
+                              pushScreen(Pages.signIn);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

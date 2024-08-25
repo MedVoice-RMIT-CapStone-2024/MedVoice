@@ -14,9 +14,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../assets/icon_assets.dart';
 import '../../../../assets/image_assets.dart';
+import '../../../../utils/pages.dart';
+
+const isFromOnBoardingParam = "isFromOnBoardingParam";
 
 class InfoView extends clean.View {
-  InfoView({Key? key}) : super(key: key);
+  final bool isFromOnBoarding;
+  InfoView({Key? key, required this.isFromOnBoarding}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -38,9 +42,17 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
   }
 
   @override
+  bool isHideBackButton() {
+    if(widget.isFromOnBoarding) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
   Widget body(BuildContext context, BaseController controller) {
     InfoController _controller = controller as InfoController;
-    final Size size = MediaQuery.of(context).size;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -168,6 +180,38 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                                       .withOpacity(0.9),
                                   fontSize: toSize(17),
                                   fontFamily: 'Rubik'))),
+                        ),
+                      ),
+                      SizedBox(height: toSize(20)),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            if (widget.isFromOnBoarding) {
+                              pushScreen(Pages.signIn);
+                            } else {
+                              onBack();
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Already registered?",
+                                style: TextStyle(
+                                    color: theme.colorScheme.onBackground,
+                                    fontSize: toSize(15),
+                                    fontFamily: 'Rubik'),
+                              ),
+                              SizedBox(width: toSize(5)),
+                              Text("Log in here.",
+                                  style: TextStyle(
+                                      color: theme.colorScheme.primary,
+                                      fontSize: toSize(15),
+                                      fontFamily: 'Rubik',
+                                      fontWeight: FontWeight.w900))
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: toSize(20))
