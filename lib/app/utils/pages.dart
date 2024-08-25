@@ -17,4 +17,9 @@ class Pages {
   static const String noteArchiveEnhancedDetails = '/enhancedNote';
   static const String chatBot = '/chatBot';
   static const String onBoardingWelcome = '/onBoardingWelcome';
+  static const String otpVerification = '/otpVerification';
+  static const String nurseProfileDetail = '/nurseProfileDetail';
+  static const String changeNurseEmail = '/changeNurseEmail';
+  static const String changeNursePassword = '/changeNursePassword';
+  static const String newPasswordView = '/newPasswordView';
 }

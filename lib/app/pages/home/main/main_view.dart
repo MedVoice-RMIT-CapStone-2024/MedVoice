@@ -53,7 +53,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
       // Adding your Views here, remember to position it the same as the index you assigned below
       const MedicalArchiveView(),
       (Platform.isIOS) ? RecordingView() : const RecordingAndroidView(),
-      NurseProfileView(),
+      const NurseProfileView(),
     ];
     if (await SharedPreferencesHelper().getBoolValue(
         SharedData.APP_FIRST_INSTALL.toString(),
@@ -297,7 +297,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                       _tab(1, "assets/main_assets/ic_voice_recording", "Record",
                           theme, keyNavigation2),
                       _tab(2, "assets/main_assets/ic_nurse_profile", "Profile",
-                          theme, keyNavigation3),
+                          theme, keyNavigation3)
                     ],
                   ),
                 ),

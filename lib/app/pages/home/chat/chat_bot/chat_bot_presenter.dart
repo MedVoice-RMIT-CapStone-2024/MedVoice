@@ -11,7 +11,6 @@ class ChatBotPresenter extends Presenter {
   final AskRepository _askRepository;
   GetAnswerUseCase? _getAnswerUseCase;
 
-  GetAnswerUseCase? getAnswerUseCase;
 
   ChatBotPresenter(this._askRepository) {
     _getAnswerUseCase = GetAnswerUseCase(_askRepository);

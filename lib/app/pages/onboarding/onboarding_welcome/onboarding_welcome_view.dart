@@ -8,7 +8,7 @@ import '../../../../common/base_state_view.dart';
 import '../../../utils/module_utils.dart';
 import '../../../utils/pages.dart';
 import '../../../widgets/theme_provider.dart';
-import '../signup/sign_up_view.dart';
+import '../signup/info/info_view.dart';
 import 'onboarding_welcome_controller.dart';
 
 class OnBoardingWelcomeView extends clean.View {
@@ -138,7 +138,7 @@ class _OnBoardingWelcomeView
             children: [
               InkWell(
                 onTap: () {
-                  pushScreen(Pages.signUp,
+                  pushScreen(Pages.info,
                       arguments: {isFromOnBoardingParam: true});
                 },
                 child: Container(

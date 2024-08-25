@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_presenter.dart';
@@ -52,7 +54,17 @@ class MedicalArchiveController extends BaseController {
 
   void onLoadRecordingArchive() {
     showLoadingProgress(loadingContent: 'Fetching medical archive...');
-    _presenter.executeGetRecordingArchive();
+    if (Global.userCredentials.id != null) {
+      if (Global.userCredentials.id!.isNotEmpty) {
+        _presenter.executeGetRecordingArchive(Global.userCredentials.id!);
+      } else {
+        hideLoadingProgress();
+        view.onGeneralError('Failed to fetch user ID');
+      }
+    } else {
+      hideLoadingProgress();
+      view.onGeneralError('Failed to fetch user ID');
+    }
   }
 
   void onChooseRecord(int index) {
@@ -182,6 +194,12 @@ class MedicalArchiveController extends BaseController {
       currentIndex += group.items!.length;
     }
     return null;
+  }
+
+  void startCountdown() {
+    Timer(const Duration(seconds: 2), () {
+      debugPrint("Testing controller check");
+    });
   }
 }
 

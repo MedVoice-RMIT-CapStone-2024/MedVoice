@@ -10,7 +10,7 @@ import '../../entities/recording/local_recording_entity/recording_upload_info.da
 import '../../entities/recording/recording_archive_info.dart';
 
 abstract class AudioRepository {
-  Future<RecordingArchiveInfo> getAudioArchive();
+  Future<RecordingArchiveInfo> getAudioArchive(String userId);
   Future<bool> uploadAudioFile(RecordingUploadInfo file);
   Future<AudioTranscriptInfo> uploadAudioInfo(UploadRecordingRequest data);
   Future<LibraryTranscriptInfo> uploadLibraryTranscript(PostTranscriptRequest data);

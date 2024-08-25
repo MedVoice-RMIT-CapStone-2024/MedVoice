@@ -37,6 +37,24 @@ class HttpHelper {
     return responseBody;
   }
 
+  static Future<bool?> invokeBoolOnlyHttp(dynamic url, RequestType type,
+      {Map<String, String>? headers, dynamic body}) async {
+    http.Response response;
+    try {
+      response = await _invoke(
+        url,
+        type,
+        headers: getHeaders(headers, url),
+        body: body,
+      );
+    } catch (error) {
+      rethrow;
+    }
+    if (response.body.isEmpty) return null;
+
+    return true;
+  }
+
   /// Invokes an `http` request given.
   /// [url] can either be a `string` or a `Uri`.
   /// The [type] can be any of the [RequestType]s.

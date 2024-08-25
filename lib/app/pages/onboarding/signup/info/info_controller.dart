@@ -1,9 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/pages/onboarding/otp_verification/otp_verification_view.dart';
+import 'package:med_voice/app/pages/onboarding/signup/info/info_presenter.dart';
 import 'package:med_voice/common/base_controller.dart';
+import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
+
+import '../../../../../domain/entities/nurse/nurse_info.dart';
+import '../../../../utils/global.dart';
+import '../../../../utils/pages.dart';
 
 class InfoController extends BaseController {
+  final InfoPresenter _presenter;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -16,11 +23,31 @@ class InfoController extends BaseController {
     PasswordStrength(strength: 0, strengthLabel: 'Weak'),
   );
 
+  InfoController(nurseRepository) : _presenter = InfoPresenter(nurseRepository);
+
   @override
   void onResumed() {}
 
   @override
-  void onListener() {}
+  void onListener() {
+    _presenter.onRegisterNurseSuccess = (NurseInfo response) {
+      debugPrint("Register nurse success! Moving to login view...");
+      hideLoadingProgress();
+      view.showPopupWithAction(
+          'Account successfully created! Welcome ${response.mName} to Medvoice!',
+          'Confirm', () {
+        view.pushScreen(Pages.signIn, isAllowBack: false);
+      });
+    };
+    _presenter.onRegisterNurseFailed = (error) {
+      debugPrint("Error registering nurse");
+      hideLoadingProgress();
+      view.showErrorFromServer("Failed to register this account: $error");
+    };
+    _presenter.onCompleted = () {
+      debugPrint("Register nurse success!");
+    };
+  }
 
   @override
   void firstLoad() {}
@@ -79,18 +106,15 @@ class InfoController extends BaseController {
     return null;
   }
 
-  bool submitForm() {
+  void submitForm() {
     if (formKey.currentState!.validate()) {
-      String email = emailController.text;
-      String password = passwordController.text;
-      String confirmPassword = confirmPasswordController.text;
-
-      print('Email: $email');
-      print('Password: $password');
-      print('Confirm Password: $confirmPassword');
-      return true;
+      Global.userCredentials.email = emailController.text.toLowerCase();
+      Global.userCredentials.password = passwordController.text;
+      view.pushScreen(Pages.otpVerification, arguments: {
+        isFromEmailChange: false,
+        isFromPasswordReset: false,
+      });
     }
-    return false;
   }
 
   void dispose() {

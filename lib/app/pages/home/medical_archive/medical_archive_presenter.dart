@@ -23,8 +23,8 @@ class MedicalArchivePresenter extends Presenter {
     _getRecordingArchiveUseCase?.dispose();
   }
 
-  void executeGetRecordingArchive() => _getRecordingArchiveUseCase?.execute(
-      _GetRecordingArchiveUseCaseObserver(this), null);
+  void executeGetRecordingArchive(String userId) => _getRecordingArchiveUseCase?.execute(
+      _GetRecordingArchiveUseCaseObserver(this), userId);
 }
 
 class _GetRecordingArchiveUseCaseObserver

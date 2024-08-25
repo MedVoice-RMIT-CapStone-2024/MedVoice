@@ -29,4 +29,5 @@ class ImageAssets {
   static const String imgAvatarSample = 'assets/images/img_avatar.png';
   static const String botDark = 'assets/images/bot_dark.png';
   static const String botLight = 'assets/images/bot_light.png';
+  static const String medVoiceCroppedLogo = 'assets/images/medvoice_cropped_logo.png';
 }

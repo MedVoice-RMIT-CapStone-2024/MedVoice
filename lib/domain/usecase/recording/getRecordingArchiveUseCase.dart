@@ -20,7 +20,7 @@ class GetRecordingArchiveUseCase extends UseCase<RecordingArchiveInfo, String?> 
 
     try {
       RecordingArchiveInfo archiveInfo =
-      await _audioRepository.getAudioArchive();
+      await _audioRepository.getAudioArchive(params!);
       controller.add(archiveInfo);
       debugPrint('get archive info successful.');
       controller.close();

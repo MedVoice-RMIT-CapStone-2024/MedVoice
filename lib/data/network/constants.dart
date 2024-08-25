@@ -8,11 +8,11 @@ class Constants {
       'https://api.sampleapis.com/baseball/hitsSingleSeason';
 
   // fetching audio
-  static String audioArchive = "${firstBitUrl}get_audios_from_user/1";
+  static String audioArchive = "${firstBitUrl}get_audios_from_user/{file_id}";
 
   // uploading audio info to backend
   static String uploadAudioInfo =
-      "${firstBitUrl}process_audio_v2?file_extension=m4a&file_id={file_id}";
+      "${firstBitUrl}process_audio_v2/{user_id}?file_extension=m4a&file_id={file_id}";
 
   // post transcript text to backend
   static String uploadLibraryTranscript =
@@ -22,7 +22,17 @@ class Constants {
   static String getLibraryTranscript =
       "${firstBitUrl}get_transcript/{file_id}/{file_extension}";
 
-  static String askEndpoint = "${firstBitUrl}ask";
+  static String askEndpoint = "${firstBitUrl}ask_v2/{user_id}";
+
+  static String createNurseAccount = "${firstBitUrl}nurses/register";
+
+  static String getNurseInformation = "${firstBitUrl}nurses/{nurse_id}";
+
+  static String deleteNurseAccount = "${firstBitUrl}nurses/{nurse_id}";
+
+  static String editNurseInformation = "${firstBitUrl}nurses/{nurse_id}";
+
+  static String loginNurseAccount = "${firstBitUrl}nurses/login";
 }
 
 const successStatusCodeList = [200, 201, 204];

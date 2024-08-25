@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
@@ -24,12 +26,16 @@ class MedicalArchiveView extends clean.View {
 }
 
 class _MedicalArchiveView
-    extends BaseStateView<MedicalArchiveView, MedicalArchiveController> {
+    extends BaseStateView<MedicalArchiveView, MedicalArchiveController>
+    with TickerProviderStateMixin {
   _MedicalArchiveView()
       : super(MedicalArchiveController(AudioRepositoryImpl()));
   MedicalArchiveController? _controller;
+  late AnimationController animationController;
+  late Animation<double> scaleAnimation;
   Map<String, bool> expandedTiles = {};
   bool toggleDeleteLetter = false;
+  bool showChatBubble = false;
 
   @override
   bool isInitialAppbar() {
@@ -53,11 +59,35 @@ class _MedicalArchiveView
 
   @override
   void onStateCreated() {
-    if (_controller != null) {
-      for (var group in _controller!.filteredMappedData) {
-        expandedTiles[group.date] = false;
-      }
-    }
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
+    startCountdown();
+    super.onStateCreated();
+  }
+
+  void startCountdown() {
+    Timer(const Duration(milliseconds: 3500), () {
+      setState(() {
+        showChatBubble = true;
+        animationController.forward();
+      });
+      Timer(const Duration(seconds: 3), () {
+        animationController.reverse().then((_) {
+          setState(() {
+            showChatBubble = false;
+          });
+        });
+      });
+    });
   }
 
   @override
@@ -68,11 +98,68 @@ class _MedicalArchiveView
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: toSize(20)),
-          child: (_controller!.dataLinks != null)
-              ? _recordContent(theme)
-              : _emptyView(theme),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: toSize(20)),
+              child: (_controller!.dataLinks != null)
+                  ? _recordContent(theme)
+                  : _emptyView(theme),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: toSize(35), right: toSize(20)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  showChatBubble
+                      ? AnimatedBuilder(
+                          animation: scaleAnimation,
+                          builder: (context, child) {
+                            return Transform.scale(
+                              scale: scaleAnimation.value,
+                              alignment: Alignment.centerRight,
+                              child: child,
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(toSize(10)),
+                            decoration: BoxDecoration(
+                                color: theme.colorScheme.primary,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Text(
+                              'Need an assistant?',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'Rubik'),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  SizedBox(width: toSize(5)),
+                  Container(
+                    height: toSize(60),
+                    width: toSize(60),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: theme.colorScheme.primary),
+                      boxShadow: [
+                        BoxShadow(
+                            color: theme.colorScheme.primary.withOpacity(0.4),
+                            offset: const Offset(0, 3),
+                            blurRadius: 6)
+                      ],
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          pushScreen(Pages.chatBot);
+                        },
+                        child: Image.asset(IconAssets.icMedvoiceBotLogo)),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -89,12 +176,14 @@ class _MedicalArchiveView
               fontSize: toSize(40),
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.w700,
-          fontFamily: 'Rubik'),
+              fontFamily: 'Rubik'),
         ),
         SizedBox(height: toSize(15)),
         Text("Your recordings and transcripts will appear here.",
             style: TextStyle(
-                fontSize: toSize(17), color: theme.colorScheme.onBackground, fontFamily: 'Rubik')),
+                fontSize: toSize(17),
+                color: theme.colorScheme.onBackground,
+                fontFamily: 'Rubik')),
         SizedBox(height: toSize(20)),
         SizedBox(
             height: MediaQuery.of(context).size.height * 0.65,
@@ -143,7 +232,10 @@ class _MedicalArchiveView
       (_controller != null)
           ? _controller!.reformatDateString(item, true, false)
           : item,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: toSize(18), fontFamily: 'Rubik'),
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: toSize(18),
+          fontFamily: 'Rubik'),
     );
   }
 
@@ -163,7 +255,8 @@ class _MedicalArchiveView
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(IconAssets.icRecordingMicrophone, color: theme.colorScheme.primary),
+            Image.asset(IconAssets.icRecordingMicrophone,
+                color: theme.colorScheme.primary),
             SizedBox(width: toSize(15)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,12 +312,16 @@ class _MedicalArchiveView
                 child: Image.asset(ImageAssets.imgEmptyRecording)),
             SizedBox(height: toSize(16)),
             Text("Voices Library",
-                style:
-                    TextStyle(fontSize: 28, color: theme.colorScheme.primary, fontFamily: 'Rubik')),
-            SizedBox(height: toSize(8)),
+                style: TextStyle(
+                    fontSize: 28,
+                    color: theme.colorScheme.primary,
+                    fontFamily: 'Rubik')),
+            SizedBox(height: toSize(10)),
             Text("Your recordings and transcripts will appear here.",
                 style: TextStyle(
-                    fontSize: 17, color: theme.colorScheme.onBackground, fontFamily: 'Rubik'))
+                    fontSize: 17,
+                    color: theme.colorScheme.onBackground,
+                    fontFamily: 'Rubik'))
           ],
         ),
       ),

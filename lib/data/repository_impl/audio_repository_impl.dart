@@ -5,15 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/storage/v1.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:med_voice/data/network/http_helper.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_info.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/health_vital_response.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/medical_diagnosis_info.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/medical_treatment_response.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/current_med_and_drug_aller_info.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/mental_state_examination_info.dart';
+import 'package:med_voice/domain/entities/recording/library_transcript/physical_examination_info.dart';
 import 'package:med_voice/domain/entities/recording/upload_recording_request.dart';
 import 'package:med_voice/domain/repositories/audio_repository/audio_repository.dart';
 
+import '../../app/utils/global.dart';
 import '../../domain/entities/recording/audio_transcript_info.dart';
 import '../../domain/entities/recording/audio_transcript_response.dart';
+import '../../domain/entities/recording/library_transcript/demographic_info.dart';
 import '../../domain/entities/recording/library_transcript/get_library_transcript_json_info.dart';
 import '../../domain/entities/recording/library_transcript/get_library_transcript_json_response.dart';
 import '../../domain/entities/recording/library_transcript/get_library_transcript_request.dart';
@@ -21,13 +22,11 @@ import '../../domain/entities/recording/library_transcript/get_library_transcrip
 import '../../domain/entities/recording/library_transcript/get_library_transcript_text_response.dart';
 import '../../domain/entities/recording/library_transcript/library_transcript_info.dart';
 import '../../domain/entities/recording/library_transcript/library_transcript_response.dart';
-import '../../domain/entities/recording/library_transcript/medical_diagnosis_response.dart';
-import '../../domain/entities/recording/library_transcript/medical_treatment_info.dart';
+import '../../domain/entities/recording/library_transcript/past_medical_history_info.dart';
 import '../../domain/entities/recording/library_transcript/post_transcript_request.dart';
 import '../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
 import '../../domain/entities/recording/recording_archive_info.dart';
 import '../../domain/entities/recording/recording_archive_response.dart';
-import '../../domain/entities/recording/sentences_response.dart';
 import '../network/constants.dart';
 
 class AudioRepositoryImpl implements AudioRepository {
@@ -38,14 +37,16 @@ class AudioRepositoryImpl implements AudioRepository {
   factory AudioRepositoryImpl() => _instance;
 
   @override
-  Future<RecordingArchiveInfo> getAudioArchive() async {
+  Future<RecordingArchiveInfo> getAudioArchive(String userId) async {
     RecordingArchiveInfo recordingArchiveInfo;
     RecordingArchiveResponse recordingArchiveResponse;
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse(Constants.audioArchive), RequestType.get,
-          headers: null, body: null);
+          Uri.parse(Constants.audioArchive.replaceAll("{file_id}", userId)),
+          RequestType.get,
+          headers: null,
+          body: null);
     } catch (error) {
       debugPrint("Fail to get audio archive list");
       rethrow;
@@ -63,8 +64,8 @@ class AudioRepositoryImpl implements AudioRepository {
   Future<bool> uploadAudioFile(RecordingUploadInfo file) async {
     AuthClient? clientResponse;
 
-    String jsonString = await rootBundle.loadString(
-        'assets/google_api_auth_key/medvoice-2-d3954824e43e.json');
+    String jsonString = await rootBundle
+        .loadString('assets/google_api_auth_key/medvoice-2-d3954824e43e.json');
     Map<String, dynamic> credentials = json.decode(jsonString);
 
     // Authenticate
@@ -107,6 +108,7 @@ class AudioRepositoryImpl implements AudioRepository {
     try {
       body = await HttpHelper.invokeHttp(
         Uri.parse(Constants.uploadAudioInfo
+            .replaceAll('{user_id}', Global.userCredentials.id ?? "")
             .replaceAll("{file_id}", request.fileId ?? "")),
         RequestType.post,
         headers: null,
@@ -120,8 +122,8 @@ class AudioRepositoryImpl implements AudioRepository {
 
     arrAudioTranscriptResponse = AudioTranscriptResponse.fromJson(body);
 
-    arrAudioTranscriptInfo = AudioTranscriptInfo(
-        arrAudioTranscriptResponse.fileId ??= "");
+    arrAudioTranscriptInfo =
+        AudioTranscriptInfo(arrAudioTranscriptResponse.fileId ??= "");
 
     return arrAudioTranscriptInfo;
   }
@@ -136,7 +138,7 @@ class AudioRepositoryImpl implements AudioRepository {
     try {
       body = await HttpHelper.invokeHttp(
           Uri.parse(Constants.uploadLibraryTranscript
-              .replaceAll('{user_id}', '1')
+              .replaceAll('{user_id}', request.fileId ?? "")
               .replaceAll("{file_name}", request.fileName ?? "")),
           RequestType.post,
           headers: null,
@@ -207,47 +209,54 @@ class AudioRepositoryImpl implements AudioRepository {
 
     response = GetLibraryTranscriptJsonResponse.fromJson(body);
 
-    List<MedicalDiagnosisInfo> medicalDiagnosisInfoList = [];
-    if (response.medicalDiagnosis != null) {
-      for (int i = 0; i < response.medicalDiagnosis!.length; i++) {
-        MedicalDiagnosisResponse? medicalDiagnosisResponse =
-            response.medicalDiagnosis![i];
-        medicalDiagnosisInfoList.add(MedicalDiagnosisInfo(
-          medicalDiagnosisResponse.name ??= "",
-        ));
-      }
-    }
-    List<MedicalTreatmentInfo> medicalTreatmentInfoList = [];
-    if (response.medicalTreatment != null) {
-      for (int i = 0; i < response.medicalTreatment!.length; i++) {
-        MedicalTreatmentResponse? medicalTreatmentResponse =
-            response.medicalTreatment![i];
-        medicalTreatmentInfoList.add(MedicalTreatmentInfo(
-          medicalTreatmentResponse.name ??= "",
-          medicalTreatmentResponse.prescription ??= "",
-        ));
-      }
-    }
-    List<HealthVitalInfo> healthVitalInfoList = [];
-    if (response.healthVitals != null) {
-      for (int i = 0; i < response.healthVitals!.length; i++) {
-        HealthVitalResponse? healthVitalResponse = response.healthVitals![i];
-        healthVitalInfoList.add(HealthVitalInfo(
-          healthVitalResponse.status ??= "",
-          healthVitalResponse.value ??= "",
-          healthVitalResponse.units ??= "",
-        ));
-      }
-    }
-
     info = GetLibraryTranscriptJsonInfo(
         response.patientName ?? "",
         response.patientDob ?? "",
         response.patientGender ?? "",
-        medicalDiagnosisInfoList,
-        medicalTreatmentInfoList,
-        healthVitalInfoList,
-        response.message ?? "");
+        response.patientDemographicResponse != null
+            ? DemographicInfo(
+                response.patientDemographicResponse?.maritalStatus ?? "",
+                response.patientDemographicResponse?.ethnicity ?? "",
+                response.patientDemographicResponse?.occupation ?? "")
+            : null,
+        response.patientPastMedicalHistoryResponse != null
+            ? PastMedicalHistoryInfo(
+                response.patientPastMedicalHistoryResponse?.medicalHistory ??
+                    "",
+                response.patientPastMedicalHistoryResponse?.surgicalHistory ??
+                    "")
+            : null,
+        response.patientCurrentMedAndDrugAllerResponse != null
+            ? CurrentMedAndDrugAllerInfo(
+                response.patientCurrentMedAndDrugAllerResponse?.drugAllergy ??
+                    "",
+                response.patientCurrentMedAndDrugAllerResponse
+                        ?.prescribedMedications ??
+                    "",
+                response.patientCurrentMedAndDrugAllerResponse
+                        ?.recentlyPrescribedMedications ??
+                    "")
+            : null,
+        response.patientMentalStateExaminationResponse != null
+            ? MentalStateExaminationInfo(
+                response.patientMentalStateExaminationResponse
+                        ?.appearanceAndBehaviour ??
+                    "",
+                response.patientMentalStateExaminationResponse
+                        ?.speechAndThoughts ??
+                    "",
+                response.patientMentalStateExaminationResponse?.mood ?? "",
+                response.patientMentalStateExaminationResponse?.thoughts ?? "")
+            : null,
+        response.patientPhysicalExaminationResponse != null
+            ? PhysicalExaminationInfo(
+                response.patientPhysicalExaminationResponse?.bloodPressure ??
+                    "",
+                response.patientPhysicalExaminationResponse?.pulseRate ?? "",
+                response.patientPhysicalExaminationResponse?.temperature ?? "")
+            : null,
+        response.note ?? "",
+        response.message);
 
     return info;
   }
