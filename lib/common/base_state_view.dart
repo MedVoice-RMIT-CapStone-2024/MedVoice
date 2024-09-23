@@ -86,6 +86,7 @@ abstract class BaseStateView<Page extends clean.View,
         Duration(milliseconds: builderDelayTime()), () => onStateCreated());
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
     super.initState();
     WidgetsBinding.instance.addObserver(this);
