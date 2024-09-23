@@ -39,79 +39,76 @@ class SmallTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
-    return Container(
-      // margin: EdgeInsets.symmetric(vertical: toSize(5)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-            child: Text(labelText,
-                style: TextStyle(
-                  color: theme.colorScheme.onBackground,
-                  fontSize: toSize(11),
-                  letterSpacing: toSize(1.5),
-                  fontFamily: 'Rubik'
-                )),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+          child: Text(labelText,
+              style: TextStyle(
+                color: theme.colorScheme.onBackground,
+                fontSize: toSize(11),
+                letterSpacing: toSize(1.5),
+                fontFamily: 'Rubik'
+              )),
+        ),
+        TextFormField(
+          onChanged: onChanged,
+          obscureText: obscureText,
+          readOnly: isReadOnly,
+          style: TextStyle(
+            color: theme.colorScheme.onBackground,
+            fontSize: 14,
+            fontFamily: 'Rubik',
+            fontWeight: FontWeight.w500
           ),
-          TextFormField(
-            onChanged: onChanged,
-            obscureText: obscureText,
-            readOnly: isReadOnly,
-            style: TextStyle(
-              color: theme.colorScheme.onBackground,
-              fontSize: 14,
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w500
-            ),
-            decoration: InputDecoration(
-                suffixIcon: Padding(
-                  padding: EdgeInsets.only(right: toSize(8.0)),
-                  child: showIconButton
-                      ? iconButton
-                      : Icon(icon, color: iconColor),
+          decoration: InputDecoration(
+              suffixIcon: Padding(
+                padding: EdgeInsets.only(right: toSize(8.0)),
+                child: showIconButton
+                    ? iconButton
+                    : Icon(icon, color: iconColor),
+              ),
+              fillColor: fillColor,
+              filled: true,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(toSize(10)),
+                borderSide: const BorderSide(color: Colors.black),
+              ),
+              isDense: true,
+              hintText: hint,
+              hintStyle: TextStyle(
+                color: theme.colorScheme.onBackground.withOpacity(0.6),
+                fontSize: 14,
+                fontWeight: FontWeight.w300,
+                fontFamily: 'Rubik'
+              ),
+              errorStyle: TextStyle(
+                color: theme.colorScheme.onSecondary,
+                fontFamily: 'Rubik'
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: theme.colorScheme
+                      .onSecondary,
                 ),
-                fillColor: fillColor,
-                filled: true,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                border: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(toSize(10)),
-                  borderSide: const BorderSide(color: Colors.black),
+                borderRadius:
+                    BorderRadius.circular(toSize(10)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: theme.colorScheme
+                      .onSecondary,
                 ),
-                isDense: true,
-                hintText: hint,
-                hintStyle: TextStyle(
-                  color: theme.colorScheme.onBackground.withOpacity(0.6),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                  fontFamily: 'Rubik'
-                ),
-                errorStyle: TextStyle(
-                  color: theme.colorScheme.onSecondary,
-                  fontFamily: 'Rubik'
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: theme.colorScheme
-                        .onSecondary,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(toSize(10)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: theme.colorScheme
-                        .onSecondary,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(toSize(10)),
-                )),
-            validator: validator,
-            controller: controller,
-          ),
-        ],
-      ),
+                borderRadius:
+                    BorderRadius.circular(toSize(10)),
+              )),
+          validator: validator,
+          controller: controller,
+        ),
+      ],
     );
   }
 }

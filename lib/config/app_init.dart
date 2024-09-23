@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:med_voice/app/widgets/theme.dart';
 import 'package:med_voice/app/widgets/theme_provider.dart';
@@ -14,6 +15,11 @@ import 'app_config.dart';
 Future<Widget> initializeApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   // await initFirebase(appConfig);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   await getAppVersion();
   await getDeviceLang();
   return MyApp(appConfig);

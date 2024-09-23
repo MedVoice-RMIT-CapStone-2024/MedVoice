@@ -101,7 +101,7 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                   borderRadius:
                                       BorderRadius.circular(toSize(15)),
                                   child: QrImageView(
-                                    data: 'testing',
+                                    data: Global.userCredentials.id ?? "N/A",
                                     size: toSize(165),
                                     eyeStyle: QrEyeStyle(
                                         color: theme.colorScheme.primary),

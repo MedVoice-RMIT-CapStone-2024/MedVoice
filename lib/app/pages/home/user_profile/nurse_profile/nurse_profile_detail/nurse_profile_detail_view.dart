@@ -95,36 +95,19 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
                         },
                         child: Row(
                           children: [
-                            Text("Email address",
+                            Text("Change email address",
                                 style: TextStyle(
                                     color: theme.colorScheme.onSurface,
                                     fontSize: toSize(15),
                                     fontFamily: 'Rubik')),
                             const Spacer(),
-                            Flexible(
-                              flex:
-                                  (Global.userCredentials.email != null && Global.userCredentials.email!.isNotEmpty) ? 3 : 0,
-                              child: Text(
-                                  (Global.userCredentials.email != null && Global.userCredentials.email!.isNotEmpty)
-                                      ? Global.userCredentials.email!
-                                      : "N/A",
-                                  style: TextStyle(
-                                      color: theme.colorScheme.onSurface,
-                                      fontSize: toSize(15),
-                                      fontFamily: 'Rubik',
-                                      overflow: TextOverflow.ellipsis)),
-                            ),
-                            SizedBox(width: toSize(7)),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: RotatedBox(
-                                quarterTurns: 2,
-                                child: SizedBox(
-                                  height: toSize(10),
-                                  width: toSize(10),
-                                  child: Image.asset(IconAssets.icBack,
-                                      color: theme.colorScheme.onSurface),
-                                ),
+                            RotatedBox(
+                              quarterTurns: 2,
+                              child: SizedBox(
+                                height: toSize(10),
+                                width: toSize(10),
+                                child: Image.asset(IconAssets.icBack,
+                                    color: theme.colorScheme.onSurface),
                               ),
                             ),
                           ],
