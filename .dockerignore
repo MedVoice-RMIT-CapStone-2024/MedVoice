@@ -1,0 +1,6 @@
+build/
+.android/
+.ios/
+.git/
+.dockerignore
+Dockerfile

@@ -132,7 +132,7 @@ class MedicalArchiveController extends BaseController {
   DisplayArchive extractFileNameAndDate(String url) {
     DisplayArchive extractedItem = DisplayArchive.buildDefault();
 
-    const pattern = r'https:\/\/storage\.googleapis\.com\/medvoice_audio_bucket_phase_2\/audios\/(.*?)patient_(.*?)date_(.*?)fileID_(.*?)(?:\.mp3|\.m4a)';
+    const pattern = r'https:\/\/storage\.googleapis\.com\/medvoice-1\/audios\/(.*?)patient_(.*?)date_(.*?)fileID_(.*?)(?:\.mp3|\.m4a)';
 
     final regExp = RegExp(pattern);
 
