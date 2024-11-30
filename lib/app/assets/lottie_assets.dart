@@ -8,4 +8,9 @@ class LottieAssets {
       'assets/lottie_images/loading_indicator_blue.json';
   static const String loadingDarkTheme =
       'assets/lottie_images/loading_indicator_pink.json';
+  static const String emptyData = 'assets/lottie_images/empty_data_lottie.json';
+  static const String generatingTranscriptDark =
+      'assets/lottie_images/generating_transcript_dark.json';
+  static const String generatingTranscriptLight =
+      "assets/lottie_images/generating_transcript_light.json";
 }
