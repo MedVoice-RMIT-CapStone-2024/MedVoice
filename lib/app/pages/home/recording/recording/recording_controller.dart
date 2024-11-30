@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:med_voice/app/pages/home/recording/recording/recording_presenter.dart';
@@ -21,13 +22,8 @@ import '../../../../utils/global.dart';
 
 class RecordingController extends BaseController {
   final RecordingPresenter _presenter;
-  SpeechToText? speech;
   bool speechEnabled = false;
-  bool speechAvailable = false;
   int recordDuration = 0;
-  String guideText = 'Press the button and start speaking';
-  double confidenceLevel = 1.0;
-  String selectedLocaleId = 'en_US';
   final audioRecorder = Record();
   StreamSubscription<RecordState>? recordSub;
   RecordState recordState = RecordState.stop;
@@ -43,6 +39,17 @@ class RecordingController extends BaseController {
   String pathForDelete = '';
   PostTranscriptRequest? dataRequest;
   UploadRecordingRequest? audioInfoRequest;
+  String currentLocaleId = '';
+  List<LocaleName> localeNames = [];
+  bool hasLibSpeech = false;
+  bool logEvents = false;
+  bool onDevice = false;
+  double minSoundLevel = 50000;
+  double maxSoundLevel = -50000;
+  String lastWords = 'Press the button and start speaking';
+  String lastError = '';
+  String lastStatus = '';
+  final SpeechToText speech = SpeechToText();
 
   RecordingController(audioRepository)
       : _presenter = RecordingPresenter(audioRepository) {
@@ -62,30 +69,13 @@ class RecordingController extends BaseController {
       amplitude = amp;
       refreshUI();
     });
-
-    speech = SpeechToText();
-    _initSpeech();
+    initSpeechState();
   }
 
-  void _initSpeech() async {
-    speechAvailable = await speech!.initialize(
-      onError: errorListener,
-      onStatus: statusListener,
-      options: [SpeechToText.webDoNotAggregate],
-    );
-    hideLoadingProgress();
-    refreshUI();
-  }
-
-  void statusListener(String status) async {
-    debugPrint("status $status");
-    if (status == "done" && speechEnabled) {
-      await startListening();
-    }
-  }
 
   void errorListener(SpeechRecognitionError error) {
     debugPrint(error.errorMsg.toString());
+    view.showErrorFromServer('Library callback error: ${error.errorMsg.toString()}');
   }
 
   @override
@@ -125,112 +115,8 @@ class RecordingController extends BaseController {
     _presenter.onCompleted = () {};
   }
 
-  Future<void> startListening() async {
-    try {
-      if (await audioRecorder.hasPermission()) {
-        if (isTheSameFile == false) {
-          view.showSaveRecordingPopup(
-              'Enter the patient name', 'Save', 'Cancel', () {
-            Navigator.pop(view.context);
-            initializeSpeechLib();
-          }, () {
-            recordingName.clear();
-            Navigator.pop(view.context);
-          }, recordingName);
-        } else {
-          initializeSpeechLib();
-        }
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  Future<void> initializeSpeechLib() async {
-    if (isStartingRecording == false) {
-      final isSupported =
-          await audioRecorder.isEncoderSupported(AudioEncoder.aacLc);
-      debugPrint('${AudioEncoder.aacLc.name} supported: $isSupported');
-      Directory? dir;
-      if (Platform.isIOS) {
-        dir = await getApplicationDocumentsDirectory();
-      } else {
-        dir = Directory('/storage/emulated/0/Download');
-        if (!await dir.exists()) {
-          dir = (await getExternalStorageDirectory());
-        }
-      }
-      await audioRecorder.start(
-          path: '${dir?.path}/${recordingName.text.replaceAll(' ', '-')}.m4a');
-      isStartingRecording = true;
-      isTheSameFile = true;
-    }
-    timer?.cancel();
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      view.setState(() {
-        recordDuration++;
-      });
-    });
-    tempName = recordingName.text.replaceAll(' ', '-');
-
-    await speech!.listen(
-      onResult: onSpeechResult,
-      localeId: selectedLocaleId,
-      listenOptions:
-          SpeechListenOptions(cancelOnError: false, partialResults: true),
-    );
-    speechEnabled = true;
-    refreshUI();
-  }
-
   void onUploadAudioForProcessing(UploadRecordingRequest request) {
     _presenter.executeUploadAudioInfo(request);
-  }
-
-  Future<void> stopListening() async {
-    isTheSameFile = false;
-    isStartingRecording = false;
-    speechEnabled = false;
-    timer?.cancel();
-    final duration = recordDuration;
-    recordDuration = 0;
-    final path = await audioRecorder.stop();
-    await speech!.stop();
-
-    view.showPopupWithAction(
-        'Do you want to use this recording for processing?',
-        'Yes',
-        () {
-          if (path != null) {
-            view.showPopupWithAction(
-                'Recording finished! Kindly wait as audio is now being processed',
-                'okay');
-            audioPath = path;
-            pathForDelete = path;
-          } else {
-            debugPrint('path is empty');
-          }
-          onSaveRecordingToList(tempName, duration, audioPath);
-          dataRequest = PostTranscriptRequest(Global.userCredentials.id,
-              '${recordingName.text.replaceAll(' ', '-')}.m4a', [guideText]);
-          recordingName.clear();
-        },
-        'Processing confirmation',
-        'No',
-        () {
-          onDelete(path ?? "");
-          guideText = 'Press the button and start speaking';
-          recordingName.clear();
-        });
-    refreshUI();
-  }
-
-  void onSpeechResult(SpeechRecognitionResult result) {
-    debugPrint("Speech recognized: ${result.recognizedWords}");
-    view.setState(() {
-      guideText = result.recognizedWords;
-    });
-    debugPrint("guideText updated to: $guideText");
   }
 
   void onSaveRecordingToList(String title, int duration, String path) {
@@ -278,5 +164,167 @@ class RecordingController extends BaseController {
       numberStr = '0$numberStr';
     }
     return numberStr;
+  }
+
+  // TODO: NEW SPEECH TO TEXT INITIALIZER
+
+  Future<void> initSpeechState() async {
+    showLoadingProgress(loadingContent: 'Initializing new speech to text');
+
+    try {
+      var hasSpeech = await speech.initialize(
+        onError: errorListener,
+        onStatus: statusListener,
+        debugLogging: logEvents,
+      );
+      if (hasSpeech) {
+        // Get the list of languages installed on the supporting platform so they
+        // can be displayed in the UI for selection by the user.
+        localeNames = await speech.locales();
+
+        var systemLocale = await speech.systemLocale();
+        currentLocaleId = systemLocale?.localeId ?? '';
+      }
+      hasLibSpeech = hasSpeech;
+      hideLoadingProgress();
+      debugPrint("Initialized success");
+      for (var item in localeNames) {
+        debugPrint("List of locales: ${item.localeId}");
+      }
+      refreshUI();
+    } catch (e) {
+      lastError = 'Speech recognition failed: ${e.toString()}';
+      hasLibSpeech = false;
+      hideLoadingProgress();
+      view.showErrorFromServer('Initialized library failed');
+      refreshUI();
+    }
+  }
+
+  void statusListener(String status) {
+    lastStatus = status;
+    refreshUI();
+  }
+
+  void startNewListening() async {
+    debugPrint("Start listening");
+    lastWords = '';
+    lastError = '';
+    // Note that `listenFor` is the maximum, not the minimum, on some
+    // systems recognition will be stopped before this value is reached.
+    // Similarly `pauseFor` is a maximum not a minimum and may be ignored
+    // on some devices.
+    if (await audioRecorder.hasPermission()) {
+      if (isTheSameFile == false) {
+        view.showSaveRecordingPopup('Enter the patient name', 'Save', 'Cancel',
+            () {
+          Navigator.pop(view.context);
+          initializeNewSpeechLib();
+        }, () {
+          recordingName.clear();
+          Navigator.pop(view.context);
+        }, recordingName);
+      } else {
+        initializeNewSpeechLib();
+      }
+    }
+    refreshUI();
+  }
+
+  Future<void> initializeNewSpeechLib() async {
+    if (isStartingRecording == false) {
+      final isSupported =
+          await audioRecorder.isEncoderSupported(AudioEncoder.aacLc);
+      debugPrint('${AudioEncoder.aacLc.name} supported: $isSupported');
+      Directory? dir;
+      if (Platform.isIOS) {
+        dir = await getApplicationDocumentsDirectory();
+      } else {
+        dir = Directory('/storage/emulated/0/Download');
+        if (!await dir.exists()) {
+          dir = (await getExternalStorageDirectory());
+        }
+      }
+      await audioRecorder.start(
+          path: '${dir?.path}/${recordingName.text.replaceAll(' ', '-')}.m4a');
+      isStartingRecording = true;
+      isTheSameFile = true;
+    }
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      view.setState(() {
+        recordDuration++;
+      });
+    });
+    tempName = recordingName.text.replaceAll(' ', '-');
+
+    final options = SpeechListenOptions(
+      onDevice: onDevice,
+      listenMode: ListenMode.confirmation,
+      cancelOnError: false,
+      partialResults: true,
+      autoPunctuation: true,
+      enableHapticFeedback: true,
+    );
+
+    speech.listen(
+      onResult: resultListener,
+      listenFor: const Duration(hours: 2),
+      pauseFor: const Duration(minutes: 2),
+      localeId: 'en_GB',
+      listenOptions: options,
+    );
+
+    speechEnabled = true;
+    refreshUI();
+  }
+
+  void stopNewListening() async {
+    debugPrint("Stopped listening");
+    isTheSameFile = false;
+    isStartingRecording = false;
+    speechEnabled = false;
+    timer?.cancel();
+    final duration = recordDuration;
+    recordDuration = 0;
+    final path = await audioRecorder.stop();
+    speech.stop();
+    view.showPopupWithAction(
+        'Do you want to use this recording for processing?',
+        'Yes',
+            () {
+          if (path != null) {
+            view.showPopupWithAction(
+                'Recording finished! Kindly wait as audio is now being processed',
+                'okay');
+            audioPath = path;
+            pathForDelete = path;
+          } else {
+            debugPrint('path is empty');
+          }
+          onSaveRecordingToList(tempName, duration, audioPath);
+          dataRequest = PostTranscriptRequest(Global.userCredentials.id,
+              '${recordingName.text.replaceAll(' ', '-')}.m4a', [lastWords]);
+          recordingName.clear();
+        },
+        'Processing confirmation',
+        'No',
+            () {
+          onDelete(path ?? "");
+          lastWords = 'Press the button and start speaking';
+          recordingName.clear();
+        });
+    refreshUI();
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    lastWords = result.recognizedWords;
+    refreshUI();
+  }
+
+  void cancelListening() {
+    debugPrint("Speech cancelled");
+    speech.cancel();
+    refreshUI();
   }
 }
