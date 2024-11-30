@@ -92,10 +92,6 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
             recordingController!.speechEnabled
                 ? _buildTimer(theme)
                 : SizedBox(height: toSize(25)),
-            Text('Error status: ${recordingController?.lastError}'),
-            (recordingController!.speech.isListening)
-                ? const Text("Listening")
-                : const Text("Not listening"),
             Padding(
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
