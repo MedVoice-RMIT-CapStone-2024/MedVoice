@@ -18,13 +18,13 @@ class NoteController extends BaseController {
   GetLibraryTranscriptRequest? libraryTranscriptRequest;
   GetLibraryTranscriptJsonInfo? jsonData;
   GetLibraryTranscriptTextInfo? textData;
-  List<Map<String, dynamic>> extractedData = [];
   AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
   bool doesHaveJsonFile = true;
   bool finishedLoading = false;
   UploadRecordingRequest? request;
   AudioTranscriptInfo? processedData;
+  bool dataIsEmpty = false;
 
   NoteController(this.groupDateInfo, this.audioLink, audioRepository)
       : _presenter = NotePresenter(audioRepository) {
@@ -70,7 +70,8 @@ class NoteController extends BaseController {
       }
     };
     _presenter.onGetLibraryTranscriptJsonFailed = (e) {
-      view.showErrorFromServer(e);
+      dataIsEmpty = true;
+      view.showErrorFromServer('Get library transcript text failed');
       debugPrint("Get library transcript text failed! $e");
       hideLoadingProgress();
     };

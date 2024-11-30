@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
     as clean;
+import 'package:lottie/lottie.dart';
 import 'package:med_voice/app/assets/icon_assets.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_controller.dart';
@@ -13,6 +14,7 @@ import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
+import '../../../../assets/lottie_assets.dart';
 import '../../../../widgets/theme_provider.dart';
 
 const groupDateInfo = 'groupDateInfo';
@@ -80,7 +82,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
             ? _jsonTranscriptContent(theme)
             : _textTranscriptContent(
                 _controller!.textData!, widget.groupDateInfo, theme)
-        : const SizedBox();
+        : _emptyView(theme);
   }
 
   Widget _textTranscriptContent(GetLibraryTranscriptTextInfo textData,
@@ -506,20 +508,152 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
     );
   }
 
-  Widget _contentLabel(String label, ThemeData theme) {
+  Widget _emptyView(ThemeData theme) {
+    bool isDarkMode = theme.brightness == Brightness.dark;
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              SizedBox(
+                height: toSize(270),
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: toSize(60)),
+                    Text("Replay audio",
+                        style:
+                            TextStyle(color: theme.colorScheme.onBackground)),
+                    SizedBox(height: toSize(20)),
+                    InkWell(
+                      onTap: () {
+                        if (!_controller!.isPlaying) {
+                          _controller!.player.setUrl(widget.audioLink);
+                          _controller!.player.play();
+                        } else {
+                          _controller!.player.stop();
+                        }
+                        _controller!.isPlaying = !_controller!.isPlaying;
+                        _controller!.refreshUI();
+                      },
+                      child: Container(
+                        height: toSize(45),
+                        width: toSize(45),
+                        decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: _controller!.isPlaying
+                            ? Icon(
+                                Icons.pause,
+                                color: theme.colorScheme.background,
+                              )
+                            : Icon(
+                                Icons.play_arrow,
+                                color: theme.colorScheme.background,
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: toSize(50), left: toSize(23), right: toSize(23)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            onBack();
+                          },
+                          child: Container(
+                              height: toSize(34),
+                              width: toSize(34),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: theme.colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                      color: theme.colorScheme.surface
+                                          .withOpacity(0.7))),
+                              child: Image.asset(IconAssets.icBack,
+                                  color: theme.colorScheme.onPrimary)),
+                        ),
+                        const Spacer(),
+
+                        // Temporary disabling the PDF feature
+
+                        // InkWell(
+                        //   onTap: () async {
+                        //     await PdfGeneratedView.generate(_controller!.jsonData!, context, widget.enhancedGroupDateInfoParam.patientName, widget.enhancedGroupDateInfoParam);
+                        //   },
+                        //   child: Image.asset(IconAssets.icPdfFilled,
+                        //       color: theme.colorScheme.primary,
+                        //       height: toSize(34),
+                        //       width: toSize(34)),
+                        // ),
+                      ],
+                    ),
+                    SizedBox(height: toSize(150)),
+                    Container(
+                      height: toSize(27),
+                      width: toSize(90),
+                      decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                          border: Border.all(
+                              color:
+                                  theme.colorScheme.surface.withOpacity(0.7)),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Center(
+                          child: Text(
+                              _controller!.convertDateTime(
+                                  widget.groupDateInfo.dateCreated),
+                              style: TextStyle(
+                                  fontSize: toSize(12),
+                                  color: theme.colorScheme.onPrimary,
+                                  fontWeight: FontWeight.w700))),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          _contentLabel("Generating transcript . . .", theme, isCenter: true),
+          (isDarkMode)
+              ? Lottie.asset(LottieAssets.generatingTranscriptDark,
+                  height: toSize(300))
+              : Lottie.asset(LottieAssets.generatingTranscriptLight,
+                  height: toSize(300))
+        ],
+      ),
+    );
+  }
+
+  Widget _contentLabel(String label, ThemeData theme, {bool? isCenter}) {
     return Container(
         width: double.infinity,
         height: toSize(50),
         color: theme.colorScheme.surface,
         padding:
             EdgeInsets.symmetric(horizontal: toSize(20), vertical: toSize(7)),
-        child: Row(children: [
-          Text(label,
-              style: TextStyle(
+        child: Row(
+            mainAxisAlignment: (isCenter == null || isCenter == false)
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.center,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w700,
-                  fontFamily: 'Rubik'))
-        ]));
+                  fontFamily: 'Rubik',
+                ),
+              )
+            ]));
   }
 
   Widget _basicContentRow(

@@ -65,7 +65,7 @@ class AudioRepositoryImpl implements AudioRepository {
     AuthClient? clientResponse;
 
     String jsonString = await rootBundle
-        .loadString('assets/google_api_auth_key/medvoice-2-d3954824e43e.json');
+        .loadString('assets/google_api_auth_key/focused-premise-442517-e2-1255c905786b.json');
     Map<String, dynamic> credentials = json.decode(jsonString);
 
     // Authenticate

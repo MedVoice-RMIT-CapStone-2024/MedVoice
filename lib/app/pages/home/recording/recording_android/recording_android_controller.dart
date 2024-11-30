@@ -237,8 +237,6 @@ class RecordingAndroidController extends BaseController {
               guideText = 'Press the button and start speaking';
               resultGuideText = 'Will be filtered from prediction texts.';
         });
-    dataRequest = PostTranscriptRequest(Global.userCredentials.id, '${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
-    recordingName.clear();
     refreshUI();
   }
 
@@ -262,6 +260,9 @@ class RecordingAndroidController extends BaseController {
   }
 
   void onUploadLibraryTranscript() {
+    showLoadingProgress(loadingContent: 'Uploading library transcript');
+    dataRequest = PostTranscriptRequest(Global.userCredentials.id, '${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
+    recordingName.clear();
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
 

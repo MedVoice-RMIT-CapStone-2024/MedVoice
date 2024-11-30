@@ -39,7 +39,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
 
   @override
   bool isHideBackButton() {
-    return true;
+    return false;
   }
 
   @override
@@ -67,11 +67,6 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: toSize(10)),
-            Text(
-                "Confidence level: ${recordingController!.confidenceLevel * 100}%",
-                style: TextStyle(
-                  color: theme.colorScheme.onBackground, fontFamily: 'Rubik'
-                )),
             Padding(
               padding:
                   EdgeInsets.symmetric(horizontal: toSize(20), vertical: 20),
@@ -86,7 +81,7 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                       horizontal: toSize(15), vertical: toSize(15)),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: Text(recordingController!.guideText,
+                    child: Text(recordingController!.lastWords,
                         style: TextStyle(
                             color: theme.colorScheme.onSurface,
                             fontFamily: 'Rubik',
@@ -95,8 +90,12 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                   )),
             ),
             recordingController!.speechEnabled
-              ? _buildTimer(theme)
-              : SizedBox(height: toSize(25)),
+                ? _buildTimer(theme)
+                : SizedBox(height: toSize(25)),
+            Text('Error status: ${recordingController?.lastError}'),
+            (recordingController!.speech.isListening)
+                ? const Text("Listening")
+                : const Text("Not listening"),
             Padding(
               padding: EdgeInsets.only(bottom: toSize(110), top: toSize(30)),
               child: AvatarGlow(
@@ -108,17 +107,16 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
                 child: InkWell(
                     onTap: () {
                       if (!recordingController!.speechEnabled) {
-                        recordingController!.startListening();
+                        recordingController!.startNewListening();
                       } else {
-                        recordingController!.stopListening();
+                        recordingController!.stopNewListening();
                       }
                     },
                     child: Container(
                         height: toSize(80),
                         width: toSize(80),
                         decoration: BoxDecoration(
-                            color:
-                            theme.colorScheme.primary,
+                            color: theme.colorScheme.primary,
                             borderRadius: BorderRadius.circular(50)),
                         child: Icon(
                             recordingController!.speechEnabled

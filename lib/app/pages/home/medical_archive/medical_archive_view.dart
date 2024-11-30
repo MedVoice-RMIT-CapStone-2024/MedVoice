@@ -82,9 +82,8 @@ class _MedicalArchiveView
       });
       Timer(const Duration(seconds: 3), () {
         animationController.reverse().then((_) {
-          setState(() {
-            showChatBubble = false;
-          });
+          showChatBubble = false;
+          _controller!.refreshUI();
         });
       });
     });
