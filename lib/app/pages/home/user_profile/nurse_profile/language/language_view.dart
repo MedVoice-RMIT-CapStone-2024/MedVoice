@@ -73,7 +73,7 @@ class _LanguageView extends BaseStateView<LanguageView, LanguageController> {
                         Global.mLanguageConfig.mLang =
                             await SharedPreferencesHelper().getStringValue(
                                 SharedData.APP_LANGUAGE.toString(),
-                                defaultValue: "en");
+                                defaultValue: "vi");
                         restartApp();
                       }, toText("languageChangeTitle"),
                           toText("languageChangeCancel"), () {});
@@ -107,7 +107,7 @@ class _LanguageView extends BaseStateView<LanguageView, LanguageController> {
                         Global.mLanguageConfig.mLang =
                             await SharedPreferencesHelper().getStringValue(
                                 SharedData.APP_LANGUAGE.toString(),
-                                defaultValue: "en");
+                                defaultValue: "vi");
                         restartApp();
                       }, toText("languageChangeTitle"),
                           toText("languageChangeCancel"), () {});
