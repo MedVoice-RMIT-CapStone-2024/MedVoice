@@ -55,12 +55,12 @@ class StartupController extends BaseController {
         defaultValue: true);
 
     if (firstInstallApp) {
-      Global.mLanguageConfig.mLang = "en";
+      Global.mLanguageConfig.mLang = "vi";
       SharedPreferencesHelper()
-          .setStringValue(SharedData.APP_LANGUAGE.toString(), "en");
+          .setStringValue(SharedData.APP_LANGUAGE.toString(), "vi");
     } else {
       Global.mLanguageConfig.mLang = await SharedPreferencesHelper()
-          .getStringValue(SharedData.APP_LANGUAGE.toString(), defaultValue: "en");
+          .getStringValue(SharedData.APP_LANGUAGE.toString(), defaultValue: "vi");
     }
     if (Global.mLanguageConfig.mLang == "en") {
       String data = await DefaultAssetBundle.of(view.context)
