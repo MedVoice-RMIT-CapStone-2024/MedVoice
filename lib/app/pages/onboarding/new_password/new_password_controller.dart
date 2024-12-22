@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 
 import '../../../../domain/entities/nurse/nurse_info.dart';
@@ -13,7 +14,7 @@ class NewPasswordController extends BaseController {
   ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
   ValueNotifier<RetypePasswordStrength> passwordStrengthNotifier =
       ValueNotifier<RetypePasswordStrength>(
-    RetypePasswordStrength(strength: 0, strengthLabel: 'Weak'),
+    RetypePasswordStrength(strength: 0, strengthLabel: toText("infoWeakLevel")),
   );
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -29,7 +30,7 @@ class NewPasswordController extends BaseController {
       hideLoadingProgress();
       debugPrint("Change nurse password success");
       view.showPopupWithAction(
-          'Password successfully changed!', 'Return to login', () {
+          toText("newPasswordControllerConfirmChange"), toText("newPasswordControllerReturnToLogin"), () {
         view.pushScreen(Pages.signIn);
       });
     };
@@ -49,24 +50,24 @@ class NewPasswordController extends BaseController {
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return toText("changeNursePasswordRequired");
     }
     return null;
   }
 
   String? validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
+      return toText("changeNursePasswordConfirm");
     }
     if (value != passwordController.text) {
-      return 'Passwords do not match';
+      return toText("changeNursePasswordNotMatch");
     }
     return null;
   }
 
   void updatePasswordStrength(String password) {
     double strength = 0;
-    String strengthLabel = 'Weak';
+    String strengthLabel = toText("infoWeakLevel");
 
     if (RegExp(r'[A-Z]').hasMatch(password)) strength += 0.2;
     if (RegExp(r'[a-z]').hasMatch(password)) strength += 0.2;
@@ -75,11 +76,11 @@ class NewPasswordController extends BaseController {
     if (password.length >= 8) strength += 0.2;
 
     if (strength < 0.3) {
-      strengthLabel = 'Weak';
+      strengthLabel = toText("infoWeakLevel");
     } else if (strength < 0.7) {
-      strengthLabel = 'Good';
+      strengthLabel = toText("infoGoodLevel");
     } else {
-      strengthLabel = 'Strong';
+      strengthLabel = toText("infoStrongLevel");
     }
 
     passwordStrengthNotifier.value = RetypePasswordStrength(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_presenter.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/domain/entities/nurse/nurse_info.dart';
 import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,7 +60,7 @@ class NurseProfileController extends BaseController {
         'Email: ${emailController.text} \nPassword: ${passwordController.text}',
         'Okay',
         () {},
-        'Credentials saved');
+        toText("nurseProfileCredentialsLinked"));
     refreshUI();
     saveBioConfig();
   }
@@ -78,18 +79,18 @@ class NurseProfileController extends BaseController {
 
   void onTurningOnBioAuth() {
     view.showPopupWithAction(
-        'Enable Biometric Authentication for this account?', 'Ok', () {
+        toText("nurseProfileEnableFaceID"), 'Ok', () {
       fetchCredentials();
       refreshUI();
-    }, 'Enable Bio Authentication', 'Cancel', () {});
+    }, toText("nurseProfileEnableFaceIDConfirmation"), toText("nurseProfileEnableFaceIDCancel"), () {});
   }
 
   void onTurningOffBioAuth() {
     view.showPopupWithAction(
-        'Disable Biometric Authentication for this account?', 'Ok', () {
+        toText("nurseProfileDisableFaceID"), 'Ok', () {
       resetBioCredentials();
       refreshUI();
-    }, 'Disable Bio Authentication', 'Cancel', () {});
+    }, toText("nurseProfileDisableFaceIDConfirmation"), toText("nurseProfileEnableFaceIDCancel"), () {});
   }
 
   Future<void> saveBioConfig() async {
@@ -119,7 +120,7 @@ class NurseProfileController extends BaseController {
   }
 
   void onLoadNurseInfo() {
-    showLoadingProgress(loadingContent: 'Fetching nurse info');
+    showLoadingProgress(loadingContent: toText("showLoadingFetchingNurseInfo"));
     NurseRegisterRequest request = NurseRegisterRequest.buildDefault();
     request.id = Global.userCredentials.id.toString();
     debugPrint("Request id: ${request.id}");

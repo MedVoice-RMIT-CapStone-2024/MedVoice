@@ -180,7 +180,7 @@ class AudioRepositoryImpl implements AudioRepository {
 
     response = GetLibraryTranscriptTextResponse.fromJson(body);
     info = GetLibraryTranscriptTextInfo(
-        response.transcript ?? "", response.message ?? "");
+        utf8.decode(response.transcript?.runes.toList() ?? []), response.message ?? "");
 
     return info;
   }
@@ -210,53 +210,47 @@ class AudioRepositoryImpl implements AudioRepository {
     response = GetLibraryTranscriptJsonResponse.fromJson(body);
 
     info = GetLibraryTranscriptJsonInfo(
-        response.patientName ?? "",
-        response.patientDob ?? "",
-        response.patientGender ?? "",
+        utf8.decode(response.patientName?.runes.toList() ?? []),
+        utf8.decode(response.patientDob?.runes.toList() ?? []),
+        utf8.decode(response.patientGender?.runes.toList() ?? []),
         response.patientDemographicResponse != null
             ? DemographicInfo(
-                response.patientDemographicResponse?.maritalStatus ?? "",
-                response.patientDemographicResponse?.ethnicity ?? "",
-                response.patientDemographicResponse?.occupation ?? "")
+            utf8.decode(response.patientDemographicResponse?.maritalStatus?.runes.toList() ?? []),
+            utf8.decode(response.patientDemographicResponse?.ethnicity?.runes.toList() ?? []),
+            utf8.decode(response.patientDemographicResponse?.occupation?.runes.toList() ?? [])
+        )
             : null,
         response.patientPastMedicalHistoryResponse != null
             ? PastMedicalHistoryInfo(
-                response.patientPastMedicalHistoryResponse?.medicalHistory ??
-                    "",
-                response.patientPastMedicalHistoryResponse?.surgicalHistory ??
-                    "")
+            utf8.decode(response.patientPastMedicalHistoryResponse?.medicalHistory?.runes.toList() ?? []),
+            utf8.decode(response.patientPastMedicalHistoryResponse?.surgicalHistory?.runes.toList() ?? [])
+        )
             : null,
         response.patientCurrentMedAndDrugAllerResponse != null
             ? CurrentMedAndDrugAllerInfo(
-                response.patientCurrentMedAndDrugAllerResponse?.drugAllergy ??
-                    "",
-                response.patientCurrentMedAndDrugAllerResponse
-                        ?.prescribedMedications ??
-                    "",
-                response.patientCurrentMedAndDrugAllerResponse
-                        ?.recentlyPrescribedMedications ??
-                    "")
+            utf8.decode(response.patientCurrentMedAndDrugAllerResponse?.drugAllergy?.runes.toList() ?? []),
+            utf8.decode(response.patientCurrentMedAndDrugAllerResponse?.prescribedMedications?.runes.toList() ?? []),
+            utf8.decode(response.patientCurrentMedAndDrugAllerResponse?.recentlyPrescribedMedications?.runes.toList() ?? [])
+        )
             : null,
         response.patientMentalStateExaminationResponse != null
             ? MentalStateExaminationInfo(
-                response.patientMentalStateExaminationResponse
-                        ?.appearanceAndBehaviour ??
-                    "",
-                response.patientMentalStateExaminationResponse
-                        ?.speechAndThoughts ??
-                    "",
-                response.patientMentalStateExaminationResponse?.mood ?? "",
-                response.patientMentalStateExaminationResponse?.thoughts ?? "")
+            utf8.decode(response.patientMentalStateExaminationResponse?.appearanceAndBehaviour?.runes.toList() ?? []),
+            utf8.decode(response.patientMentalStateExaminationResponse?.speechAndThoughts?.runes.toList() ?? []),
+            utf8.decode(response.patientMentalStateExaminationResponse?.mood?.runes.toList() ?? []),
+            utf8.decode(response.patientMentalStateExaminationResponse?.thoughts?.runes.toList() ?? [])
+        )
             : null,
         response.patientPhysicalExaminationResponse != null
             ? PhysicalExaminationInfo(
-                response.patientPhysicalExaminationResponse?.bloodPressure ??
-                    "",
-                response.patientPhysicalExaminationResponse?.pulseRate ?? "",
-                response.patientPhysicalExaminationResponse?.temperature ?? "")
+            utf8.decode(response.patientPhysicalExaminationResponse?.bloodPressure?.runes.toList() ?? []),
+            utf8.decode(response.patientPhysicalExaminationResponse?.pulseRate?.runes.toList() ?? []),
+            utf8.decode(response.patientPhysicalExaminationResponse?.temperature?.runes.toList() ?? [])
+        )
             : null,
-        response.note ?? "",
-        response.message);
+        utf8.decode(response.note?.runes.toList() ?? []),
+        utf8.decode(response.message?.runes.toList() ?? [])
+    );
 
     return info;
   }

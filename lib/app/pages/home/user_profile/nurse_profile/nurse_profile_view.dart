@@ -24,7 +24,8 @@ class NurseProfileView extends clean.View {
 
 class _NurseProfileView
     extends BaseStateView<NurseProfileView, NurseProfileController> {
-  _NurseProfileView() : super(NurseProfileController(NurseDataControlRepositoryImpl()));
+  _NurseProfileView()
+      : super(NurseProfileController(NurseDataControlRepositoryImpl()));
 
   ThemeData? theme;
 
@@ -35,7 +36,7 @@ class _NurseProfileView
 
   @override
   String appBarTitle() {
-    return "Profile";
+    return toText("nurseProfileProfile");
   }
 
   @override
@@ -46,28 +47,6 @@ class _NurseProfileView
   @override
   bool isShowFeedbackFeature() {
     return true;
-  }
-
-  @override
-  List<Widget>? rightMenu() {
-    theme = Provider.of<ThemeProvider>(context).themeData;
-    return [
-      Padding(
-        padding: EdgeInsets.only(right: toSize(20)),
-        child: Consumer<ThemeProvider>(
-          builder: (context, themeProvider, child) {
-            return InkWell(
-              onTap: () {
-                themeProvider.toggleTheme();
-              },
-              child: theme?.brightness == Brightness.dark
-                  ? Icon(Icons.light_mode_outlined, size: toSize(25))
-                  : Icon(Icons.dark_mode_outlined, size: toSize(25)),
-            );
-          },
-        ),
-      )
-    ];
   }
 
   @override
@@ -84,7 +63,7 @@ class _NurseProfileView
             children: [
               SizedBox(height: toSize(23)),
               InkWell(
-                onTap: (){
+                onTap: () {
                   pushScreen(Pages.nurseProfileDetail);
                 },
                 child: Container(
@@ -108,13 +87,25 @@ class _NurseProfileView
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text((Global.userCredentials.email != null && Global.userCredentials.email!.isNotEmpty) ?  Global.userCredentials.email! : "N/A",
+                          Text(
+                              (Global.userCredentials.email != null &&
+                                      Global.userCredentials.email!.isNotEmpty)
+                                  ? Global.userCredentials.email!
+                                  : "N/A",
                               style: TextStyle(
-                                  color: theme.colorScheme.onSurface, fontFamily: 'Rubik', fontSize: toSize(17), fontWeight: FontWeight.w500)),
+                                  color: theme.colorScheme.onSurface,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: toSize(17),
+                                  fontWeight: FontWeight.w500)),
                           const Spacer(),
-                          Text((Global.userCredentials.id != null && Global.userCredentials.id!.isNotEmpty) ?  "User ID: ${Global.userCredentials.id!}" : "N/A",
+                          Text(
+                              (Global.userCredentials.id != null &&
+                                      Global.userCredentials.id!.isNotEmpty)
+                                  ? "User ID: ${Global.userCredentials.id!}"
+                                  : "N/A",
                               style: TextStyle(
-                                  color: theme.colorScheme.onSurface, fontFamily: 'Rubik')),
+                                  color: theme.colorScheme.onSurface,
+                                  fontFamily: 'Montserrat')),
                         ],
                       ),
                       const Spacer(),
@@ -146,11 +137,11 @@ class _NurseProfileView
                   },
                   child: Row(
                     children: [
-                      Text("QR Code",
+                      Text(toText("nurseProfileQRCode"),
                           style: TextStyle(
                               color: theme.colorScheme.onSurface,
                               fontSize: toSize(17),
-                              fontFamily: 'Rubik')),
+                              fontFamily: 'Montserrat')),
                       const Spacer(),
                       RotatedBox(
                         quarterTurns: 2,
@@ -179,11 +170,11 @@ class _NurseProfileView
                   children: [
                     Row(
                       children: [
-                        Text("Dark Mode",
+                        Text(toText("nurseProfileDarkMode"),
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
                                 fontSize: toSize(17),
-                                fontFamily: 'Rubik')),
+                                fontFamily: 'Montserrat')),
                         const Spacer(),
                         Consumer<ThemeProvider>(
                           builder: (context, themeProvider, child) {
@@ -204,17 +195,16 @@ class _NurseProfileView
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                       child: Divider(
-                          color:
-                          theme.colorScheme.background.withOpacity(0.5)),
+                          color: theme.colorScheme.background.withOpacity(0.5)),
                     ),
                     SizedBox(height: toSize(5)),
                     Row(
                       children: [
-                        Text("Biometric Auth",
+                        Text(toText("nurseProfileBioAuth"),
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
                                 fontSize: toSize(17),
-                                fontFamily: 'Rubik')),
+                                fontFamily: 'Montserrat')),
                         const Spacer(),
                         SizedBox(
                           height: toSize(10),
@@ -252,11 +242,11 @@ class _NurseProfileView
                       },
                       child: Row(
                         children: [
-                          Text("Assist Bot",
+                          Text(toText("nurseProfileAssistBot"),
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17),
-                                  fontFamily: 'Rubik')),
+                                  fontFamily: 'Montserrat')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
@@ -274,21 +264,21 @@ class _NurseProfileView
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                       child: Divider(
-                          color:
-                              theme.colorScheme.background.withOpacity(0.5)),
+                          color: theme.colorScheme.background.withOpacity(0.5)),
                     ),
                     SizedBox(height: toSize(5)),
                     Row(
                       children: [
-                        Text("Version",
+                        Text(toText("nurseProfileVersion"),
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
                                 fontSize: toSize(17),
-                                fontFamily: 'Rubik')),
+                                fontFamily: 'Montserrat')),
                         const Spacer(),
                         Text(
-                          "1.0.0",
-                          style: TextStyle(fontSize: toSize(17), fontFamily: 'Rubik'),
+                          "2.0.0",
+                          style: TextStyle(
+                              fontSize: toSize(17), fontFamily: 'Montserrat'),
                         )
                       ],
                     ),
@@ -296,8 +286,7 @@ class _NurseProfileView
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                       child: Divider(
-                          color:
-                              theme.colorScheme.background.withOpacity(0.5)),
+                          color: theme.colorScheme.background.withOpacity(0.5)),
                     ),
                     SizedBox(height: toSize(5)),
                     InkWell(
@@ -306,11 +295,11 @@ class _NurseProfileView
                       },
                       child: Row(
                         children: [
-                          Text("Terms of Service",
+                          Text(toText("nurseProfileTermsOfService"),
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17),
-                                  fontFamily: 'Rubik')),
+                                  fontFamily: 'Montserrat')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,
@@ -328,8 +317,7 @@ class _NurseProfileView
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: toSize(8)),
                       child: Divider(
-                          color:
-                              theme.colorScheme.background.withOpacity(0.5)),
+                          color: theme.colorScheme.background.withOpacity(0.5)),
                     ),
                     SizedBox(height: toSize(5)),
                     InkWell(
@@ -338,11 +326,11 @@ class _NurseProfileView
                       },
                       child: Row(
                         children: [
-                          Text("Privacy Policy",
+                          Text(toText("nurseProfilePrivacyPolicy"),
                               style: TextStyle(
                                   color: theme.colorScheme.onSurface,
                                   fontSize: toSize(17),
-                                  fontFamily: 'Rubik')),
+                                  fontFamily: 'Montserrat')),
                           const Spacer(),
                           RotatedBox(
                             quarterTurns: 2,

@@ -10,7 +10,7 @@ import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/common/base_state_view.dart';
 
 class NurseNoteView extends clean.View {
-  NurseNoteView({Key? key}) : super(key: key);
+  const NurseNoteView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -73,9 +73,9 @@ class _NurseNoteViewState
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _items.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0, top: 20.0),
-                    child: const Center(child: CircularProgressIndicator()),
+                ? const Padding(
+                    padding: EdgeInsets.only(bottom: 20.0, top: 20.0),
+                    child: Center(child: CircularProgressIndicator()),
                   )
                 : ListView.builder(
                     itemExtent: 60.0,
@@ -100,7 +100,7 @@ class _NurseNoteViewState
                               color: Theme.of(context).colorScheme.onSecondary,
                               fontWeight: FontWeight.w300,
                               fontSize: toSize(16),
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Montserrat',
                             ),
                           ),
                           onTap: () {
@@ -121,7 +121,7 @@ class _NurseNoteViewState
                       );
                     },
                   ),
-            ElevatedButton(onPressed: loadNurseNote, child: Text('Load Data', style: TextStyle(fontFamily: 'Rubik'))),
+            ElevatedButton(onPressed: loadNurseNote, child: const Text('Load Data', style: TextStyle(fontFamily: 'Montserrat'))),
           ],
         ),
       ),

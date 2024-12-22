@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:med_voice/app/assets/image_assets.dart';
 
 import '../../../../common/base_controller.dart';
+import '../../../utils/module_utils.dart';
 
 class OnBoardingWelcomeController extends BaseController {
   int currentStep = 0;
   List<String> onBoardingWelcomeMessage = [
-    "It’s now easier than ever to create unique AI voices for free on the go with MedVoice.",
-    "Make voices travel across the globe or match it with scenery with built-in scenes.",
-    "Our features are packed with creative code and supported by Deep Mind codebase."
+    toText("onBoardingMessageOne"),
+    toText("onBoardingMessageTwo"),
+    toText("onBoardingMessageThree")
   ];
 
   List<String> onBoardingWelcomeImage = [

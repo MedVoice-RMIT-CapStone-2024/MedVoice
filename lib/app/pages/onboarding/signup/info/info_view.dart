@@ -70,12 +70,12 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                                 height: toSize(55)),
                             SizedBox(height: toSize(25)),
                             Center(
-                              child: Text("Account information",
+                              child: Text(toText("signUpCreateAccount"),
                                   style: TextStyle(
                                       color: theme.colorScheme.onBackground,
                                       fontSize: toSize(35),
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Rubik')),
+                                      fontFamily: 'Montserrat')),
                             ),
                           ],
                         ),
@@ -83,8 +83,8 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                       SizedBox(height: toSize(25)),
                       SmallTextField(
                         fillColor: theme.colorScheme.onPrimary,
-                        labelText: "EMAIL ADDRESS",
-                        hint: "Email address",
+                        labelText: toText("infoEmailAddress").toUpperCase(),
+                        hint: toText("infoEmailAddress"),
                         showIconButton: false,
                         validator: _controller.validateEmail,
                         controller: _controller.emailController,
@@ -95,8 +95,8 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                         builder: (context, obscureText, child) {
                           return SmallTextField(
                             fillColor: theme.colorScheme.onPrimary,
-                            labelText: "PASSWORD",
-                            hint: "Password",
+                            labelText: toText("infoPassword").toUpperCase(),
+                            hint: toText("infoPassword"),
                             iconButton: IconButton(
                               icon: Icon(
                                 obscureText
@@ -134,9 +134,9 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                         valueListenable: _controller.obscureText,
                         builder: (context, obscureText, child) {
                           return SmallTextField(
-                            hint: "Re-enter your password",
+                            hint: toText("infoReconfirmPasswordHintText"),
                             fillColor: theme.colorScheme.onPrimary,
-                            labelText: "CONFIRM PASSWORD",
+                            labelText: toText("infoReconfirmPassword").toUpperCase(),
                             iconButton: IconButton(
                               icon: Icon(
                                 obscureText
@@ -165,12 +165,12 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                               borderRadius: BorderRadius.circular(toSize(10)),
                               color: theme.colorScheme.primary),
                           child: Center(
-                              child: Text("Sign Up",
+                              child: Text(toText("infoSignUp"),
                                   style: TextStyle(
                                       color: theme.colorScheme.onPrimary
                                           .withOpacity(0.9),
                                       fontSize: toSize(17),
-                                      fontFamily: 'Rubik'))),
+                                      fontFamily: 'Montserrat'))),
                         ),
                       ),
                       SizedBox(height: toSize(20)),
@@ -188,18 +188,18 @@ class _InfoView extends BaseStateView<InfoView, InfoController> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "Already registered?",
+                                toText("infoAlreadyRegistered"),
                                 style: TextStyle(
                                     color: theme.colorScheme.onBackground,
                                     fontSize: toSize(15),
-                                    fontFamily: 'Rubik'),
+                                    fontFamily: 'Montserrat'),
                               ),
                               SizedBox(width: toSize(5)),
-                              Text("Log in here.",
+                              Text(toText("infoLogInHere"),
                                   style: TextStyle(
                                       color: theme.colorScheme.primary,
                                       fontSize: toSize(15),
-                                      fontFamily: 'Rubik',
+                                      fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w900))
                             ],
                           ),

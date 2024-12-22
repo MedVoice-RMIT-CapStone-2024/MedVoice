@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 import '../app/assets/icon_assets.dart';
 import '../app/utils/global.dart';
 import '../app/utils/module_utils.dart';
+import '../app/utils/pages.dart';
 import '../app/utils/router.dart';
 import '../app/widgets/confirm_view.dart';
 import '../app/widgets/theme_provider.dart';
+import '../restart_widget.dart';
 import 'base_controller.dart';
 import 'i_base_view.dart';
 
@@ -215,7 +217,7 @@ abstract class BaseStateView<Page extends clean.View,
                                 color: Colors.white,
                                 decoration: TextDecoration.none,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Rubik'),
+                                fontFamily: 'Montserrat'),
                           ),
                         ],
                       ),
@@ -241,7 +243,7 @@ abstract class BaseStateView<Page extends clean.View,
                               centerTitle: true,
                               title: Text(appBarTitle(),
                                   style: const TextStyle(
-                                      fontFamily: 'Rubik',
+                                      fontFamily: 'Montserrat',
                                       fontSize: 18,
                                       fontWeight: FontWeight.w400)),
                               leading: !isHideBackButton()
@@ -264,17 +266,38 @@ abstract class BaseStateView<Page extends clean.View,
                               elevation: 0,
                               actions: (isShowFeedbackFeature())
                                   ? [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(right: toSize(20)),
-                                        child: InkWell(
+                                      Row(
+                                        children: [
+                                          InkWell(
                                             onTap: () {
-                                              controller
-                                                  .submittingFeedback(context);
+                                              pushScreen(Pages.languageView);
                                             },
-                                            child: Icon(
-                                                Icons.bug_report_outlined,
-                                                size: toSize(25))),
+                                            child: theme.brightness ==
+                                                    Brightness.dark
+                                                ? Image.asset(
+                                                    IconAssets.icLanguageDark,
+                                                    color: Colors.white,
+                                                    width: toSize(25),
+                                                  )
+                                                : Image.asset(
+                                                    IconAssets.icLanguageLight,
+                                                    width: toSize(25),
+                                                  ),
+                                          ),
+                                          SizedBox(width: toSize(15)),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: toSize(20)),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  controller.submittingFeedback(
+                                                      context);
+                                                },
+                                                child: Icon(
+                                                    Icons.bug_report_outlined,
+                                                    size: toSize(25))),
+                                          ),
+                                        ],
                                       )
                                     ]
                                   : rightMenu(),
@@ -350,7 +373,7 @@ abstract class BaseStateView<Page extends clean.View,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontFamily: 'Rubik',
+                                fontFamily: 'Inter',
                                 fontSize: 11,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -376,7 +399,8 @@ abstract class BaseStateView<Page extends clean.View,
       () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(message, style: const TextStyle(fontFamily: 'Rubik')),
+            content:
+                Text(message, style: const TextStyle(fontFamily: 'Inter')),
           ),
         );
       },
@@ -457,11 +481,11 @@ abstract class BaseStateView<Page extends clean.View,
                 style: TextStyle(
                     fontSize: toSize(20),
                     color: theme.colorScheme.onBackground,
-                    fontFamily: 'Rubik')),
+                    fontFamily: 'Inter')),
             content: TextField(
               autofocus: true,
-              decoration: const InputDecoration(
-                  hintText: 'Enter your patient name here'),
+              decoration: InputDecoration(
+                  hintText: toText("recorderEnterPatientNameText")),
               style: TextStyle(color: theme.colorScheme.onBackground),
               controller: saveNameController,
             ),
@@ -482,7 +506,7 @@ abstract class BaseStateView<Page extends clean.View,
                             child: Text(cancelButton,
                                 style: TextStyle(
                                     color: theme.colorScheme.onSurface,
-                                    fontFamily: 'Rubik')),
+                                    fontFamily: 'Inter')),
                           ),
                         ),
                       )),
@@ -522,5 +546,9 @@ abstract class BaseStateView<Page extends clean.View,
     } else {
       showErrorFromServer(e);
     }
+  }
+
+  void restartApp() {
+    RestartWidget.restartApp(context);
   }
 }

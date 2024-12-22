@@ -36,7 +36,7 @@ class _RecordingAndroidView
 
   @override
   String appBarTitle() {
-    return "Android Recorder";
+    return toText("recordingRecorder");
   }
 
   @override
@@ -100,10 +100,10 @@ class _RecordingAndroidView
                                 builder: (context, snapshot) => Text(
                                       (snapshot.data != null &&
                                               snapshot.data!.isNotEmpty)
-                                          ? "Predictions: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
-                                          : "Predictions: ${recordingAndroidController!.guideText}.",
+                                          ? "${toText("androidRecorderPrediction")}: ${recordingAndroidController!.decodePartialTranscript(snapshot.data.toString())}"
+                                          : "${toText("androidRecorderPrediction")}: ${recordingAndroidController!.guideText}.",
                                       style:
-                                          const TextStyle(fontFamily: 'Rubik'),
+                                          const TextStyle(fontFamily: 'Montserrat'),
                                     ))
                             : const SizedBox(),
                         const Spacer(),
@@ -115,9 +115,9 @@ class _RecordingAndroidView
                                     .speechServiceController!
                                     .onResult(),
                                 builder: (context, snapshot) => Text(
-                                      "Result: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : recordingAndroidController!.resultGuideText}",
+                                      "${toText("androidRecorderResults")}: ${(snapshot.data != null && snapshot.data!.isNotEmpty) ? recordingAndroidController!.decodeCompleteTranscript(snapshot.data.toString()) : recordingAndroidController!.resultGuideText}",
                                       style:
-                                          const TextStyle(fontFamily: 'Rubik'),
+                                          const TextStyle(fontFamily: 'Montserrat'),
                                     ))
                             : const SizedBox(),
                         const Spacer(),

@@ -69,7 +69,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                                       color: theme.colorScheme.onBackground,
                                       fontSize: toSize(35),
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Rubik')),
+                                      fontFamily: 'Montserrat')),
                               SizedBox(height: toSize(10)),
                               Text(
                                 "Please provide us with your email address,\nwe will send you a link to regain access to your account.",
@@ -77,7 +77,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                                     color: theme.colorScheme.onBackground,
                                     fontSize: toSize(14),
                                     fontWeight: FontWeight.w300,
-                                    fontFamily: 'Rubik'),
+                                    fontFamily: 'Montserrat'),
                               ),
                             ],
                           ),
@@ -149,7 +149,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                                                   .withOpacity(0.8),
                                               fontSize: toSize(14),
                                               fontWeight: FontWeight.w600,
-                                              fontFamily: 'Rubik')),
+                                              fontFamily: 'Montserrat')),
                                     ),
                                   ),
                                 ),
@@ -168,7 +168,7 @@ class _ResetView extends BaseStateView<ResetView, ResetController> {
                                     child: Center(
                                         child: Text("Send",
                                             style: TextStyle(
-                                                fontFamily: 'Rubik',
+                                                fontFamily: 'Montserrat',
                                                 fontSize: toSize(17),
                                                 fontWeight: FontWeight.w700,
                                                 color: theme

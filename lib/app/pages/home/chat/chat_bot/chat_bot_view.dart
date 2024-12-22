@@ -142,7 +142,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
               children: [
                 Icon(Icons.circle, color: Colors.green, size: toSize(8)),
                 SizedBox(width: toSize(4)),
-                Text("Always active",
+                Text(toText("chatBotAlwaysActive"),
                     style: TextStyle(fontFamily: 'Rubik', fontSize: toSize(12)))
               ],
             )
@@ -260,14 +260,14 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
         spacing: 8,
         runSpacing: 8,
         children: [
-          _buildBubble('Covid 19 symptoms',
-              () => controller.sendMessage('Covid 19 symptoms'), isDarkMode),
-          _buildBubble('Update information',
-              () => controller.sendMessage('Update information'), isDarkMode),
-          _buildBubble('Scan QR code',
-              () => controller.sendMessage('Scan QR code'), isDarkMode),
-          _buildBubble('Record interaction',
-              () => controller.sendMessage('Record interaction'), isDarkMode),
+          _buildBubble(toText("chatBotCovidSymptoms"),
+              () => controller.sendMessage(toText("chatBotCovidSymptoms")), isDarkMode),
+          _buildBubble(toText("chatBotUpdateInformation"),
+              () => controller.sendMessage(toText("chatBotUpdateInformation")), isDarkMode),
+          _buildBubble(toText("chatBotScanQRCode"),
+              () => controller.sendMessage(toText("chatBotScanQRCode")), isDarkMode),
+          _buildBubble(toText("chatBotRecordInteraction"),
+              () => controller.sendMessage(toText("chatBotRecordInteraction")), isDarkMode),
         ],
       ),
     );
@@ -373,7 +373,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
               ),
               SizedBox(width: toSize(10)),
               Text(
-                'MVBot is typing',
+                toText("chatBotMVBotIsTyping"),
                 style: TextStyle(
                     fontFamily: 'Rubik',
                     fontSize: toSize(14),
@@ -478,7 +478,7 @@ class _ChatBotView extends BaseStateView<ChatBotView, ChatBotController>
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(50)),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
-                          labelText: 'Type a message...',
+                          labelText: '${toText("chatBotTypeAMessage")}...',
                           labelStyle: TextStyle(
                               fontFamily: 'Rubik',
                               fontSize: toSize(16),

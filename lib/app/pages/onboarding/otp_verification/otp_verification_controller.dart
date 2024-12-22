@@ -4,6 +4,7 @@ import 'package:email_otp/email_otp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:med_voice/app/pages/onboarding/otp_verification/otp_verification_presenter.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 
 import '../../../../domain/entities/nurse/nurse_info.dart';
@@ -48,7 +49,7 @@ class OtpVerificationController extends BaseController {
         }
       } else {
         view.showPopupWithAction(
-            'Account successfully created! Welcome ${response.mName} to Medvoice!',
+            '${toText("infoPopUpActionWelcome")} ${response.mName}',
             'Confirm', () {
           view.pushScreen(Pages.signIn, isAllowBack: false);
         });
@@ -67,7 +68,7 @@ class OtpVerificationController extends BaseController {
           view.onGeneralError(response.mDetail);
         }
       } else {
-        view.showPopupWithAction('Email successfully changed', 'Back to login',
+        view.showPopupWithAction(toText("OTPVerificationEmailChanged"), toText("newPasswordControllerReturnToLogin"),
             () {
           view.pushScreen(Pages.signIn, isAllowBack: false);
         });
@@ -84,7 +85,7 @@ class OtpVerificationController extends BaseController {
   }
 
   void sendOtp(String userEmail) async {
-    showLoadingProgress(loadingContent: 'Sending OTP');
+    showLoadingProgress(loadingContent: toText("showLoadingSendingOTP"));
     isSent = false;
     EmailOTP.config(
       appName: 'MedVoice',
@@ -112,7 +113,7 @@ class OtpVerificationController extends BaseController {
   }
 
   void otpVerification(String otpCode) async {
-    showLoadingProgress(loadingContent: 'Verifying OTP');
+    showLoadingProgress(loadingContent: toText("showLoadingVerifyingOTP"));
     if (EmailOTP.verifyOTP(otp: otpCode)) {
       if (isFromPasswordReset) {
         view.pushScreen(Pages.newPasswordView);
@@ -126,7 +127,7 @@ class OtpVerificationController extends BaseController {
     } else {
       hideLoadingProgress();
       view.showPopupWithAction(
-          'OTP verification failed, please try again', 'Okay');
+          toText("OTPVerificationEmailFailed"), 'Okay');
     }
   }
 

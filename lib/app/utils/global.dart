@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
 
+import '../../domain/entities/language/language.dart';
 import '../../domain/entities/recording_archive/recording_info.dart';
 
 class Global {
@@ -131,4 +132,7 @@ class Global {
 
   static String adminEmail = '1@a.com';
   static String adminPassword = '1';
+
+  /// the language data
+  static LanguageConfig mLanguageConfig = LanguageConfig("", "", {});
 }

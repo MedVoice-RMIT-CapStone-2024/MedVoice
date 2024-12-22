@@ -77,7 +77,7 @@ class _OnBoardingWelcomeView
                 style: TextStyle(
                     fontSize: toSize(34),
                     color: theme.colorScheme.primary,
-                    fontFamily: 'Rubik'),
+                    fontFamily: 'Montserrat'),
               ),
               SizedBox(height: toSize(16)),
               AnimatedSwitcher(
@@ -85,7 +85,7 @@ class _OnBoardingWelcomeView
                 child: Text(
                   _controller.onBoardingWelcomeMessage[_controller.currentStep],
                   key: ValueKey<int>(_controller.currentStep),
-                  style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground, fontFamily: 'Rubik'),
+                  style: TextStyle(fontSize: toSize(20), color: theme.colorScheme.onBackground, fontFamily: 'Montserrat'),
                   textAlign: TextAlign.center,
                 ),
                 transitionBuilder: (child, animation) {
@@ -148,11 +148,11 @@ class _OnBoardingWelcomeView
                       borderRadius: BorderRadius.circular(12),
                       color: theme.colorScheme.primary),
                   child: Center(
-                      child: Text("Get Started",
+                      child: Text(toText("onBoardingMessageGetStarted"),
                           style: TextStyle(
                               fontSize: toSize(20),
                               color: theme.colorScheme.onPrimary,
-                              fontFamily: 'Rubik'))),
+                              fontFamily: 'Montserrat'))),
                 ),
               ),
               SizedBox(height: toSize(20)),
@@ -164,15 +164,15 @@ class _OnBoardingWelcomeView
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Already have an account?  ',
+                        text: "${toText("signUpAlreadyRegistered")}  ",
                         style: TextStyle(
                             fontSize: toSize(17),
                             color:
                                 theme.colorScheme.onBackground,
-                            fontFamily: 'Rubik'),
+                            fontFamily: 'Montserrat'),
                       ),
                       TextSpan(
-                        text: 'Login',
+                        text: toText("signInLogin"),
                         style: TextStyle(
                             fontSize: toSize(17),
                             color:

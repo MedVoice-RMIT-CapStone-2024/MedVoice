@@ -36,7 +36,7 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
 
   @override
   String appBarTitle() {
-    return "Profile detail";
+    return toText("profileDetailProfileDetail");
   }
 
   @override
@@ -64,7 +64,7 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
                   children: [
                     Row(
                       children: [
-                        Text("Account ID",
+                        Text(toText("profileDetailAccountID"),
                             style: TextStyle(
                                 color: theme.colorScheme.onSurface,
                                 fontSize: toSize(15),
@@ -88,14 +88,13 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
                       alignment: Alignment.centerLeft,
                       child: InkWell(
                         onTap: () {
-                          // TODO: Push screen to edit email address
                           pushScreen(Pages.changeNurseEmail, arguments: {
                             nurseEmailItemRequest: Global.userCredentials
                           });
                         },
                         child: Row(
                           children: [
-                            Text("Change email address",
+                            Text(toText("profileDetailChangeEmailAddress"),
                                 style: TextStyle(
                                     color: theme.colorScheme.onSurface,
                                     fontSize: toSize(15),
@@ -163,15 +162,15 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
                       child: InkWell(
                         onTap: () {
                           showPopupWithAction(
-                              'This account along with its data will be permanently deleted. Do you still want to proceed?',
-                              'Yes', () {
+                              toText("nurseProfileDetailsDeletePopUp"),
+                              toText("nurseProfileDetailsDeletePopUpConfirm"), () {
                             // TODO: Implement delete function
                             _controller?.onDeleteNurseAccount();
-                          }, 'Account deletion', 'No', () {});
+                          }, toText("nurseProfileDetailsDeletePopUpTitle"), toText("nurseProfileDetailsDeletePopUpCancel"), () {});
                         },
                         child: Row(
                           children: [
-                            Text("Delete account",
+                            Text(toText("profileDetailDeleteAccount"),
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontSize: toSize(15),
@@ -208,7 +207,7 @@ class _NurseProfileDetailView extends BaseStateView<NurseProfileDetailView,
                       border: Border.all(color: theme.colorScheme.surface),
                       borderRadius: BorderRadius.circular(toSize(10))),
                   child: Center(
-                    child: Text("Sign out",
+                    child: Text(toText("profileDetailSignOut"),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: toSize(15),

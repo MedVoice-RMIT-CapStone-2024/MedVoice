@@ -22,4 +22,5 @@ class Pages {
   static const String changeNurseEmail = '/changeNurseEmail';
   static const String changeNursePassword = '/changeNursePassword';
   static const String newPasswordView = '/newPasswordView';
+  static const String languageView = '/languageView';
 }

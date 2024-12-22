@@ -78,7 +78,7 @@ class _OtpVerificationView
                               height: toSize(55)),
                           SizedBox(height: toSize(25)),
                           Center(
-                            child: Text("Email Verification",
+                            child: Text(toText("OTPEmailVerification"),
                                 style: TextStyle(
                                     color: theme.colorScheme.onBackground,
                                     fontSize: toSize(35),
@@ -86,10 +86,10 @@ class _OtpVerificationView
                                     fontFamily: 'Rubik')),
                           ),
                           SizedBox(height: toSize(10)),
-                          const Center(
+                          Center(
                             child: Text(
-                                "Enter the 5-digit OTP code we have sent to:",
-                                style: TextStyle(fontFamily: 'Rubik')),
+                                toText("OTPEmailVerificationDescription"),
+                                style: const TextStyle(fontFamily: 'Rubik')),
                           ),
                           SizedBox(height: toSize(5)),
                           Center(
@@ -133,7 +133,7 @@ class _OtpVerificationView
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Did not receive a code?",
+                        Text(toText("OTPDidNotReceiveCode"),
                             style: TextStyle(
                                 fontFamily: 'Rubik', fontSize: toSize(15))),
                         SizedBox(width: toSize(5)),
@@ -151,7 +151,7 @@ class _OtpVerificationView
                                 _controller!.refreshUI();
                               }
                             },
-                            child: Text("Resend",
+                            child: Text(toText("OTPResend"),
                                 style: TextStyle(
                                   fontFamily: 'Rubik',
                                   color: (_controller!.isAvailableToClick)

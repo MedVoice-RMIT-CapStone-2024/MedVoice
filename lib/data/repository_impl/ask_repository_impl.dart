@@ -37,7 +37,7 @@ class AskRepositoryImpl implements AskRepository {
     if (body == null) return AskInfo.buildDefault();
 
     askResponse = AskResponse.fromJson(body);
-    askInfo = AskInfo(askResponse.answer ??= '');
+    askInfo = AskInfo(utf8.decode(askResponse.answer?.runes.toList() ?? []));
     return askInfo;
   }
 }

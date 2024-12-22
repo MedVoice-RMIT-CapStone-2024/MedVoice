@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart'
 as clean;
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 
 import '../../../../../../common/base_state_view.dart';
@@ -25,7 +26,7 @@ class _ChangeNursePasswordViewState
 
   @override
   String appBarTitle() {
-    return 'Change password';
+    return toText("changeNursePasswordTitle");
   }
 
   @override

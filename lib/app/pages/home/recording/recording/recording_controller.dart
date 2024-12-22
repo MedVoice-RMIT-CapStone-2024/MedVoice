@@ -19,6 +19,7 @@ import '../../../../../domain/entities/recording/library_transcript/post_transcr
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
 import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
+import '../../../../utils/module_utils.dart';
 
 class RecordingController extends BaseController {
   final RecordingPresenter _presenter;
@@ -46,7 +47,7 @@ class RecordingController extends BaseController {
   bool onDevice = false;
   double minSoundLevel = 50000;
   double maxSoundLevel = -50000;
-  String lastWords = 'Press the button and start speaking';
+  String lastWords = toText("recordingPressButton");
   String lastError = '';
   String lastStatus = '';
   final SpeechToText speech = SpeechToText();
@@ -58,7 +59,7 @@ class RecordingController extends BaseController {
 
   @override
   void firstLoad() {
-    showLoadingProgress(loadingContent: 'Initiating library...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingInitiatingLibrary")}...');
     recordSub = audioRecorder.onStateChanged().listen((newRecordState) {
       recordState = newRecordState;
       refreshUI();
@@ -72,10 +73,10 @@ class RecordingController extends BaseController {
     initSpeechState();
   }
 
-
   void errorListener(SpeechRecognitionError error) {
     debugPrint(error.errorMsg.toString());
-    view.showErrorFromServer('Library callback error: ${error.errorMsg.toString()}');
+    view.showErrorFromServer(
+        'Library callback error: ${error.errorMsg.toString()}');
   }
 
   @override
@@ -134,7 +135,7 @@ class RecordingController extends BaseController {
   }
 
   void onUploadAudioFile(RecordingUploadInfo data) {
-    showLoadingProgress(loadingContent: 'Uploading audio file...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingUploadingAudioFile")}...');
     _presenter.executeUploadRecording(data);
   }
 
@@ -169,7 +170,7 @@ class RecordingController extends BaseController {
   // TODO: NEW SPEECH TO TEXT INITIALIZER
 
   Future<void> initSpeechState() async {
-    showLoadingProgress(loadingContent: 'Initializing new speech to text');
+    showLoadingProgress(loadingContent: toText("showLoadingInitializingSpeechToText"));
 
     try {
       var hasSpeech = await speech.initialize(
@@ -216,8 +217,10 @@ class RecordingController extends BaseController {
     // on some devices.
     if (await audioRecorder.hasPermission()) {
       if (isTheSameFile == false) {
-        view.showSaveRecordingPopup('Enter the patient name', 'Save', 'Cancel',
-            () {
+        view.showSaveRecordingPopup(
+            toText("recorderPatientNameTitle"),
+            toText("recorderPatientNameSave"),
+            toText("recorderPatientNameCancel"), () {
           Navigator.pop(view.context);
           initializeNewSpeechLib();
         }, () {
@@ -271,7 +274,7 @@ class RecordingController extends BaseController {
       onResult: resultListener,
       listenFor: const Duration(hours: 2),
       pauseFor: const Duration(minutes: 2),
-      localeId: 'en_GB',
+      localeId: 'vi-VN',
       listenOptions: options,
     );
 
@@ -290,13 +293,12 @@ class RecordingController extends BaseController {
     final path = await audioRecorder.stop();
     speech.stop();
     view.showPopupWithAction(
-        'Do you want to use this recording for processing?',
-        'Yes',
-            () {
+        toText("recordingUseRecordForProcessPopUp"),
+        toText("recordingUseRecordForProcessYes"),
+        () {
           if (path != null) {
             view.showPopupWithAction(
-                'Recording finished! Kindly wait as audio is now being processed',
-                'okay');
+                toText("recordingUseRecordForProcessConfirmPopUp"), 'okay');
             audioPath = path;
             pathForDelete = path;
           } else {
@@ -307,11 +309,11 @@ class RecordingController extends BaseController {
               '${recordingName.text.replaceAll(' ', '-')}.m4a', [lastWords]);
           recordingName.clear();
         },
-        'Processing confirmation',
-        'No',
-            () {
+        toText("recordingUseRecordForProcessConfirmConfirmation"),
+        toText("recordingUseRecordForProcessNo"),
+        () {
           onDelete(path ?? "");
-          lastWords = 'Press the button and start speaking';
+          lastWords = toText("recordingPressButton");
           recordingName.clear();
         });
     refreshUI();

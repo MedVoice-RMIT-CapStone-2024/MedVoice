@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,6 +17,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
 import '../../../../assets/lottie_assets.dart';
+import '../../../../utils/global.dart';
 import '../../../../widgets/theme_provider.dart';
 
 const groupDateInfo = 'groupDateInfo';
@@ -101,10 +104,10 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: toSize(60)),
-                      Text("Replay audio",
+                      Text(toText("medNoteReplayAudio"),
                           style: TextStyle(
                               color: theme.colorScheme.onBackground,
-                              fontFamily: 'Rubik')),
+                              fontFamily: 'Montserrat')),
                       SizedBox(height: toSize(20)),
                       InkWell(
                         onTap: () {
@@ -179,7 +182,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                                         fontSize: toSize(12),
                                         color: theme.colorScheme.onPrimary,
                                         fontWeight: FontWeight.w700,
-                                        fontFamily: 'Rubik'))),
+                                        fontFamily: 'Montserrat'))),
                           )
                         ],
                       )),
@@ -195,7 +198,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Recording name',
+                      Text(toText("medNoteRecordingName"),
                           style:
                               TextStyle(color: theme.colorScheme.onBackground)),
                       Text(displayData.dateCreated),
@@ -205,12 +208,13 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                   _libraryContainerContent(
                       displayData.patientName, false, theme),
                   SizedBox(height: toSize(20)),
-                  Text('Content',
+                  Text(toText("medNoteContent"),
                       style: TextStyle(color: theme.colorScheme.onBackground)),
                   SizedBox(height: toSize(10)),
                   _libraryContainerContent(
                       (textData.mMessage!.isEmpty)
-                          ? textData.mTranscript ?? ""
+                          ? utf8.decode(
+                              textData.mTranscript?.runes.toList() ?? [])
                           : "No file found with the given ID",
                       true,
                       theme),
@@ -273,7 +277,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: toSize(60)),
-                    Text("Replay audio",
+                    Text(toText("medNoteReplayAudio"),
                         style:
                             TextStyle(color: theme.colorScheme.onBackground)),
                     SizedBox(height: toSize(20)),
@@ -379,119 +383,129 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _contentLabel("Patient Information", theme),
+                _contentLabel(toText("notePatientInformation"), theme),
                 SizedBox(height: toSize(5)),
-                _basicContentRow(
-                    'Name', _controller!.jsonData?.mPatientName, false, theme),
-                _basicContentRow('Date Of Birth',
+                _basicContentRow(toText("notePatientInformationName"),
+                    _controller!.jsonData?.mPatientName, false, theme),
+                _basicContentRow(toText("notePatientInformationDoB"),
                     _controller!.jsonData?.mPatientDob, false, theme),
-                _basicContentRow('Gender',
+                _basicContentRow(toText("notePatientInformationGender"),
                     _controller!.jsonData?.mPatientGender, true, theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Patient's demographics", theme),
+                _contentLabel(
+                    toText("notePatientInformationPatientDemographics"), theme),
                 SizedBox(height: toSize(5)),
                 _overflowContentRow(
-                    'Marital status',
+                    toText("notePatientInformationMaritalStatus"),
                     _controller!
                         .jsonData?.mPatientDemographicInfo?.mMaritalStatus,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Ethnicity',
+                    toText("notePatientInformationEthnicity"),
                     _controller!.jsonData?.mPatientDemographicInfo?.mEthnicity,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Occupation',
+                    toText("notePatientInformationOccupation"),
                     _controller!.jsonData?.mPatientDemographicInfo?.mOccupation,
                     true,
                     theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Past medical history", theme),
+                _contentLabel(
+                    toText("notePatientInformationPastMedicalHistory"), theme),
                 SizedBox(height: toSize(5)),
                 _overflowContentRow(
-                    'Medical history',
+                    toText("notePatientInformationMedicalHistory"),
                     _controller!.jsonData?.mPatientPastMedicalHistoryInfo
                         ?.mMedicalHistory,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Surgical history',
+                    toText("notePatientInformationSurgicalHistory"),
                     _controller!.jsonData?.mPatientPastMedicalHistoryInfo
                         ?.mSurgicalHistory,
                     true,
                     theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Current medications and drug allergies", theme),
+                _contentLabel(
+                    toText(
+                        "notePatientInformationCurrentMedicationsAndDrugAllergies"),
+                    theme),
                 SizedBox(height: toSize(5)),
                 _overflowContentRow(
-                    'Drug allergy',
+                    toText("notePatientInformationDrugAllergy"),
                     _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
                         ?.mDrugAllergy,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Prescribed medications',
+                    toText("notePatientInformationPrescribedMedications"),
                     _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
                         ?.mPrescribedMedications,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Recently prescribed medications',
+                    toText(
+                        "notePatientInformationRecentlyPrescribedMedications"),
                     _controller!.jsonData?.mPatientCurrentMedAndDrugAllerInfo
                         ?.mRecentlyPrescribedMedications,
                     true,
                     theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Mental state examination", theme),
+                _contentLabel(
+                    toText("notePatientInformationMentalStateExamination"),
+                    theme),
                 SizedBox(height: toSize(5)),
                 _overflowContentRow(
-                    'Appearance and behavior',
+                    toText("notePatientInformationAppearanceAndBehavior"),
                     _controller!.jsonData?.mPatientMentalStateExaminationInfo
                         ?.mAppearanceAndBehaviour,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Speech and thoughts',
+                    toText("notePatientInformationSpeechAndThoughts"),
                     _controller!.jsonData?.mPatientMentalStateExaminationInfo
                         ?.mSpeechAndThoughts,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Mood',
+                    toText("notePatientInformationMood"),
                     _controller!
                         .jsonData?.mPatientMentalStateExaminationInfo?.mMood,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Thoughts',
+                    toText("notePatientInformationThoughts"),
                     _controller!.jsonData?.mPatientMentalStateExaminationInfo
                         ?.mThoughts,
                     true,
                     theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Physical examination", theme),
+                _contentLabel(
+                    toText("notePatientInformationPhysicalExamination"), theme),
                 SizedBox(height: toSize(5)),
                 _overflowContentRow(
-                    'Blood pressure',
+                    toText("notePatientInformationBloodPressure"),
                     _controller!.jsonData?.mPatientPhysicalExaminationInfo
                         ?.mBloodPressure,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Pulse rate',
+                    toText("notePatientInformationPulseRate"),
                     _controller!
                         .jsonData?.mPatientPhysicalExaminationInfo?.mPulseRate,
                     false,
                     theme),
                 _overflowContentRow(
-                    'Temperature',
+                    toText("notePatientInformationTemperature"),
                     _controller!.jsonData?.mPatientPhysicalExaminationInfo
                         ?.mTemperature,
                     true,
                     theme),
                 SizedBox(height: toSize(10)),
-                _contentLabel("Additional notes", theme),
+                _contentLabel(
+                    toText("notePatientInformationAdditionalNotes"), theme),
                 SizedBox(height: toSize(5)),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -523,7 +537,7 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: toSize(60)),
-                    Text("Replay audio",
+                    Text(toText("medNoteReplayAudio"),
                         style:
                             TextStyle(color: theme.colorScheme.onBackground)),
                     SizedBox(height: toSize(20)),
@@ -622,7 +636,10 @@ class _NoteViewState extends BaseStateView<NoteView, NoteController>
               )
             ],
           ),
-          _contentLabel("Generating transcript . . .", theme, isCenter: true),
+          _contentLabel(
+              "${toText("notePatientInformationGeneratingTranscript")} . . .",
+              theme,
+              isCenter: true),
           (isDarkMode)
               ? Lottie.asset(LottieAssets.generatingTranscriptDark,
                   height: toSize(300))

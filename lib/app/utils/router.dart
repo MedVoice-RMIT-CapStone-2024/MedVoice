@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/medical_archive/audio_playback/audio_playback_view.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_controller.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_view.dart';
+import 'package:med_voice/app/pages/home/user_profile/nurse_profile/language/language_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_detail/nurse_profile_detail_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/privacy/privacy_policy_view.dart';
 import 'package:med_voice/app/pages/home/user_profile/policies/terms/term_of_service_view.dart';
@@ -134,6 +135,9 @@ class AppRouter {
 
       case Pages.newPasswordView:
         return _buildRoute(settings, const NewPasswordView());
+
+      case Pages.languageView:
+        return _buildRoute(settings, const LanguageView());
 
       default:
         return null;

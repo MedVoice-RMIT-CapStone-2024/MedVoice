@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:med_voice/app/pages/home/medical_archive/medical_archive_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 
 import '../../../../common/base_controller.dart';
 import '../../../../domain/entities/recording/recording_archive_info.dart';
@@ -53,7 +55,7 @@ class MedicalArchiveController extends BaseController {
   }
 
   void onLoadRecordingArchive() {
-    showLoadingProgress(loadingContent: 'Fetching medical archive...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingFetchingMedicalArchive")}...');
     if (Global.userCredentials.id != null) {
       if (Global.userCredentials.id!.isNotEmpty) {
         _presenter.executeGetRecordingArchive(Global.userCredentials.id!);
@@ -145,7 +147,7 @@ class MedicalArchiveController extends BaseController {
       final userId = match.group(4);
 
       return extractedItem = DisplayArchive(
-          fileName!.replaceAll(RegExp(r'[-_]'), ' '),
+          Uri.decodeFull(fileName!.replaceAll(RegExp(r'[-_]'), ' ')),
           reformatDateString(dateCreated!, false, false),
           audioId!,
           userId!);

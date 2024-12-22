@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import '../../../../common/base_controller.dart';
 import '../../../utils/global.dart';
 
@@ -19,17 +20,17 @@ class SignUpController extends BaseController {
 
   String? validateDateOfBirth(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Date of birth is required';
+      return toText("signUpChooseDateOfBirth");
     }
     return null;
   }
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return toText("signUpFieldIsRequired");
     }
     if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
-      return 'This field can only contain letters and spaces';
+      return toText("signUpFieldAcceptCharacters");
     }
     return null;
   }

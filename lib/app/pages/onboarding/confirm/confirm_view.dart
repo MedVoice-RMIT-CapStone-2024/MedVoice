@@ -58,7 +58,7 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                         color: theme.colorScheme.onBackground,
                         fontSize: toSize(30),
                         fontWeight: FontWeight.w800,
-                        fontFamily: 'Rubik'
+                        fontFamily: 'Montserrat'
                       )),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -70,7 +70,7 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                         color: theme.colorScheme.onBackground,
                         fontSize: toSize(13),
                         fontWeight: FontWeight.w300,
-                        fontFamily: 'Rubik'
+                        fontFamily: 'Montserrat'
                       ),
                     ),
                   ),
@@ -91,7 +91,7 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                           color: theme.colorScheme.surface,
                           fontSize: toSize(14),
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Rubik'
+                          fontFamily: 'Montserrat'
                         ),
                       ),
                     ),
@@ -102,7 +102,7 @@ class _ConfirmView extends BaseStateView<ConfirmView, ConfirmController> {
                         color: theme.colorScheme.onBackground,
                         fontSize: toSize(14),
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Rubik'
+                        fontFamily: 'Montserrat'
                       )),
                 ],
               ),

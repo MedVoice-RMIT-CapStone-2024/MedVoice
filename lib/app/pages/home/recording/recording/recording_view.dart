@@ -34,12 +34,12 @@ class _RecordingView extends BaseStateView<RecordingView, RecordingController> {
 
   @override
   String appBarTitle() {
-    return "Recorder";
+    return toText("recordingRecorder");
   }
 
   @override
   bool isHideBackButton() {
-    return false;
+    return true;
   }
 
   @override

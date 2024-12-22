@@ -18,13 +18,14 @@ import '../../../../../domain/entities/recording/library_transcript/post_transcr
 import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
 import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
+import '../../../../utils/module_utils.dart';
 
 class RecordingAndroidController extends BaseController {
   final RecordingAndroidPresenter _presenter;
   bool speechEnabled = false;
   int recordDuration = 0;
-  String guideText = 'Press the button and start speaking';
-  String resultGuideText = 'Will be filtered from prediction texts.';
+  String guideText = toText("recordingPressButton");
+  String resultGuideText = toText("recordingAndroidFilteredPredText");
   final audioRecorder = Record();
   StreamSubscription<RecordState>? recordSub;
   RecordState recordState = RecordState.stop;
@@ -74,7 +75,7 @@ class RecordingAndroidController extends BaseController {
   }
 
   _initSpeech() async {
-    showLoadingProgress(loadingContent: 'Initiating speech library...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingInitiatingSpeechLibrary")}...');
     if (modelLoader != null) {
       try {
         String modelPath = await modelLoader!.loadFromAssets(enModelName);
@@ -153,7 +154,9 @@ class RecordingAndroidController extends BaseController {
       if (await audioRecorder.hasPermission()) {
         if (isTheSameFile == false) {
           view.showSaveRecordingPopup(
-              'Enter the patient name', 'Save', 'Cancel', () {
+              toText("recorderPatientNameTitle"),
+              toText("recorderPatientNameSave"),
+              toText("recorderPatientNameCancel"), () {
             Navigator.pop(view.context);
             initializeSpeechLib();
           }, () {
@@ -215,27 +218,26 @@ class RecordingAndroidController extends BaseController {
       await speechServiceController!.stop();
     }
     view.showPopupWithAction(
-        'Do you want to use this recording for processing?',
-        'Yes',
-            () {
-              if (path != null) {
-                view.showPopupWithAction(
-                    'Recording finished! Kindly wait as audio is now being processed',
-                    'okay');
-                audioPath = path;
-                pathForDelete = path;
-              } else {
-                debugPrint('path is empty');
-              }
-              onSaveRecordingToList(tempName, duration, audioPath);
-              addUniqueStrings(resultTranscript);
+        toText("recordingUseRecordForProcessPopUp"),
+        toText("recordingUseRecordForProcessYes"),
+        () {
+          if (path != null) {
+            view.showPopupWithAction(
+                toText("recordingUseRecordForProcessConfirmPopUp"), 'okay');
+            audioPath = path;
+            pathForDelete = path;
+          } else {
+            debugPrint('path is empty');
+          }
+          onSaveRecordingToList(tempName, duration, audioPath);
+          addUniqueStrings(resultTranscript);
         },
-        'Processing confirmation',
-        'No',
-            () {
-              onDelete(path ?? "");
-              guideText = 'Press the button and start speaking';
-              resultGuideText = 'Will be filtered from prediction texts.';
+        toText("recordingUseRecordForProcessConfirmConfirmation"),
+        toText("recordingUseRecordForProcessNo"),
+        () {
+          onDelete(path ?? "");
+          guideText = toText("recordingPressButton");
+          resultGuideText = toText("recordingAndroidFilteredPredText");
         });
     refreshUI();
   }
@@ -255,13 +257,16 @@ class RecordingAndroidController extends BaseController {
   }
 
   void onUploadAudioFile(RecordingUploadInfo data) {
-    showLoadingProgress(loadingContent: 'Uploading audio file...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingUploadingAudioFile")}...');
     _presenter.executeUploadRecording(data);
   }
 
   void onUploadLibraryTranscript() {
-    showLoadingProgress(loadingContent: 'Uploading library transcript');
-    dataRequest = PostTranscriptRequest(Global.userCredentials.id, '${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
+    showLoadingProgress(loadingContent: toText("showLoadingUploadingLibraryTranscript"));
+    dataRequest = PostTranscriptRequest(
+        Global.userCredentials.id,
+        '${recordingName.text.replaceAll(' ', '-')}.m4a',
+        resultTranscriptFiltered);
     recordingName.clear();
     _presenter.executeUploadLibraryTranscript(dataRequest!);
   }
@@ -308,7 +313,8 @@ class RecordingAndroidController extends BaseController {
   void addUniqueStrings(List<String> unfilteredString) {
     resultTranscriptFiltered = [];
     for (String str in unfilteredString) {
-      if (resultTranscriptFiltered.isEmpty || resultTranscriptFiltered.last != str) {
+      if (resultTranscriptFiltered.isEmpty ||
+          resultTranscriptFiltered.last != str) {
         debugPrint("DATA FILTERED: $str");
         resultTranscriptFiltered.add(str);
       }

@@ -36,7 +36,7 @@ class _ChangeNurseEmailViewState
 
   @override
   String appBarTitle() {
-    return 'Change email address';
+    return toText("changeNurseEmailTitle");
   }
 
   @override
@@ -56,8 +56,8 @@ class _ChangeNurseEmailViewState
             ),
             SmallTextField(
               fillColor: theme.colorScheme.onPrimary,
-              labelText: "NEW EMAIL ADDRESS",
-              hint: "New email address",
+              labelText: toText("changeNurseEmailNewEmailAddress").toUpperCase(),
+              hint: toText("changeNurseEmailNewEmailAddress"),
               validator: _controller?.validateEmail,
               showIconButton: false,
               controller: _controller!.emailController,
@@ -80,7 +80,7 @@ class _ChangeNurseEmailViewState
                     borderRadius: BorderRadius.circular(10),
                     color: theme.colorScheme.primary),
                 child: Center(
-                  child: Text('CONTINUE',
+                  child: Text(toText("changeNurseEmailContinue").toUpperCase(),
                       style: TextStyle(
                           fontFamily: 'Rubik',
                           fontSize: toSize(15),
