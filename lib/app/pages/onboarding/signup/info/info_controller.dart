@@ -6,6 +6,7 @@ import 'package:med_voice/domain/entities/nurse/nurse_register_request.dart';
 
 import '../../../../../domain/entities/nurse/nurse_info.dart';
 import '../../../../utils/global.dart';
+import '../../../../utils/module_utils.dart';
 import '../../../../utils/pages.dart';
 
 class InfoController extends BaseController {
@@ -20,7 +21,7 @@ class InfoController extends BaseController {
   ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
   ValueNotifier<PasswordStrength> passwordStrengthNotifier =
       ValueNotifier<PasswordStrength>(
-    PasswordStrength(strength: 0, strengthLabel: 'Weak'),
+    PasswordStrength(strength: 0, strengthLabel: toText("infoWeakLevel")),
   );
 
   InfoController(nurseRepository) : _presenter = InfoPresenter(nurseRepository);
@@ -34,8 +35,8 @@ class InfoController extends BaseController {
       debugPrint("Register nurse success! Moving to login view...");
       hideLoadingProgress();
       view.showPopupWithAction(
-          'Account successfully created! Welcome ${response.mName} to Medvoice!',
-          'Confirm', () {
+          '${toText("infoPopUpActionWelcome")} ${response.mName}',
+          toText("infoPopUpReturnToLogin"), () {
         view.pushScreen(Pages.signIn, isAllowBack: false);
       });
     };
@@ -58,7 +59,7 @@ class InfoController extends BaseController {
 
   void updatePasswordStrength(String password) {
     double strength = 0;
-    String strengthLabel = 'Weak';
+    String strengthLabel = toText("infoWeakLevel");
 
     if (RegExp(r'[A-Z]').hasMatch(password)) strength += 0.2;
     if (RegExp(r'[a-z]').hasMatch(password)) strength += 0.2;
@@ -67,11 +68,11 @@ class InfoController extends BaseController {
     if (password.length >= 8) strength += 0.2;
 
     if (strength < 0.3) {
-      strengthLabel = 'Weak';
+      strengthLabel = toText("infoWeakLevel");
     } else if (strength < 0.7) {
-      strengthLabel = 'Good';
+      strengthLabel = toText("infoGoodLevel");
     } else {
-      strengthLabel = 'Strong';
+      strengthLabel = toText("infoStrongLevel");
     }
 
     passwordStrengthNotifier.value =
@@ -81,27 +82,27 @@ class InfoController extends BaseController {
   // Custom validation functions
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email address is required';
+      return toText("infoErrorEmailNeeded");
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Enter a valid email address';
+      return toText("infoErrorInvalidEmail");
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return toText("infoErrorPasswordNeeded");
     }
     return null;
   }
 
   String? validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
+      return toText("infoErrorEmptyReconfirm");
     }
     if (value != passwordController.text) {
-      return 'Passwords do not match';
+      return toText("infoErrorMissMatchPassword");
     }
     return null;
   }

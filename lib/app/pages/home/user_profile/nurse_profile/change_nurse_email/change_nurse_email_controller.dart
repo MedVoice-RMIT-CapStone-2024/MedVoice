@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:med_voice/common/base_controller.dart';
 
 import '../../../../../utils/global.dart';
+import '../../../../../utils/module_utils.dart';
 
 class ChangeNurseEmailController extends BaseController {
   TextEditingController emailController = TextEditingController();
@@ -16,12 +17,12 @@ class ChangeNurseEmailController extends BaseController {
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email address is required';
+      return toText("changeNurseEmailEmailRequired");
     }
     // Validate email format using regex
     if (!value.contains('@') &&
         !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Enter a valid email address';
+      return toText("changeNurseEmailEmailFormat");
     }
     return null; // Return null if validation passes
   }

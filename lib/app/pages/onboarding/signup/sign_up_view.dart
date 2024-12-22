@@ -70,12 +70,12 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                                   height: toSize(55)),
                               SizedBox(height: toSize(30)),
                               Center(
-                                child: Text("Create Account",
+                                child: Text(toText("signUpCreateAccount"),
                                     style: TextStyle(
                                         color: theme.colorScheme.onBackground,
                                         fontSize: toSize(35),
                                         fontWeight: FontWeight.w900,
-                                        fontFamily: 'Rubik')),
+                                        fontFamily: 'Montserrat')),
                               ),
                             ],
                           ),
@@ -111,11 +111,11 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                                 borderRadius:
                                     BorderRadius.circular(toSize(10))),
                             child: Center(
-                                child: Text("Continue",
+                                child: Text(toText("signUpContinue"),
                                     style: TextStyle(
                                         color: theme.colorScheme.onPrimary
                                             .withOpacity(0.9),
-                                        fontFamily: 'Rubik',
+                                        fontFamily: 'Montserrat',
                                         fontSize: toSize(17)))),
                           ),
                         ),
@@ -130,18 +130,18 @@ class _SignUpView extends BaseStateView<SignUpView, SignUpController> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "Already registered?",
+                                  toText("signUpAlreadyRegistered"),
                                   style: TextStyle(
                                       color: theme.colorScheme.onBackground,
                                       fontSize: toSize(15),
-                                      fontFamily: 'Rubik'),
+                                      fontFamily: 'Montserrat'),
                                 ),
                                 SizedBox(width: toSize(5)),
-                                Text("Log in here.",
+                                Text(toText("signUpLogInHere"),
                                     style: TextStyle(
                                         color: theme.colorScheme.primary,
                                         fontSize: toSize(15),
-                                        fontFamily: 'Rubik',
+                                        fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w900))
                               ],
                             ),

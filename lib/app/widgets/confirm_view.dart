@@ -59,7 +59,7 @@ class ConfirmView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: theme.colorScheme.primary,
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Montserrat',
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
                         ))
@@ -72,7 +72,7 @@ class ConfirmView extends StatelessWidget {
                           style: TextStyle(
                               color:
                               theme.colorScheme.onSurface,
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Montserrat',
                               fontSize: 12,
                               fontWeight: FontWeight.normal),
                         )),
@@ -111,7 +111,7 @@ class ConfirmView extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: theme.colorScheme.primary,
-                                              fontFamily: 'Rubik',
+                                              fontFamily: 'Montserrat',
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal),
                                         )),
@@ -149,7 +149,7 @@ class ConfirmView extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: Colors.white,
-                                              fontFamily: 'Rubik',
+                                              fontFamily: 'Montserrat',
                                               fontSize: 11,
                                               fontWeight: FontWeight.normal),
                                         )),

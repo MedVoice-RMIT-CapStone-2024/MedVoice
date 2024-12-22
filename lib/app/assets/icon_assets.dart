@@ -15,4 +15,6 @@ class IconAssets {
   static const String icPdfFilled = 'assets/icons/ic_pdf_filled.png';
   static const String icMedvoiceBotLogo = 'assets/icons/ic_medvoice_bot_logo.png';
   static const String icBackArrow = 'assets/icons/ic_back_arrow.png';
+  static const String icLanguageLight = 'assets/icons/ic_language_lightmode.png';
+  static const String icLanguageDark = 'assets/icons/ic_language_darkmode.png';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:med_voice/app/pages/home/patient_doc/note/note_presenter.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
 
@@ -9,6 +10,7 @@ import '../../../../../domain/entities/recording/audio_transcript_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_json_info.dart';
 import '../../../../../domain/entities/recording/library_transcript/get_library_transcript_request.dart';
 import '../../../../../domain/entities/recording/upload_recording_request.dart';
+import '../../../../utils/global.dart';
 import '../../medical_archive/medical_archive_controller.dart';
 
 class NoteController extends BaseController {
@@ -33,7 +35,7 @@ class NoteController extends BaseController {
 
   @override
   void firstLoad() {
-    showLoadingProgress(loadingContent: 'Fetching transcript...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingFetchingTranscript")}...');
     libraryTranscriptRequest =
         GetLibraryTranscriptRequest(groupDateInfo.audioId);
     onGetLibraryTranscriptJson();
@@ -100,7 +102,7 @@ class NoteController extends BaseController {
   }
 
   void onProcessAudioV2() {
-    showLoadingProgress(loadingContent: 'Enhancing transcript...');
+    showLoadingProgress(loadingContent: '${toText("showLoadingEnhancingTranscript")}...');
     request = UploadRecordingRequest(groupDateInfo.audioId);
     _presenter.executeUploadAudioInfo(request!);
   }

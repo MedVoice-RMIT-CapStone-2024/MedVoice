@@ -83,14 +83,14 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
                                     fontWeight: FontWeight.w600,
                                     fontSize: toSize(25),
                                     color: theme.colorScheme.onBackground,
-                                    fontFamily: 'Rubik'),
+                                    fontFamily: 'Montserrat'),
                               ),
                               Text("04 - 04 - 2001",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: toSize(15),
                                     color: theme.colorScheme.onBackground,
-                                    fontFamily: 'Rubik'
+                                    fontFamily: 'Montserrat'
                                   )),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -160,11 +160,11 @@ class _MyQRView extends BaseStateView<MyQRView, MyQRController> {
               ),
             ),
             child: Text(
-              "Scan QR Code",
+              toText("myQRScanQR"),
               style: TextStyle(
                 color: theme.colorScheme.background,
                 fontSize: toSize(18),
-                fontFamily: 'Rubik'
+                fontFamily: 'Montserrat'
               ),
             ),
           ),

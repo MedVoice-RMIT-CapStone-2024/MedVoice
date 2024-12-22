@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 
 import '../../../../../common/base_controller.dart';
 
@@ -34,7 +35,7 @@ class MyQRController extends BaseController {
       barcodeScanRes = 'Failed to get platform version.';
     }
     if (barcodeScanRes.isNotEmpty && barcodeScanRes != "-1") {
-      view.showPopupWithAction("Scan result is: $barcodeScanRes", 'ok');
+      view.showPopupWithAction("${toText("myQRScanResultPopUp")} $barcodeScanRes", 'ok');
     }
   }
 }

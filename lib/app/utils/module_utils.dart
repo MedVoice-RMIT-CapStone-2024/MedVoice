@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart' as MyFormat;
 import 'constants.dart';
+import 'global.dart';
 
 String formattedDate(String? formattedString, String dateFormat) {
   if (formattedString == null || formattedString == "") return "";
@@ -70,6 +71,21 @@ String formatDateTime(String dateTime) {
 
 String formatTimeToHour(DateTime time) {
   return MyFormat.DateFormat('HH:mm').format(time.toLocal());
+}
+
+String toText(String? key) {
+  String showingMessage = "";
+  if (key == null) {
+    showingMessage = "UndefineKey";
+  } else {
+    String? message = Global.mLanguageConfig.mLanguages[key];
+    if (message == null || message.isEmpty) {
+      showingMessage = key;
+    } else {
+      showingMessage = message;
+    }
+  }
+  return showingMessage.replaceAll('\\n', '\n');
 }
 
 // String accentParser(String text) {

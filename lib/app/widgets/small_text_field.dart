@@ -49,7 +49,7 @@ class SmallTextField extends StatelessWidget {
                 color: theme.colorScheme.onBackground,
                 fontSize: toSize(11),
                 letterSpacing: toSize(1.5),
-                fontFamily: 'Rubik'
+                fontFamily: 'Montserrat'
               )),
         ),
         TextFormField(
@@ -59,7 +59,7 @@ class SmallTextField extends StatelessWidget {
           style: TextStyle(
             color: theme.colorScheme.onBackground,
             fontSize: 14,
-            fontFamily: 'Rubik',
+            fontFamily: 'Montserrat',
             fontWeight: FontWeight.w500
           ),
           decoration: InputDecoration(
@@ -83,11 +83,11 @@ class SmallTextField extends StatelessWidget {
                 color: theme.colorScheme.onBackground.withOpacity(0.6),
                 fontSize: 14,
                 fontWeight: FontWeight.w300,
-                fontFamily: 'Rubik'
+                fontFamily: 'Montserrat'
               ),
               errorStyle: TextStyle(
                 color: theme.colorScheme.onSecondary,
-                fontFamily: 'Rubik'
+                fontFamily: 'Montserrat'
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(

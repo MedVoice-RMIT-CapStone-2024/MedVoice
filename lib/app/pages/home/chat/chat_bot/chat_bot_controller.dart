@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/domain/entities/ask/chat_info.dart';
 import 'package:med_voice/common/base_controller.dart';
 import 'package:med_voice/domain/entities/ask/ask_info.dart';
@@ -25,7 +26,7 @@ class ChatBotController extends BaseController {
     messages = [
       ChatInfo(
           isMe: false,
-          message: 'Hello, I am MVBot. How can I assist you today?',
+          message: toText("chatBotGreetings"),
           time: DateTime.now()),
     ];
   }

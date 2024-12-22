@@ -125,12 +125,12 @@ class _MedicalArchiveView
                             decoration: BoxDecoration(
                                 color: theme.colorScheme.primary,
                                 borderRadius: BorderRadius.circular(15)),
-                            child: const Text(
-                              'Need an assistant?',
+                            child: Text(
+                              toText("medArchiveBotPopupText"),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
-                                  fontFamily: 'Rubik'),
+                                  fontFamily: 'Montserrat'),
                             ),
                           ),
                         )
@@ -170,19 +170,19 @@ class _MedicalArchiveView
       children: [
         SizedBox(height: toSize(38)),
         Text(
-          "Voices Library",
+          toText("medArchiveMedicalArchiveTitle"),
           style: TextStyle(
               fontSize: toSize(40),
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.w700,
-              fontFamily: 'Rubik'),
+              fontFamily: 'Montserrat'),
         ),
         SizedBox(height: toSize(15)),
-        Text("Your recordings and transcripts will appear here.",
+        Text(toText("medArchiveDescription"),
             style: TextStyle(
                 fontSize: toSize(17),
                 color: theme.colorScheme.onBackground,
-                fontFamily: 'Rubik')),
+                fontFamily: 'Montserrat')),
         SizedBox(height: toSize(20)),
         SizedBox(
             height: MediaQuery.of(context).size.height * 0.65,
@@ -234,7 +234,7 @@ class _MedicalArchiveView
       style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: toSize(18),
-          fontFamily: 'Rubik'),
+          fontFamily: 'Montserrat'),
     );
   }
 
@@ -267,7 +267,7 @@ class _MedicalArchiveView
                         overflow: TextOverflow.ellipsis,
                         fontSize: toSize(16),
                         color: theme.colorScheme.onBackground,
-                        fontFamily: 'Rubik')),
+                        fontFamily: 'Montserrat')),
                 const Spacer(),
                 Text(
                     _controller!
@@ -275,7 +275,7 @@ class _MedicalArchiveView
                     style: TextStyle(
                         fontSize: toSize(14),
                         color: theme.colorScheme.onBackground,
-                        fontFamily: 'Rubik')),
+                        fontFamily: 'Montserrat')),
               ],
             ),
             const Spacer(),
@@ -310,17 +310,17 @@ class _MedicalArchiveView
                 width: toSize(200),
                 child: Image.asset(ImageAssets.imgEmptyRecording)),
             SizedBox(height: toSize(16)),
-            Text("Voices Library",
+            Text(toText("medArchiveMedicalArchiveTitle"),
                 style: TextStyle(
                     fontSize: 28,
                     color: theme.colorScheme.primary,
-                    fontFamily: 'Rubik')),
+                    fontFamily: 'Montserrat')),
             SizedBox(height: toSize(10)),
-            Text("Your recordings and transcripts will appear here.",
+            Text(toText("medArchiveDescription"),
                 style: TextStyle(
                     fontSize: 17,
                     color: theme.colorScheme.onBackground,
-                    fontFamily: 'Rubik'))
+                    fontFamily: 'Montserrat'))
           ],
         ),
       ),

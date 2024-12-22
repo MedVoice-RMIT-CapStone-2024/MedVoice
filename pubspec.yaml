@@ -133,6 +133,7 @@ flutter:
     - assets/google_api_auth_key/
     - assets/json/nurse_note.json
     - assets/vosk_model/
+    - assets/language/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -146,10 +147,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Rubik
+    - family: Inter
       fonts:
-        - asset: assets/fonts/Rubik-VariableFont_wght.ttf
-        - asset: assets/fonts/Rubik-Italic-VariableFont_wght.ttf
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
           style: italic
 
   # For details regarding fonts from package dependencies,

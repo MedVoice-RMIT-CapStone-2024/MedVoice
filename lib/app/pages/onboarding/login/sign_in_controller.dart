@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:med_voice/app/pages/onboarding/login/sign_in_presenter.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/domain/entities/nurse/nurse_login_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,18 +60,18 @@ class SignInController extends BaseController {
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email address is required';
+      return toText("changeNurseEmailEmailRequired");
     }
     if (!value.contains('@') &&
         !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Enter a valid email address';
+      return toText("changeNurseEmailEmailFormat");
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return toText("changeNursePasswordRequired");
     }
     return null;
   }

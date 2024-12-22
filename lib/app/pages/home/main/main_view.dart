@@ -89,7 +89,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
       colorShadow: Colors.red,
-      textSkip: "SKIP",
+      textSkip: toText("mainSkip"),
       paddingFocus: 10,
       opacityShadow: 0.5,
       imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
@@ -144,10 +144,10 @@ class _MainView extends BaseStateView<MainView, MainController> {
                           child: Image.asset(ImageAssets.imgMedVoiceLogo))),
                   SizedBox(height: toSize(30)),
                   Text(
-                    "Welcome to Medvoice",
+                    toText("mainCoachWelcomeText"),
                     style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'Rubik',
+                        fontFamily: 'Montserrat',
                         fontSize: toSize(25),
                         fontWeight: FontWeight.w600),
                   ),
@@ -177,9 +177,9 @@ class _MainView extends BaseStateView<MainView, MainController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  const Text(
-                    "Storing/Viewing patients' audio items you have recorded",
-                    style: TextStyle(
+                  Text(
+                    toText("mainCoachFirstTabText"),
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
@@ -205,9 +205,9 @@ class _MainView extends BaseStateView<MainView, MainController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  const Text(
-                    "Recording new patient audios",
-                    style: TextStyle(
+                  Text(
+                    toText("mainCoachSecondTabText"),
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
@@ -233,9 +233,9 @@ class _MainView extends BaseStateView<MainView, MainController> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "View/Adjust your profiling",
-                    style: TextStyle(
+                  Text(
+                    toText("mainCoachThirdTabText"),
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
@@ -293,10 +293,10 @@ class _MainView extends BaseStateView<MainView, MainController> {
                     items: [
                       // Add _tab([index], [asset location], [title underneath the icon]
                       _tab(0, "assets/main_assets/ic_medical_archive",
-                          "Archive", theme, keyNavigation1),
-                      _tab(1, "assets/main_assets/ic_voice_recording", "Record",
+                          toText("mainTabNavArchive"), theme, keyNavigation1),
+                      _tab(1, "assets/main_assets/ic_voice_recording", toText("mainTabNavRecord"),
                           theme, keyNavigation2),
-                      _tab(2, "assets/main_assets/ic_nurse_profile", "Profile",
+                      _tab(2, "assets/main_assets/ic_nurse_profile", toText("mainTabNavProfile"),
                           theme, keyNavigation3)
                     ],
                   ),
@@ -328,7 +328,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                   Text(
                     namePage,
                     style: TextStyle(
-                      fontFamily: 'Rubik',
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
                       color: theme.colorScheme.secondary.withOpacity(0.7),
@@ -355,7 +355,7 @@ class _MainView extends BaseStateView<MainView, MainController> {
                   Text(
                     namePage,
                     style: TextStyle(
-                      fontFamily: 'Rubik',
+                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w900,
                       fontSize: 11,
                       color: theme.colorScheme.onSecondary,

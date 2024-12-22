@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'base_state_view.dart';
@@ -12,7 +13,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 abstract class BaseController extends Controller implements IBaseController {
   bool isLoading = false;
-  String baseLoadingContent = 'Loading, please wait...';
+  String baseLoadingContent = '${toText("baseControllerLoadingText")}...';
   late BaseStateView view;
 
   void initView(BaseStateView pageView) {
@@ -43,7 +44,7 @@ abstract class BaseController extends Controller implements IBaseController {
   @override
   void showLoadingProgress({String? loadingContent}) {
     isLoading = true;
-    baseLoadingContent = loadingContent ?? 'Loading, please wait...';
+    baseLoadingContent = loadingContent ?? '${toText("baseControllerLoadingText")}...';
     refreshUI();
   }
 

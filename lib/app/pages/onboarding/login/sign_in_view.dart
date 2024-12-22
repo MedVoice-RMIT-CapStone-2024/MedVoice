@@ -70,19 +70,19 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                         child: Column(
                           children: [
                             Text(
-                              "Login",
+                              toText("signInLogin"),
                               style: TextStyle(
                                   color: theme.colorScheme.onBackground,
                                   fontSize: toSize(50),
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Rubik'),
+                                  fontFamily: 'Montserrat'),
                             ),
                             Text(
-                              "Sign in to continue",
+                              toText("signInToContinue"),
                               style: TextStyle(
                                   color: theme.colorScheme.onBackground,
                                   fontSize: toSize(15),
-                                  fontFamily: 'Rubik'
+                                  fontFamily: 'Montserrat'
                                   // fontWeight: FontWeight.w300,
                                   ),
                             ),
@@ -92,8 +92,8 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                       SizedBox(height: toSize(20)),
                       SmallTextField(
                         fillColor: theme.colorScheme.onPrimary,
-                        labelText: "EMAIL ADDRESS",
-                        hint: "Enter your email",
+                        labelText: toText("infoEmailAddress").toUpperCase(),
+                        hint: toText("infoEmailAddress"),
                         validator: _controller?.validateEmail,
                         showIconButton: false,
                         controller: _controller!.emailController,
@@ -102,8 +102,8 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                       SmallTextField(
                         fillColor: theme.colorScheme.onPrimary,
                         obscureText: obscureText,
-                        hint: "Enter your password",
-                        labelText: "PASSWORD",
+                        hint: toText("infoPassword"),
+                        labelText: toText("infoPassword"),
                         iconButton: IconButton(
                           icon: Icon(
                             obscureText == true
@@ -133,7 +133,7 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                       //             color: theme.colorScheme.onBackground,
                       //             fontSize: toSize(13),
                       //             fontWeight: FontWeight.w500,
-                      //             fontFamily: 'Rubik')),
+                      //             fontFamily: 'Montserrat')),
                       //   ),
                       // ),
                       SizedBox(height: toSize(23)),
@@ -153,9 +153,9 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: theme.colorScheme.primary),
                                 child: Center(
-                                    child: Text("Log In",
+                                    child: Text(toText("signInLogin"),
                                         style: TextStyle(
-                                            fontFamily: 'Rubik',
+                                            fontFamily: 'Montserrat',
                                             fontSize: toSize(17),
                                             color: theme.colorScheme.onPrimary.withOpacity(0.9)))),
                               ),
@@ -187,19 +187,19 @@ class _SignInView extends BaseStateView<SignInView, SignInController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text("Don't have an account?",
+                                  Text(toText("signInDontHaveAnAccount"),
                                       style: TextStyle(
                                           color: theme.colorScheme.onBackground,
                                           fontSize: toSize(15),
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: 'Rubik')),
+                                          fontFamily: 'Montserrat')),
                                   SizedBox(width: toSize(5)),
-                                  Text("Register now",
+                                  Text(toText("signInRegisterNow"),
                                       style: TextStyle(
                                           color: theme.colorScheme.primary,
                                           fontSize: toSize(15),
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: 'Rubik')),
+                                          fontFamily: 'Montserrat')),
                                 ],
                               ),
                             ),

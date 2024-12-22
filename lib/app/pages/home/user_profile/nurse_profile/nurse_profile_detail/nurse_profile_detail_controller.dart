@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:med_voice/app/pages/home/user_profile/nurse_profile/nurse_profile_detail/nurse_profile_detail_presenter.dart';
+import 'package:med_voice/app/utils/module_utils.dart';
 import 'package:med_voice/common/base_controller.dart';
 
 import '../../../../../../domain/entities/nurse/nurse_register_request.dart';
@@ -24,7 +25,7 @@ class NurseProfileDetailController extends BaseController {
       debugPrint("Delete nurse successful");
       hideLoadingProgress();
       view.showPopupWithAction(
-          'Account deleted successfully', 'Return to login', () {
+          toText("nurseProfileDetailsAccountDeleteSuccess"), toText("newPasswordControllerReturnToLogin"), () {
         view.pushScreen(Pages.signIn, isAllowBack: false);
       });
     };
@@ -39,7 +40,7 @@ class NurseProfileDetailController extends BaseController {
   }
 
   void onDeleteNurseAccount() {
-    showLoadingProgress(loadingContent: 'Deleting your account');
+    showLoadingProgress(loadingContent: toText("showLoadingDeletingYourAccount"));
     request?.id = Global.userCredentials.id;
     _presenter.executeDeleteNurseAccount(request!);
   }
