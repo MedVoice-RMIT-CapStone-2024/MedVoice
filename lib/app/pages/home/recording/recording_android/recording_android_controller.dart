@@ -51,7 +51,7 @@ class RecordingAndroidController extends BaseController {
   List<String> resultTranscript = [];
   List<String> resultTranscriptFiltered = [];
   String enModelName = 'assets/vosk_model/vosk-model-small-en-us-0.15.zip';
-  String vnModelName = 'vosk-model-vn-0.4.zip';
+  String vnModelName = 'assets/vosk_model/vosk-model-vn-0.4.zip';
 
   RecordingAndroidController(audioRepository)
       : _presenter = RecordingAndroidPresenter(audioRepository) {
@@ -77,10 +77,15 @@ class RecordingAndroidController extends BaseController {
   _initSpeech() async {
     showLoadingProgress(loadingContent: '${toText("showLoadingInitiatingSpeechLibrary")}...');
     if (modelLoader != null) {
+      String? modelPath;
       try {
-        String modelPath = await modelLoader!.loadFromAssets(enModelName);
-        debugPrint("Model path: $modelPath");
+        if (Global.mLanguageConfig.mLang == "en") {
+          modelPath = await modelLoader!.loadFromAssets(enModelName);
+        } else {
+          modelPath = await modelLoader!.loadFromAssets(vnModelName);
+        }
 
+        debugPrint("Model path: $modelPath");
         var model = await vosk.createModel(modelPath);
         modelController = model;
         debugPrint("Model created successfully");

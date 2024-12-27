@@ -274,12 +274,19 @@ class RecordingController extends BaseController {
       onResult: resultListener,
       listenFor: const Duration(hours: 2),
       pauseFor: const Duration(minutes: 2),
-      localeId: 'vi-VN',
+      localeId: returnStt(),
       listenOptions: options,
     );
 
     speechEnabled = true;
     refreshUI();
+  }
+
+  String returnStt() {
+    if (Global.mLanguageConfig.mLang == 'en') {
+      return 'en_GB';
+    }
+    return 'vi-VN';
   }
 
   void stopNewListening() async {
