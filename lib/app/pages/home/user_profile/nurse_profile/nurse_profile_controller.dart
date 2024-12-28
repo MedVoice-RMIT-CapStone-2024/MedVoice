@@ -40,7 +40,7 @@ class NurseProfileController extends BaseController {
       debugPrint("Fetch nurse data failed");
       hideLoadingProgress();
       view.showErrorFromServer(
-          "Failed to fetch information\nPlease try again later");
+          "Failed to fetch information: $e");
     };
     _presenter.onCompleted = () {
       debugPrint("Finished fetching nurse data");

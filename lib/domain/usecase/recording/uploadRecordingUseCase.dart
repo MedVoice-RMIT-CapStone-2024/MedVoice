@@ -25,7 +25,7 @@ class UploadRecordingUseCase extends UseCase<bool, RecordingUploadInfo?> {
         controller.addError(e.message);
       } else {
         debugPrint("failed $e");
-        controller.addError("");
+        controller.addError(e);
       }
     }
     return controller.stream;

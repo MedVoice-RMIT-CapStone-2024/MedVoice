@@ -58,7 +58,7 @@ class OtpVerificationController extends BaseController {
     _presenter.onRegisterNurseFailed = (error) {
       debugPrint("Error registering nurse");
       hideLoadingProgress();
-      view.showErrorFromServer("Email has already taken");
+      view.showErrorFromServer("Register nurse failed: $error");
     };
     _presenter.onChangeEmailSuccess = (NurseInfo response) {
       debugPrint("Change email success");

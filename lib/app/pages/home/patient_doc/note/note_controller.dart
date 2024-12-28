@@ -73,7 +73,7 @@ class NoteController extends BaseController {
     };
     _presenter.onGetLibraryTranscriptJsonFailed = (e) {
       dataIsEmpty = true;
-      view.showErrorFromServer('Get library transcript text failed');
+      view.showErrorFromServer('Get library transcript text failed: $e');
       debugPrint("Get library transcript text failed! $e");
       hideLoadingProgress();
     };

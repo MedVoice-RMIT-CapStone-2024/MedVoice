@@ -30,7 +30,7 @@ class GetBaseballListUseCase extends UseCase<List<BaseballInfo>, String?> {
         controller.addError(e.message);
       } else {
         debugPrint("failed $e");
-        controller.addError("");
+        controller.addError(e);
       }
     }
     return controller.stream;

@@ -32,7 +32,7 @@ class NurseProfileDetailController extends BaseController {
     _presenter.onGetNurseInfoFailed = (e) {
       debugPrint("Delete nurse failed");
       hideLoadingProgress();
-      view.showErrorFromServer('Failed to delete nurse account');
+      view.showErrorFromServer('Failed to delete nurse account: $e');
     };
     _presenter.onCompleted = (){
       debugPrint("Delete nurse completed");

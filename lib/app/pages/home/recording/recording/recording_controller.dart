@@ -197,7 +197,7 @@ class RecordingController extends BaseController {
       lastError = 'Speech recognition failed: ${e.toString()}';
       hasLibSpeech = false;
       hideLoadingProgress();
-      view.showErrorFromServer('Initialized library failed');
+      view.showErrorFromServer('Initialized library failed: $e');
       refreshUI();
     }
   }
