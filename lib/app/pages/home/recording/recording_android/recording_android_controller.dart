@@ -4,8 +4,8 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:med_voice/app/pages/home/recording/recording_android/recording_android_presenter.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/library_transcript_info.dart';
+import 'package:med_voice/app/pages/home/recording/recording/recording_presenter.dart';
+import 'package:med_voice/domain/entities/recording/recording_detail.dart';
 import 'package:med_voice/domain/entities/recording_archive/recording_info.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,14 +13,10 @@ import 'package:record/record.dart';
 import 'package:vosk_flutter_2/vosk_flutter_2.dart';
 
 import '../../../../../common/base_controller.dart';
-import '../../../../../domain/entities/recording/audio_transcript_info.dart';
-import '../../../../../domain/entities/recording/library_transcript/post_transcript_request.dart';
-import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../../../../domain/entities/recording/upload_recording_request.dart';
 import '../../../../utils/global.dart';
 
 class RecordingAndroidController extends BaseController {
-  final RecordingAndroidPresenter _presenter;
+  final RecordingPresenter _presenter;
   bool speechEnabled = false;
   int recordDuration = 0;
   String guideText = 'Press the button and start speaking';
@@ -37,8 +33,7 @@ class RecordingAndroidController extends BaseController {
   bool isTheSameFile = false;
   bool isStartingRecording = false;
   String pathForDelete = '';
-  PostTranscriptRequest? dataRequest;
-  UploadRecordingRequest? audioInfoRequest;
+  RecordingDetail? uploadResult;
   ModelLoader? modelLoader;
   VoskFlutterPlugin vosk = VoskFlutterPlugin.instance();
   Model? modelController;
@@ -52,7 +47,7 @@ class RecordingAndroidController extends BaseController {
   String vnModelName = 'vosk-model-vn-0.4.zip';
 
   RecordingAndroidController(audioRepository)
-      : _presenter = RecordingAndroidPresenter(audioRepository) {
+      : _presenter = RecordingPresenter(audioRepository) {
     initListeners();
   }
 
@@ -113,38 +108,18 @@ class RecordingAndroidController extends BaseController {
 
   @override
   void onListener() {
-    _presenter.onUploadRecordingSuccess = (bool responses) {
-      onUploadLibraryTranscript();
+    _presenter.onUploadRecordingSuccess = (RecordingDetail detail) {
+      uploadResult = detail;
       onDelete(pathForDelete);
-      debugPrint("Upload audio success");
+      hideLoadingProgress();
+      refreshUI();
+      debugPrint("Upload recording succeeded: ${detail.recordingId}");
     };
     _presenter.onUploadRecordingFailed = (e) {
-      view.showErrorFromServer("Upload audio failed: $e");
+      view.showErrorFromServer("Upload recording failed: $e");
       hideLoadingProgress();
-      debugPrint("Upload audio failed");
+      debugPrint("Upload recording failed");
     };
-    _presenter.onUploadLibraryTranscriptSuccess =
-        (LibraryTranscriptInfo response) {
-      audioInfoRequest = UploadRecordingRequest(response.mFileId);
-      if (audioInfoRequest != null) {
-        onUploadAudioForProcessing(audioInfoRequest!);
-      }
-      debugPrint("Upload library transcript success");
-      hideLoadingProgress();
-    };
-    _presenter.onUploadLibraryTranscriptFailed = (e) {
-      view.showErrorFromServer("Upload library transcript failed: $e");
-      hideLoadingProgress();
-    };
-    _presenter.onUploadAudioInfoSuccess = (AudioTranscriptInfo response) {
-      debugPrint("Upload audio for processing v2 success");
-      hideLoadingProgress();
-    };
-    _presenter.onUploadAudioInfoFailed = (e) {
-      view.showErrorFromServer("Upload audio for processing v2 failed: $e");
-      hideLoadingProgress();
-    };
-    _presenter.onCompleted = () {};
   }
 
   Future<void> startListening() async {
@@ -225,7 +200,6 @@ class RecordingAndroidController extends BaseController {
     }
     onSaveRecordingToList(tempName, duration, audioPath);
     addUniqueStrings(resultTranscript);
-    dataRequest = PostTranscriptRequest('${recordingName.text.replaceAll(' ', '-')}.m4a', resultTranscriptFiltered);
     recordingName.clear();
     refreshUI();
   }
@@ -237,24 +211,21 @@ class RecordingAndroidController extends BaseController {
     audioFile = File(path);
     audioPath = '';
     if (audioFile != null) {
-      RecordingUploadInfo temp =
-          RecordingUploadInfo(audioFile, Global.bucketName);
-      onUploadAudioFile(temp);
+      onUploadAudioFile(audioFile!, title);
     }
     refreshUI();
   }
 
-  void onUploadAudioFile(RecordingUploadInfo data) {
+  void onUploadAudioFile(File file, String? patientName) {
     showLoadingProgress();
-    _presenter.executeUploadRecording(data);
+    _presenter.executeUploadRecording(file, patientName);
   }
 
-  void onUploadLibraryTranscript() {
-    _presenter.executeUploadLibraryTranscript(dataRequest!);
-  }
-
-  void onUploadAudioForProcessing(UploadRecordingRequest request) {
-    _presenter.executeUploadAudioInfo(request);
+  void clearResult() {
+    uploadResult = null;
+    resultTranscript = [];
+    resultTranscriptFiltered = [];
+    refreshUI();
   }
 
   Future<void> onDelete(String path) async {

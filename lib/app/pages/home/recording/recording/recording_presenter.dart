@@ -1,118 +1,46 @@
+import 'dart:io';
+
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/post_transcript_request.dart';import 'package:med_voice/domain/repositories/audio_repository/audio_repository.dart';
-import 'package:med_voice/domain/usecase/recording/uploadLibraryTranscriptUseCase.dart';
-import 'package:med_voice/domain/usecase/recording/uploadRecordingUseCase.dart';
 
-import '../../../../../domain/entities/recording/audio_transcript_info.dart';
-import '../../../../../domain/entities/recording/library_transcript/library_transcript_info.dart';
-import '../../../../../domain/entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../../../../domain/entities/recording/upload_recording_request.dart';
-import '../../../../../domain/usecase/recording/uploadAudioInfoUseCase.dart';
+import '../../../../../domain/entities/recording/recording_detail.dart';
+import '../../../../../domain/repositories/audio_repository/audio_repository.dart';
 
-
-class RecordingPresenter extends Presenter{
+/// Uploads a finished recording to the medvoice-service `/recordings` endpoint.
+/// Shared by the iOS and Android recording screens: the upload contract is the
+/// same, only the on-device live-transcription engine differs.
+class RecordingPresenter extends Presenter {
   final AudioRepository _audioRepository;
-  UploadRecordingUseCase? _uploadRecordingUseCase;
-  UploadAudioInfoUseCase? _uploadAudioInfoUseCase;
-  UploadLibraryTranscriptUseCase?  _uploadLibraryTranscriptUseCase;
 
   Function? onUploadRecordingSuccess;
   Function? onUploadRecordingFailed;
 
-  Function? onUploadAudioInfoSuccess;
-  Function? onUploadAudioInfoFailed;
-
-  Function? onUploadLibraryTranscriptSuccess;
-  Function? onUploadLibraryTranscriptFailed;
-
-  Function? onCompleted;
-
-  RecordingPresenter(this._audioRepository) {
-    _uploadRecordingUseCase = UploadRecordingUseCase(_audioRepository);
-    _uploadAudioInfoUseCase = UploadAudioInfoUseCase(_audioRepository);
-    _uploadLibraryTranscriptUseCase = UploadLibraryTranscriptUseCase(_audioRepository);
-  }
+  RecordingPresenter(this._audioRepository);
 
   @override
-  void dispose() {
-    _uploadRecordingUseCase?.dispose();
-    _uploadAudioInfoUseCase?.dispose();
-    _uploadLibraryTranscriptUseCase?.dispose();
+  void dispose() {}
+
+  Future<void> executeUploadRecording(File file, String? patientName) async {
+    try {
+      final RecordingDetail detail = await _audioRepository.uploadRecording(
+        fileBytes: await file.readAsBytes(),
+        fileName: _fileNameFor(file),
+        patientName:
+            (patientName == null || patientName.isEmpty) ? null : patientName,
+      );
+      onUploadRecordingSuccess?.call(detail);
+    } catch (e) {
+      onUploadRecordingFailed?.call(e);
+    }
   }
 
-  void executeUploadRecording(RecordingUploadInfo info) => _uploadRecordingUseCase?.execute(_UploadRecordingUseCaseObserver(this), info);
-  void executeUploadAudioInfo(UploadRecordingRequest request) => _uploadAudioInfoUseCase?.execute(_UploadAudioInfoUseCaseObserver(this), request);
-  void executeUploadLibraryTranscript(PostTranscriptRequest request) => _uploadLibraryTranscriptUseCase?.execute(_UploadLibraryTranscriptUseCaseObserver(this), request);
-}
-
-class _UploadRecordingUseCaseObserver implements Observer<bool> {
-  final RecordingPresenter _presenter;
-
-  _UploadRecordingUseCaseObserver(this._presenter);
-
-  @override
-  void onComplete() {
-    assert(_presenter.onCompleted != null);
-    _presenter.onCompleted!();
-  }
-
-  @override
-  void onError(e) {
-    assert(_presenter.onUploadRecordingFailed != null);
-    _presenter.onUploadRecordingFailed!(e);
-  }
-
-  @override
-  void onNext(bool? response) {
-    assert(response is bool);
-    _presenter.onUploadRecordingSuccess!(response);
-  }
-}
-
-class _UploadLibraryTranscriptUseCaseObserver implements Observer<LibraryTranscriptInfo> {
-  final RecordingPresenter _presenter;
-
-  _UploadLibraryTranscriptUseCaseObserver(this._presenter);
-
-  @override
-  void onComplete() {
-    assert(_presenter.onCompleted != null);
-    _presenter.onCompleted!();
-  }
-
-  @override
-  void onError(e) {
-    assert(_presenter.onUploadLibraryTranscriptFailed != null);
-    _presenter.onUploadLibraryTranscriptFailed!(e);
-  }
-
-  @override
-  void onNext(LibraryTranscriptInfo? response) {
-    assert(response is LibraryTranscriptInfo);
-    _presenter.onUploadLibraryTranscriptSuccess!(response);
-  }
-}
-
-class _UploadAudioInfoUseCaseObserver implements Observer<AudioTranscriptInfo> {
-  final RecordingPresenter _presenter;
-
-  _UploadAudioInfoUseCaseObserver(this._presenter);
-
-  @override
-  void onComplete() {
-    assert(_presenter.onCompleted != null);
-    _presenter.onCompleted!();
-  }
-
-  @override
-  void onError(e) {
-    assert(_presenter.onUploadAudioInfoFailed != null);
-    _presenter.onUploadAudioInfoFailed!(e);
-  }
-
-  @override
-  void onNext(AudioTranscriptInfo? response) {
-    assert(response is AudioTranscriptInfo);
-    _presenter.onUploadAudioInfoSuccess!(response);
+  /// The recorder names files after the patient, so an unnamed recording yields
+  /// a bare ".m4a". Fall back to a timestamp so the server always gets a usable
+  /// filename.
+  String _fileNameFor(File file) {
+    final String name = file.uri.pathSegments.last;
+    if (name.isEmpty || name.startsWith('.')) {
+      return 'rec_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    }
+    return name;
   }
 }

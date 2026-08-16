@@ -12,6 +12,8 @@ import '../../../../../common/base_controller.dart';
 import '../../../../../common/base_state_view.dart';
 import '../../../../utils/global.dart';
 import '../../../../widgets/theme_provider.dart';
+import '../../../../../domain/entities/recording/recording_detail.dart';
+import '../../../../widgets/recording_result_view.dart';
 
 class RecordingAndroidView extends clean.View {
   const RecordingAndroidView({Key? key}) : super(key: key);
@@ -59,6 +61,9 @@ class _RecordingAndroidView
   Widget body(BuildContext context, BaseController controller) {
     recordingAndroidController = controller as RecordingAndroidController;
     ThemeData theme = Provider.of<ThemeProvider>(context).themeData;
+
+    final RecordingDetail? result = recordingAndroidController!.uploadResult;
+    if (result != null) return _resultBody(context, result);
 
     return Scaffold(
       body: SafeArea(
@@ -153,6 +158,28 @@ class _RecordingAndroidView
           ],
         ),
       )),
+    );
+  }
+
+  Widget _resultBody(BuildContext context, RecordingDetail detail) {
+    return Scaffold(
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.all(toSize(16)),
+          children: [
+            Text(detail.patientName ?? detail.recordingId,
+                style: Theme.of(context).textTheme.titleLarge),
+            Text('${detail.status} - ${detail.createdAt}'),
+            SizedBox(height: toSize(12)),
+            ...buildRecordingResult(context, detail),
+            SizedBox(height: toSize(12)),
+            FilledButton(
+              onPressed: () => recordingAndroidController!.clearResult(),
+              child: const Text('New recording'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
