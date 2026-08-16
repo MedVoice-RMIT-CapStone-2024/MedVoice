@@ -1,0 +1,56 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:med_voice/domain/entities/recording/medical_document.dart';
+import 'package:med_voice/domain/entities/recording/recording_detail.dart';
+import 'package:med_voice/domain/entities/recording/recording_list.dart';
+import 'package:med_voice/domain/entities/recording/create_recording_response.dart';
+
+void main() {
+  test('RecordingDetail.fromJson parses full contract response', () {
+    final detail = RecordingDetail.fromJson({
+      'recording_id': 'rec_1',
+      'status': 'completed',
+      'created_at': '2026-08-16T03:31:12Z',
+      'patient_name': 'Jane Doe',
+      'language': 'en',
+      'transcript': {
+        'full_text': 'Hello doctor',
+        'segments': [
+          {'speaker': 'SPEAKER_01', 'start': 0.0, 'end': 1.0, 'text': 'Hello doctor'}
+        ],
+      },
+      'medical_document': {
+        'soap': {'subjective': 's', 'objective': 'o', 'assessment': 'a', 'plan': 'p'},
+        'entities': [
+          {'name': 'Hypertension', 'code': 'I10', 'category': 'diagnosis', 'speaker': 'SPEAKER_00'}
+        ],
+        'phi': {'detected': false, 'entities': []},
+      },
+    });
+    expect(detail.recordingId, 'rec_1');
+    expect(detail.transcript.fullText, 'Hello doctor');
+    expect(detail.transcript.segments.length, 1);
+    expect(detail.medicalDocument.soap.assessment, 'a');
+    expect(detail.medicalDocument.entities.length, 1);
+    expect(detail.medicalDocument.entities.first.code, 'I10');
+    expect(detail.medicalDocument.phi.detected, false);
+  });
+
+  test('RecordingList.fromJson parses list response', () {
+    final list = RecordingList.fromJson({
+      'recordings': [
+        {'recording_id': 'rec_1', 'patient_name': 'Jane Doe', 'created_at': '2026-08-16T03:31:12Z', 'status': 'completed', 'has_medical_document': true}
+      ],
+    });
+    expect(list.recordings.length, 1);
+    expect(list.recordings.first.hasMedicalDocument, true);
+  });
+
+  test('CreateRecordingResponse.fromJson parses POST response', () {
+    final resp = CreateRecordingResponse.fromJson({
+      'recording_id': 'rec_1', 'status': 'completed', 'created_at': 't', 'patient_name': null, 'language': 'en',
+      'transcript': {'full_text': '', 'segments': []},
+      'medical_document': {'soap': {}, 'entities': [], 'phi': {'detected': false, 'entities': []}},
+    });
+    expect(resp.recordingId, 'rec_1');
+  });
+}
