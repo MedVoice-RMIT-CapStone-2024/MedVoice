@@ -1,19 +1,16 @@
-import 'package:med_voice/domain/entities/recording/audio_transcript_info.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/get_library_transcript_text_info.dart';
-import 'package:med_voice/domain/entities/recording/library_transcript/post_transcript_request.dart';
-import 'package:med_voice/domain/entities/recording/upload_recording_request.dart';
+import 'dart:typed_data';
 
-import '../../entities/recording/library_transcript/get_library_transcript_json_info.dart';
-import '../../entities/recording/library_transcript/get_library_transcript_request.dart';
-import '../../entities/recording/library_transcript/library_transcript_info.dart';
-import '../../entities/recording/local_recording_entity/recording_upload_info.dart';
-import '../../entities/recording/recording_archive_info.dart';
+import '../../entities/recording/recording_detail.dart';
+import '../../entities/recording/recording_list.dart';
 
 abstract class AudioRepository {
-  Future<RecordingArchiveInfo> getAudioArchive();
-  Future<bool> uploadAudioFile(RecordingUploadInfo file);
-  Future<AudioTranscriptInfo> uploadAudioInfo(UploadRecordingRequest data);
-  Future<LibraryTranscriptInfo> uploadLibraryTranscript(PostTranscriptRequest data);
-  Future<GetLibraryTranscriptTextInfo> getLibraryTranscriptText(GetLibraryTranscriptRequest data);
-  Future<GetLibraryTranscriptJsonInfo> getLibraryTranscriptJson(GetLibraryTranscriptRequest data);
+  Future<RecordingDetail> uploadRecording({
+    required Uint8List fileBytes,
+    required String fileName,
+    String? patientName,
+    String language,
+  });
+  Future<RecordingList> listRecordings();
+  Future<RecordingDetail> getRecordingDetail(String recordingId);
+  Future<void> deleteRecording(String recordingId);
 }

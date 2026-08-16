@@ -120,7 +120,6 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/main_assets/
-    - assets/google_api_auth_key/
     - assets/json/nurse_note.json
     - assets/vosk_model/
 
