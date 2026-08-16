@@ -13,7 +13,4 @@ class Pages {
   static const String audioPlayback = '/audioPlayback';
   static const String terms = '/termsAndConditions';
   static const String privacy = '/privacyPolicy';
-  static const String noteArchiveDetails = '/note';
-  static const String noteArchiveEnhancedDetails = '/enhancedNote';
-  static const String chatBot = '/chatBot';
 }
