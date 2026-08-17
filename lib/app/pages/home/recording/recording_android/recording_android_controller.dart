@@ -10,7 +10,8 @@ import 'package:med_voice/domain/entities/recording_archive/recording_info.dart'
 import 'package:path_provider/path_provider.dart';
 
 import 'package:record/record.dart';
-import 'package:vosk_flutter_2/vosk_flutter_2.dart';
+// Real vosk on mobile; dart:ffi-free stub on web (vosk cannot compile to JS).
+import 'vosk_io.dart' if (dart.library.js_interop) 'vosk_web.dart';
 
 import '../../../../../common/base_controller.dart';
 import '../../../../utils/global.dart';
