@@ -22,3 +22,13 @@ This project is being developed under Flutter sdk version 3.19.5. Make sure your
 After cloning the project, make sure to flutter pub get to install the app's neccessary library packages for the build.
 
 Locate and run the main.dart file to start building the application.
+
+## Backend
+
+The app talks to [medvoice-service](https://github.com/medvoice-research/medvoice-service)
+over its `/recordings` API (multipart upload -> transcript + SOAP/ICD-10/PHI
+document; list, get, delete).
+
+Set `Constants.baseUrl` in `lib/data/network/constants.dart` to your server:
+`http://localhost:8000/` for the emulator, your LAN IP or an ngrok URL for a
+physical device.

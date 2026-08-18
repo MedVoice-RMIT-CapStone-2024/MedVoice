@@ -1,0 +1,6 @@
+# Keeps backend-dependent tests out of the default `fvm flutter test` run.
+# Run them explicitly with:
+#   fvm flutter test --tags integration --run-skipped
+tags:
+  integration:
+    skip: 'backend integration — start docker compose in medvoice-service first'

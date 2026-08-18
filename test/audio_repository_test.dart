@@ -1,0 +1,80 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
+import 'package:med_voice/data/network/constants.dart';
+import 'package:med_voice/data/repository_impl/audio_repository_impl.dart';
+
+void main() {
+  Constants.baseUrl = 'http://test.local:8000/';
+
+  test('uploadRecording posts multipart and parses response', () async {
+    final mock = MockClient((request) async {
+      expect(request.method, 'POST');
+      expect(request.url.path, '/recordings');
+      expect(request.headers['content-type'], contains('multipart/form-data'));
+      return http.Response(
+        jsonEncode({
+          'recording_id': 'rec_1', 'status': 'completed', 'created_at': 't',
+          'patient_name': 'Jane', 'language': 'en',
+          'transcript': {'full_text': 'Hello', 'segments': []},
+          'medical_document': {'soap': {}, 'entities': [], 'phi': {'detected': false, 'entities': []}},
+        }),
+        201,
+        headers: {'content-type': 'application/json'},
+      );
+    });
+    final repo = AudioRepositoryImpl.withClient(mock);
+    final result = await repo.uploadRecording(
+      fileBytes: Uint8List.fromList([1, 2, 3]),
+      fileName: 'a.m4a',
+      patientName: 'Jane',
+    );
+    expect(result.recordingId, 'rec_1');
+    expect(result.transcript.fullText, 'Hello');
+  });
+
+  test('listRecordings parses list', () async {
+    final mock = MockClient((request) async {
+      expect(request.url.path, '/recordings');
+      return http.Response(
+        jsonEncode({'recordings': [
+          {'recording_id': 'rec_1', 'patient_name': null, 'created_at': 't', 'status': 'completed', 'has_medical_document': true}
+        ]}),
+        200,
+        headers: {'content-type': 'application/json'},
+      );
+    });
+    final repo = AudioRepositoryImpl.withClient(mock);
+    final list = await repo.listRecordings();
+    expect(list.recordings.length, 1);
+    expect(list.recordings.first.recordingId, 'rec_1');
+  });
+
+  test('getRecordingDetail fetches by id', () async {
+    final mock = MockClient((request) async {
+      expect(request.url.path, '/recordings/rec_1');
+      return http.Response(
+        jsonEncode({'recording_id': 'rec_1', 'status': 'completed', 'created_at': 't', 'patient_name': null, 'language': 'en',
+          'transcript': {'full_text': 'X', 'segments': []},
+          'medical_document': {'soap': {}, 'entities': [], 'phi': {'detected': false, 'entities': []}}}),
+        200,
+        headers: {'content-type': 'application/json'},
+      );
+    });
+    final repo = AudioRepositoryImpl.withClient(mock);
+    final detail = await repo.getRecordingDetail('rec_1');
+    expect(detail.recordingId, 'rec_1');
+  });
+
+  test('deleteRecording expects 204', () async {
+    final mock = MockClient((request) async {
+      expect(request.method, 'DELETE');
+      return http.Response('', 204);
+    });
+    final repo = AudioRepositoryImpl.withClient(mock);
+    await repo.deleteRecording('rec_1'); // should not throw
+  });
+}
